@@ -227,6 +227,17 @@
     <button id="salary-month-back" class="back-btn">← Назад</button>
   </div>
 
+  <!-- Расчетный лист -->
+<div id="salary-slip" class="form-container hidden">
+  <h2 id="slip-title">Расчетный листок</h2>
+  <p><strong>ФИО:</strong> Иванов Иван</p>
+  <p><strong>Оклад:</strong> <span id="slip-salary">—</span></p>
+  <p><strong>Начислено:</strong> <span id="slip-earned">—</span></p>
+  <p><strong>Удержано:</strong> <span id="slip-deducted">—</span></p>
+  <p><strong>Выплачено:</strong> <span id="slip-paid">—</span></p>
+  <button id="slip-back" class="back-btn">← Назад</button>
+</div>
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
@@ -378,13 +389,40 @@
 }
 
     // Обработка выбора месяца
-    salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const year = salaryMonth.dataset.year;
-        tg.HapticFeedback.impactOccurred("medium");
-        tg.showAlert(`Вы выбрали зарплату за ${btn.dataset.month} ${year} года`);
-      });
-    });
+    const salarySlip = document.getElementById("salary-slip");
+
+function formatMoney(num) {
+  return num.toLocaleString("ru-RU") + " сум";
+}
+
+salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const year = salaryMonth.dataset.year;
+    const month = btn.dataset.month;
+
+    tg.HapticFeedback.impactOccurred("medium");
+
+    // Генерация случайных цифр
+    const base = Math.floor(Math.random() * (35_000_000 - 15_000_000) + 15_000_000);
+    const earned = base + Math.floor(Math.random() * 5_000_000);
+    const deducted = Math.floor(Math.random() * 3_000_000);
+    const paid = earned - deducted;
+
+    document.getElementById("slip-title").innerText = `Расчетный листок за ${month} ${year} года`;
+    document.getElementById("slip-salary").innerText = formatMoney(base);
+    document.getElementById("slip-earned").innerText = formatMoney(earned);
+    document.getElementById("slip-deducted").innerText = formatMoney(deducted);
+    document.getElementById("slip-paid").innerText = formatMoney(paid);
+
+    showBlock(salarySlip);
+  });
+});
+
+document.getElementById("slip-back").addEventListener("click", () => {
+  tg.HapticFeedback.impactOccurred("light");
+  showBlock(salaryMonth);
+});
+
 
     // === Чат ===
     document.getElementById("chat").addEventListener("click", () => {
