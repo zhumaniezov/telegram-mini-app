@@ -6,33 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body {
+    /* Центрируем весь контент по центру экрана */
+    html, body {
+      height: 100%;
+      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--tg-theme-bg-color, #f0f4ff);
       color: var(--tg-theme-text-color, #222);
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
+    }
+    body > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      max-width: 420px;
+      padding: 0 20px;
       box-sizing: border-box;
     }
     #greeting {
       font-size: 28px;
-      margin-bottom: 40px;
       text-align: center;
       user-select: none;
-      width: 100%;
-      max-width: 400px;
+      margin: 0;
     }
     .buttons, .submenu, .form-container {
       display: flex;
       gap: 15px;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 400px;
       width: 100%;
     }
     button {
@@ -67,6 +72,10 @@
       font-size: 22px;
       user-select: none;
       pointer-events: none;
+    }
+    /* Скрытые блоки */
+    .hidden {
+      display: none !important;
     }
     /* === Обновленные стили для формы отпуска === */
     #vacation-form {
@@ -145,16 +154,22 @@
       user-select: none;
       min-height: 22px;
     }
-    .hidden {
-      display: none;
+    /* Подменю (например, обед, зарплата) */
+    #lunch-menu, #salary-year, #salary-month {
+      flex-direction: column;
+      gap: 10px;
+    }
+    #lunch-menu button, #salary-year button, #salary-month button {
+      flex: none;
+      width: 100%;
     }
     .back-btn {
-      margin-top: 20px;
+      margin-top: 10px;
       background: #aaa;
-      flex: none;
-      width: auto;
       border-radius: 10px;
       box-shadow: none;
+      flex: none;
+      width: 100%;
     }
     .back-btn:hover {
       background: #888;
@@ -164,193 +179,59 @@
   </style>
 </head>
 <body>
-  <h1 id="greeting">Загрузка...</h1>
+  <div>
+    <h1 id="greeting">Загрузка...</h1>
 
-  <!-- Основные кнопки -->
-  <div id="main-buttons" class="buttons">
-    <button id="vacation"><span class="icon">🏖️</span> Отпуск</button>
-    <button id="lunch"><span class="icon">🍔</span> Обед</button>
-    <button id="salary"><span class="icon">💰</span> Зарплата</button>
-    <button id="chat"><span class="icon">💬</span> Чат</button>
-  </div>
+    <!-- Основные кнопки -->
+    <div id="main-buttons" class="buttons">
+      <button id="vacation"><span class="icon">🏖️</span> Отпуск</button>
+      <button id="lunch"><span class="icon">🍔</span> Обед</button>
+      <button id="salary"><span class="icon">💰</span> Зарплата</button>
+      <button id="chat"><span class="icon">💬</span> Чат</button>
+    </div>
 
-  <!-- Подменю для обеда -->
-  <div id="lunch-menu" class="submenu hidden">
-    <button data-dish="Макароны"><span class="icon">🍝</span> Макароны</button>
-    <button data-dish="Плов"><span class="icon">🍚</span> Плов</button>
-    <button data-dish="Суп"><span class="icon">🥣</span> Суп</button>
-    <button data-dish="Бургер"><span class="icon">🍔</span> Бургер</button>
-    <button id="lunch-back" class="back-btn">← Назад</button>
-  </div>
+    <!-- Подменю для обеда -->
+    <div id="lunch-menu" class="submenu hidden">
+      <button data-dish="Макароны"><span class="icon">🍝</span> Макароны</button>
+      <button data-dish="Плов"><span class="icon">🍚</span> Плов</button>
+      <button data-dish="Суп"><span class="icon">🥣</span> Суп</button>
+      <button data-dish="Бургер"><span class="icon">🍔</span> Бургер</button>
+      <button id="lunch-back" class="back-btn">← Назад</button>
+    </div>
 
-  <!-- Форма для отпуска -->
-  <div id="vacation-form" class="hidden">
-    <label for="start-date">Дата начала отпуска:</label>
-    <input type="date" id="start-date" />
-    <label for="end-date">Дата окончания отпуска:</label>
-    <input type="date" id="end-date" />
-    <div id="vacation-error" class="error"></div>
-    <button id="vacation-submit">Отправить</button>
-    <button id="vacation-back" class="back-btn">← Назад</button>
-  </div>
+    <!-- Форма для отпуска -->
+    <div id="vacation-form" class="hidden">
+      <label for="start-date">Дата начала отпуска:</label>
+      <input type="date" id="start-date" />
+      <label for="end-date">Дата окончания отпуска:</label>
+      <input type="date" id="end-date" />
+      <div id="vacation-error" class="error"></div>
+      <button id="vacation-submit">Отправить</button>
+      <button id="vacation-back" class="back-btn">← Назад</button>
+    </div>
 
-  <!-- Выбор года для зарплаты -->
-  <div id="salary-year" class="submenu hidden" style="flex-direction: column;">
-    <!-- Кнопки годов сгенерируем в JS -->
-    <button id="salary-year-back" class="back-btn">← Назад</button>
-  </div>
+    <!-- Выбор года для зарплаты -->
+    <div id="salary-year" class="submenu hidden">
+      <!-- Кнопки годов сгенерируем в JS -->
+      <button id="salary-year-back" class="back-btn">← Назад</button>
+    </div>
 
-  <!-- Выбор месяца для зарплаты -->
-  <div id="salary-month" class="submenu hidden" style="flex-direction: row; flex-wrap: wrap; gap: 10px;">
-    <button data-month="Январь">Январь</button>
-    <button data-month="Февраль">Февраль</button>
-    <button data-month="Март">Март</button>
-    <button data-month="Апрель">Апрель</button>
-    <button data-month="Май">Май</button>
-    <button data-month="Июнь">Июнь</button>
-    <button data-month="Июль">Июль</button>
-    <button data-month="Август">Август</button>
-    <button data-month="Сентябрь">Сентябрь</button>
-    <button data-month="Октябрь">Октябрь</button>
-    <button data-month="Ноябрь">Ноябрь</button>
-    <button data-month="Декабрь">Декабрь</button>
-    <button id="salary-month-back" class="back-btn" style="flex-basis: 100%;">← Назад</button>
-  </div>
+    <!-- Выбор месяца для зарплаты -->
+    <div id="salary-month" class="submenu hidden" style="flex-wrap: wrap;">
+      <button data-month="Январь">Январь</button>
+      <button data-month="Февраль">Февраль</button>
+      <button data-month="Март">Март</button>
+      <button data-month="Апрель">Апрель</button>
+      <button data-month="Май">Май</button>
+      <button data-month="Июнь">Июнь</button>
+      <button data-month="Июль">Июль</button>
+      <button data-month="Август">Август</button>
+      <button data-month="Сентябрь">Сентябрь</button>
+      <button data-month="Октябрь">Октябрь</button>
+      <button data-month="Ноябрь">Ноябрь</button>
+      <button data-month="Декабрь">Декабрь</button>
+      <button id="salary-month-back" class="
+back-btn">← Назад</button>
+</div>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-
-    const user = tg.initDataUnsafe?.user || { first_name: "Гость" };
-
-    const now = new Date();
-    const hour = now.getHours();
-
-    let greetingText = "Добрый вечер";
-    if (hour < 12) greetingText = "Доброе утро";
-    else if (hour < 18) greetingText = "Добрый день";
-
-    document.getElementById("greeting").innerText = `${greetingText}, ${user.first_name}!`;
-
-    // Главные кнопки и блоки
-    const mainButtons = document.getElementById("main-buttons");
-    const lunchMenu = document.getElementById("lunch-menu");
-    const vacationForm = document.getElementById("vacation-form");
-    const salaryYear = document.getElementById("salary-year");
-    const salaryMonth = document.getElementById("salary-month");
-
-    // === Функции показа/скрытия ===
-    function showBlock(block) {
-      [mainButtons, lunchMenu, vacationForm, salaryYear, salaryMonth].forEach(el => {
-        if (el === block) el.classList.remove("hidden");
-        else el.classList.add("hidden");
-      });
-    }
-
-    // === Обед ===
-    document.getElementById("lunch").onclick = () => {
-      showBlock(lunchMenu);
-    };
-
-    document.getElementById("lunch-back").onclick = () => {
-      showBlock
-(mainButtons);
-};
-    lunchMenu.querySelectorAll("button[data-dish]").forEach(btn => {
-  btn.onclick = () => {
-    alert(`Вы выбрали блюдо: ${btn.dataset.dish}`);
-  };
-});
-
-// === Отпуск ===
-document.getElementById("vacation").onclick = () => {
-  showBlock(vacationForm);
-  const today = new Date();
-  const todayStr = today.toISOString().slice(0, 10);
-  document.getElementById("start-date").value = "";
-  document.getElementById("end-date").value = "";
-  document.getElementById("vacation-error").classList.add("hidden");
-  document.getElementById("vacation-error").innerText = "";
-  document.getElementById("start-date").setAttribute("min", todayStr);
-  document.getElementById("end-date").setAttribute("min", todayStr);
-};
-
-document.getElementById("vacation-back").onclick = () => {
-  showBlock(mainButtons);
-};
-
-document.getElementById("vacation-submit").onclick = () => {
-  const start = document.getElementById("start-date").value;
-  const end = document.getElementById("end-date").value;
-  const error = document.getElementById("vacation-error");
-
-  if (!start || !end) {
-    error.innerText = "Пожалуйста, выберите обе даты.";
-    error.classList.remove("hidden");
-    return;
-  }
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-
-  if (endDate < startDate) {
-    error.innerText = "Дата окончания не может быть раньше даты начала.";
-    error.classList.remove("hidden");
-    return;
-  }
-
-  const diffTime = endDate - startDate;
-  const diffDays = diffTime / (1000 * 60 * 60 * 24) + 1;
-
-  if (diffDays > 14) {
-    error.innerText = "Максимальная длительность отпуска — 14 дней.";
-    error.classList.remove("hidden");
-    return;
-  }
-
-  error.classList.add("hidden");
-  alert(`Отпуск с ${start} по ${end} принят.`);
-};
-
-// === Зарплата ===
-document.getElementById("salary").onclick = () => {
-  showBlock(salaryYear);
-  renderYears();
-};
-
-document.getElementById("salary-year-back").onclick = () => {
-  showBlock(mainButtons);
-};
-
-document.getElementById("salary-month-back").onclick = () => {
-  showBlock(salaryYear);
-};
-
-function renderYears() {
-  const backBtn = document.getElementById("salary-year-back");
-  salaryYear.innerHTML = "";
-  salaryYear.appendChild(backBtn);
-
-  for (let y = 2025; y >= 2015; y--) {
-    const btn = document.createElement("button");
-    btn.textContent = y;
-    btn.onclick = () => {
-      showBlock(salaryMonth);
-      salaryMonth.setAttribute("data-year", y);
-    };
-    salaryYear.insertBefore(btn, backBtn);
-  }
-}
-
-salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
-  btn.onclick = () => {
-    const year = salaryMonth.getAttribute("data-year");
-    const month = btn.dataset.month;
-    alert(`Вы выбрали зарплату за ${month} ${year} года`);
-  };
-});
-
-// === Чат ===
-document.getElementById("chat").onclick = () => {
-  alert("Функция Чата пока не реализована.");
-};
-</script> </body> </html> ```
+</div> <script> const tg = window.Telegram.WebApp; tg.ready(); const greeting = document.getElementById("greeting"); const mainButtons = document.getElementById("main-buttons"); const lunchMenu = document.getElementById("lunch-menu"); const vacationForm = document.getElementById("vacation-form"); const salaryYear = document.getElementById("salary-year"); const salaryMonth = document.getElementById("salary-month"); // Функция показать блок и скрыть остальные function showBlock(blockToShow) { [mainButtons, lunchMenu, vacationForm, salaryYear, salaryMonth].forEach(block => { if (block === blockToShow) { block.classList.remove("hidden"); } else { block.classList.add("hidden"); } }); } // Приветствие по времени function updateGreeting() { const now = new Date(); const h = now.getHours(); let greet; if (h >= 5 && h < 12) greet = "Доброе утро"; else if (h >= 12 && h < 18) greet = "Добрый день"; else greet = "Добрый вечер"; const userName = "Алексей"; // Здесь можно поставить своё имя greeting.textContent = `${greet}, ${userName}!`; } updateGreeting(); showBlock(mainButtons); // === Кнопки главного меню === document.getElementById("lunch").onclick = () => showBlock(lunchMenu); document.getElementById("lunch-back").onclick = () => showBlock(mainButtons); lunchMenu.querySelectorAll("button[data-dish]").forEach(btn => { btn.onclick = () => alert(`Вы выбрали блюдо: ${btn.dataset.dish}`); }); // Отпуск document.getElementById("vacation").onclick = () => { showBlock(vacationForm); const today = new Date(); const todayStr = today.toISOString().slice(0, 10); document.getElementById("start-date").value = ""; document.getElementById("end-date").value = ""; document.getElementById("vacation-error").classList.add("hidden"); document.getElementById("vacation-error").innerText = ""; document.getElementById("start-date").setAttribute("min", todayStr); document.getElementById("end-date").setAttribute("min", todayStr); }; document.getElementById("vacation-back").onclick = () => showBlock(mainButtons); document.getElementById("vacation-submit").onclick = () => { const start = document.getElementById("start-date").value; const end = document.getElementById("end-date").value; const error = document.getElementById("vacation-error"); if (!start || !end) { error.innerText = "Пожалуйста, выберите обе даты."; error.classList.remove("hidden"); return; } const startDate = new Date(start); const endDate = new Date(end); if (endDate < startDate) { error.innerText = "Дата окончания не может быть раньше даты начала."; error.classList.remove("hidden"); return; } const diffTime = endDate - startDate; const diffDays = diffTime / (1000 * 60 * 60 * 24) + 1; if (diffDays > 14) { error.innerText = "Максимальная длительность отпуска — 14 дней."; error.classList.remove("hidden"); return; } error.classList.add("hidden"); alert(`Отпуск с ${start} по ${end} принят.`); }; // Зарплата document.getElementById("salary").onclick = () => { renderYears(); showBlock(salaryYear); }; document.getElementById("salary-year-back").onclick = () => showBlock(mainButtons); document.getElementById("salary-month-back").onclick = () => showBlock(salaryYear); function renderYears() { // Очищаем кнопки, оставляем кнопку назад const backBtn = document.getElementById("salary-year-back"); salaryYear.innerHTML = ""; salaryYear.appendChild(backBtn); for (let y = 2025; y >= 2015; y--) { const btn = document.createElement("button"); btn.textContent = y; btn.onclick = () => { showBlock(salaryMonth); salaryMonth.setAttribute("data-year", y); }; salaryYear.insertBefore(btn, backBtn); } } salaryMonth.querySelectorAll("button[data-month]").forEach(btn => { btn.onclick = () => { const year = salaryMonth.getAttribute("data-year"); const month = btn.dataset.month; alert(`Вы выбрали зарплату за ${month} ${year} года`); }; }); // Чат document.getElementById("chat").onclick = () => alert("Функция Чата пока не реализована."); </script> </body> </html> ```
