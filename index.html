@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Telegram Mini App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: var(--tg-theme-bg-color, #ffffff);
+      color: var(--tg-theme-text-color, #000000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+    h1 {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="greeting">Welcome!</h1>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+
+    const user = tg.initDataUnsafe.user;
+    document.getElementById("greeting").innerText =
+      `Hello, ${user?.first_name || "Guest"}!`;
+  </script>
+</body>
+</html>
+Add index.html
