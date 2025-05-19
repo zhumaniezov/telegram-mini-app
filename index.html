@@ -93,10 +93,10 @@
     /* Специальные стили для разных кнопок */
     #lunch { background-color: #00B894; }
     #lunch:hover { background-color: #00A884; }
-    
+
     #salary { background-color: #FDCB6E; color: #2D3436; }
     #salary:hover { background-color: #FFB347; }
-    
+
     #chat { background-color: #0984E3; }
     #chat:hover { background-color: #0771C1; }
 
@@ -170,6 +170,35 @@
     .buttons, .submenu, .form-container {
       animation: fadeIn 0.3s ease-out;
     }
+
+    /* Новый стиль для расчетного листка */
+    #salary-slip {
+      max-width: 400px;
+      background: var(--tg-theme-secondary-bg-color, #FFFFFF);
+      box-shadow: var(--box-shadow);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-sizing: border-box;
+      color: var(--text-color);
+      user-select: none;
+    }
+
+    #salary-slip h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    #salary-slip p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    #salary-slip .amount {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
   </style>
 </head>
 <body>
@@ -196,19 +225,15 @@
   <div id="vacation-form" class="form-container hidden">
     <label for="start-date">Дата начала отпуска:</label>
     <input type="date" id="start-date" />
-    
     <label for="end-date">Дата окончания отпуска:</label>
     <input type="date" id="end-date" />
-    
     <div id="vacation-error" class="error hidden"></div>
     <button id="vacation-submit">Отправить</button>
     <button id="vacation-back" class="back-btn">← Назад</button>
   </div>
 
   <!-- Выбор года для зарплаты -->
-  <div id="salary-year" class="submenu hidden">
-    <!-- Кнопки годов сгенерируем в JS -->
-  </div>
+  <div id="salary-year" class="submenu hidden"></div>
 
   <!-- Выбор месяца для зарплаты -->
   <div id="salary-month" class="submenu hidden">
@@ -227,16 +252,8 @@
     <button id="salary-month-back" class="back-btn">← Назад</button>
   </div>
 
-  <!-- Расчетный лист -->
-<div id="salary-slip" class="form-container hidden">
-  <h2 id="slip-title">Расчетный листок</h2>
-  <p><strong>ФИО:</strong> Иванов Иван</p>
-  <p><strong>Оклад:</strong> <span id="slip-salary">—</span></p>
-  <p><strong>Начислено:</strong> <span id="slip-earned">—</span></p>
-  <p><strong>Удержано:</strong> <span id="slip-deducted">—</span></p>
-  <p><strong>Выплачено:</strong> <span id="slip-paid">—</span></p>
-  <button id="slip-back" class="back-btn">← Назад</button>
-</div>
+  <!-- Расчетный листок -->
+  <div id="salary-slip" class="form-container hidden"></div>
 
   <script>
     const tg = window.Telegram.WebApp;
@@ -244,7 +261,7 @@
     tg.expand();
 
     // Инициализация пользователя
-    const user = tg.initDataUnsafe.user || { first_name: "Гость" };
+    const user = tg.initDataUnsafe.user || { first_name: "Гость", last_name: "", username: "" };
     const now = new Date();
     const hour = now.getHours();
 
@@ -252,7 +269,11 @@
     if (hour < 12) greetingText = "Доброе утро";
     else if (hour < 18) greetingText = "Добрый день";
 
-    document.getElementById("greeting").innerText = `${greetingText}, ${user.first_name}!`;
+    // Корректно выводим имя
+    let fullName = user.first_name;
+    if (user.last_name) fullName += " " + user.last_name;
+
+    document.getElementById("greeting").innerText = `${greetingText}, ${fullName}!`;
 
     // Главные кнопки и блоки
     const mainButtons = document.getElementById("main-buttons");
@@ -260,10 +281,11 @@
     const vacationForm = document.getElementById("vacation-form");
     const salaryYear = document.getElementById("salary-year");
     const salaryMonth = document.getElementById("salary-month");
+    const salarySlip = document.getElementById("salary-slip");
 
     // Функция показа/скрытия блоков
     function showBlock(block) {
-      [mainButtons, lunchMenu, vacationForm, salaryYear, salaryMonth].forEach(el => {
+      [mainButtons, lunchMenu, vacationForm, salaryYear, salaryMonth, salarySlip].forEach(el => {
         el.classList.toggle("hidden", el !== block);
       });
     }
@@ -291,7 +313,7 @@
       tg.HapticFeedback.impactOccurred("light");
       showBlock(vacationForm);
       document.getElementById("vacation-error").classList.add("hidden");
-      
+
       // Установка минимальной даты (сегодня)
       const todayStr = new Date().toISOString().slice(0, 10);
       document.getElementById("start-date").value = "";
@@ -322,65 +344,52 @@
 
       if (endDate < startDate) {
         error.innerText = "Дата окончания не может быть раньше начала";
-        error.classList.remove("hidden");
-        tg.HapticFeedback.notificationOccurred("error");
-        return;
-      }
+        error.class
+List.remove("hidden");
+tg.HapticFeedback.notificationOccurred("error");
+return;
+}
+        error.classList.add("hidden");
+  tg.HapticFeedback.notificationOccurred("success");
+  tg.showAlert(`Заявка на отпуск с ${start} по ${end} отправлена!`);
+  showBlock(mainButtons);
+});
 
-      const diffDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+// === Зарплата ===
+document.getElementById("salary").addEventListener("click", () => {
+  tg.HapticFeedback.impactOccurred("light");
+  showBlock(salaryYear);
+  salarySlip.classList.add("hidden");
+  populateYears();
+});
 
-      if (diffDays > 14) {
-        error.innerText = "Максимальная длительность — 14 дней";
-        error.classList.remove("hidden");
-        tg.HapticFeedback.notificationOccurred("error");
-        return;
-      }
+document.getElementById("salary-month-back").addEventListener("click", () => {
+  tg.HapticFeedback.impactOccurred("light");
+  showBlock(salaryYear);
+  salarySlip.classList.add("hidden");
+});
 
-      tg.HapticFeedback.notificationOccurred("success");
-      tg.showAlert(`Отпуск с ${start} по ${end} (${diffDays} дней) принят!`);
-    });
-
-    // === Зарплата ===
-    document.getElementById("salary").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(salaryYear);
-      renderYears();
-    });
-
-    document.getElementById("salary-year-back").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(mainButtons);
-    });
-
-    document.getElementById("salary-month-back").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(salaryYear);
-    });
-
-    // Генерация кнопок годов
-    function renderYears() {
-  salaryYear.innerHTML = '';
-
+// Заполнить выбор года (последние 5 лет)
+function populateYears() {
+  salaryYear.innerHTML = "";
   const currentYear = new Date().getFullYear();
-  const minYear = 2015;
 
-  for (let y = currentYear; y >= minYear; y--) {
+  for (let y = currentYear; y >= currentYear - 5; y--) {
     const btn = document.createElement("button");
-    btn.innerHTML = `<span class="icon">📅</span> ${y}`;
-    btn.dataset.year = y;
+    btn.textContent = y;
     btn.addEventListener("click", () => {
       tg.HapticFeedback.impactOccurred("light");
       showBlock(salaryMonth);
+      salarySlip.classList.add("hidden");
       salaryMonth.dataset.year = y;
     });
     salaryYear.appendChild(btn);
   }
 
-  // Добавляем кнопку "Назад" внизу
+  // Кнопка назад
   const backBtn = document.createElement("button");
-  backBtn.id = "salary-year-back";
-  backBtn.className = "back-btn";
   backBtn.textContent = "← Назад";
+  backBtn.className = "back-btn";
   backBtn.addEventListener("click", () => {
     tg.HapticFeedback.impactOccurred("light");
     showBlock(mainButtons);
@@ -388,53 +397,50 @@
   salaryYear.appendChild(backBtn);
 }
 
-    // Обработка выбора месяца
-    const salarySlip = document.getElementById("salary-slip");
-
-function formatMoney(num) {
-  return num.toLocaleString("ru-RU") + " сум";
-}
-
+// При выборе месяца показываем расчетный листок
 salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
   btn.addEventListener("click", () => {
+    tg.HapticFeedback.impactOccurred("medium");
     const year = salaryMonth.dataset.year;
     const month = btn.dataset.month;
-
-    tg.HapticFeedback.impactOccurred("medium");
-
-    // Генерация случайных цифр
-    const base = Math.floor(Math.random() * (35_000_000 - 15_000_000) + 15_000_000);
-    const earned = base + Math.floor(Math.random() * 5_000_000);
-    const deducted = Math.floor(Math.random() * 3_000_000);
-    const paid = earned - deducted;
-
-    document.getElementById("slip-title").innerText = `Расчетный листок за ${month} ${year} года`;
-    document.getElementById("slip-salary").innerText = formatMoney(base);
-    document.getElementById("slip-earned").innerText = formatMoney(earned);
-    document.getElementById("slip-deducted").innerText = formatMoney(deducted);
-    document.getElementById("slip-paid").innerText = formatMoney(paid);
-
-    showBlock(salarySlip);
+    showSalarySlip(year, month);
   });
 });
 
-document.getElementById("slip-back").addEventListener("click", () => {
+// Функция генерации рандомного числа в диапазоне
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Функция показа расчетного листка
+function showSalarySlip(year, month) {
+  const fullNameSlip = fullName || "Иван Иванов";
+  const baseSalary = randomInt(15000000, 50000000);
+  const accrued = baseSalary + randomInt(-2000000, 3000000); // Начислено
+  const withheld = randomInt(0, 2000000);                   // Удержано
+  const paid = accrued - withheld;
+
+  salarySlip.innerHTML = `
+    <h2>Расчетный листок за ${month} ${year} г.</h2>
+    <p><strong>ФИО:</strong> ${fullNameSlip}</p>
+    <p><strong>Оклад:</strong> <span class="amount">${baseSalary.toLocaleString('ru-RU')} сум</span></p>
+    <p><strong>Начислено:</strong> <span class="amount">${accrued.toLocaleString('ru-RU')} сум</span></p>
+    <p><strong>Удержано:</strong> <span class="amount">${withheld.toLocaleString('ru-RU')} сум</span></p>
+    <p><strong>Выплачено:</strong> <span class="amount">${paid.toLocaleString('ru-RU')} сум</span></p>
+    <button id="salary-slip-back" class="back-btn">← Назад</button>
+  `;
+
+  showBlock(salarySlip);
+
+  document.getElementById("salary-slip-back").addEventListener("click", () => {
+    tg.HapticFeedback.impactOccurred("light");
+    showBlock(salaryMonth);
+  });
+}
+
+// === Чат ===
+document.getElementById("chat").addEventListener("click", () => {
   tg.HapticFeedback.impactOccurred("light");
-  showBlock(salaryMonth);
+  tg.openTelegramLink("https://t.me/your_chat_link"); // Замените на свой чат
 });
-
-
-    // === Чат ===
-    document.getElementById("chat").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      tg.showAlert("Чат с HR будет доступен в следующей версии");
-    });
-
-    // Автоматическое обновление темы при изменении
-    tg.onEvent('themeChanged', () => {
-      document.body.style.backgroundColor = tg.themeParams.bg_color || '#F5F6FA';
-      document.body.style.color = tg.themeParams.text_color || '#2D3436';
-    });
-  </script>
-</body>
-</html>
+</script> </body> </html> ```
