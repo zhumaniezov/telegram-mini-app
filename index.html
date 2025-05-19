@@ -7,9 +7,9 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: var(--tg-theme-bg-color, #ffffff);
-      color: var(--tg-theme-text-color, #000000);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--tg-theme-bg-color, #f0f4ff);
+      color: var(--tg-theme-text-color, #222);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -23,29 +23,48 @@
       font-size: 28px;
       margin-bottom: 40px;
       text-align: center;
+      user-select: none;
     }
     .buttons {
       display: flex;
       gap: 15px;
       flex-wrap: wrap;
       justify-content: center;
-      width: 100%;
       max-width: 400px;
+      width: 100%;
     }
     button {
       flex: 1 1 40%;
-      padding: 12px 20px;
-      font-size: 16px;
+      padding: 14px 20px;
+      font-size: 18px;
+      font-weight: 600;
       border: none;
-      border-radius: 8px;
+      border-radius: 14px;
       cursor: pointer;
-      background-color: var(--tg-theme-button-color, #0088cc);
-      color: var(--tg-theme-button-text-color, #ffffff);
-      transition: background-color 0.3s ease;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      box-shadow: 0 6px 15px rgba(118, 75, 162, 0.5);
+      transition: background 0.3s ease, transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       user-select: none;
+      outline-offset: 2px;
+      outline: transparent;
     }
     button:hover {
-      background-color: var(--tg-theme-button-hover-color, #006699);
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      transform: scale(1.05);
+      outline-color: #fff;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+    .icon {
+      font-size: 22px;
+      user-select: none;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -53,10 +72,10 @@
   <h1 id="greeting">Загрузка...</h1>
 
   <div class="buttons">
-    <button id="vacation">Отпуск</button>
-    <button id="lunch">Обед</button>
-    <button id="salary">Зарплата</button>
-    <button id="chat">Чат</button>
+    <button id="vacation"><span class="icon">🏖️</span> Отпуск</button>
+    <button id="lunch"><span class="icon">🍔</span> Обед</button>
+    <button id="salary"><span class="icon">💰</span> Зарплата</button>
+    <button id="chat"><span class="icon">💬</span> Чат</button>
   </div>
 
   <script>
@@ -65,7 +84,6 @@
 
     const user = tg.initDataUnsafe.user || { first_name: "Гость" };
 
-    // Получаем текущее время по устройству
     const now = new Date();
     const hour = now.getHours();
 
@@ -78,19 +96,11 @@
 
     document.getElementById("greeting").innerText = `${greetingText}, ${user.first_name}!`;
 
-    // Обработчики кнопок (пока просто вывод в консоль)
-    document.getElementById("vacation").onclick = () => {
-      alert("Вы нажали кнопку Отпуск");
-    };
-    document.getElementById("lunch").onclick = () => {
-      alert("Вы нажали кнопку Обед");
-    };
-    document.getElementById("salary").onclick = () => {
-      alert("Вы нажали кнопку Зарплата");
-    };
-    document.getElementById("chat").onclick = () => {
-      alert("Вы нажали кнопку Чат");
-    };
+    // Обработчики кнопок — пока просто alert
+    document.getElementById("vacation").onclick = () => alert("Вы нажали кнопку Отпуск");
+    document.getElementById("lunch").onclick = () => alert("Вы нажали кнопку Обед");
+    document.getElementById("salary").onclick = () => alert("Вы нажали кнопку Зарплата");
+    document.getElementById("chat").onclick = () => alert("Вы нажали кнопку Чат");
   </script>
 </body>
 </html>
