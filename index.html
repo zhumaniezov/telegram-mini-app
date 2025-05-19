@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Telegram Mini App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
@@ -11,26 +11,86 @@
       background-color: var(--tg-theme-bg-color, #ffffff);
       color: var(--tg-theme-text-color, #000000);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    h1 {
-      font-size: 24px;
+    #greeting {
+      font-size: 28px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      flex: 1 1 40%;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: var(--tg-theme-button-color, #0088cc);
+      color: var(--tg-theme-button-text-color, #ffffff);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: var(--tg-theme-button-hover-color, #006699);
     }
   </style>
 </head>
 <body>
-  <h1 id="greeting">Welcome!</h1>
+  <h1 id="greeting">Загрузка...</h1>
+
+  <div class="buttons">
+    <button id="vacation">Отпуск</button>
+    <button id="lunch">Обед</button>
+    <button id="salary">Зарплата</button>
+    <button id="chat">Чат</button>
+  </div>
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
 
-    const user = tg.initDataUnsafe.user;
-    document.getElementById("greeting").innerText =
-      `Hello, ${user?.first_name || "Guest"}!`;
+    const user = tg.initDataUnsafe.user || { first_name: "Гость" };
+
+    // Получаем текущее время по устройству
+    const now = new Date();
+    const hour = now.getHours();
+
+    let greetingText = "Добрый вечер";
+    if (hour < 12) {
+      greetingText = "Доброе утро";
+    } else if (hour < 18) {
+      greetingText = "Добрый день";
+    }
+
+    document.getElementById("greeting").innerText = `${greetingText}, ${user.first_name}!`;
+
+    // Обработчики кнопок (пока просто вывод в консоль)
+    document.getElementById("vacation").onclick = () => {
+      alert("Вы нажали кнопку Отпуск");
+    };
+    document.getElementById("lunch").onclick = () => {
+      alert("Вы нажали кнопку Обед");
+    };
+    document.getElementById("salary").onclick = () => {
+      alert("Вы нажали кнопку Зарплата");
+    };
+    document.getElementById("chat").onclick = () => {
+      alert("Вы нажали кнопку Чат");
+    };
   </script>
 </body>
 </html>
