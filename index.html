@@ -68,37 +68,82 @@
       user-select: none;
       pointer-events: none;
     }
-    /* Дополнительные стили для форм */
-    label {
-      font-weight: 600;
-      margin-top: 10px;
-      display: block;
-      user-select: none;
-    }
-    input[type="date"], select {
-      margin-top: 6px;
-      padding: 8px 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      width: 100%;
-      max-width: 200px;
-      box-sizing: border-box;
-    }
-    .form-container {
-      flex-direction: column;
-      align-items: flex-start;
+    /* === Обновленные стили для формы отпуска === */
+    #vacation-form {
       background: #fff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(100, 100, 100, 0.1);
+      padding: 25px 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      color: #222;
+      max-width: 360px;
+      width: 100%;
+      font-size: 18px;
+      font-weight: 600;
+      flex-direction: column;
+      display: flex;
       margin-top: 20px;
     }
-    .error {
-      color: red;
-      font-weight: 600;
-      margin-top: 10px;
+    #vacation-form label {
+      color: #444;
+      font-size: 16px;
+      margin-bottom: 8px;
       user-select: none;
+    }
+    #vacation-form input[type="date"] {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1.8px solid #888;
+      margin-bottom: 18px;
+      transition: border-color 0.3s ease;
+    }
+    #vacation-form input[type="date"]:focus {
+      border-color: #6655cc;
+      outline: none;
+      box-shadow: 0 0 6px #6655ccaa;
+    }
+    #vacation-submit {
+      background: linear-gradient(135deg, #5a67d8, #9f7aea);
+      color: #fff;
+      font-size: 18px;
+      padding: 14px 0;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(94, 60, 204, 0.6);
+      cursor: pointer;
+      width: 100%;
+      border: none;
+      font-weight: 700;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    #vacation-submit:hover {
+      background: linear-gradient(135deg, #4c51bf, #805ad5);
+    }
+    #vacation-submit:active {
+      transform: scale(0.96);
+    }
+    #vacation-back {
+      margin-top: 14px;
+      background: #ccc;
+      color: #444;
+      font-weight: 600;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: none;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+    #vacation-back:hover {
+      background: #bbb;
+    }
+    #vacation-error {
+      color: #d9534f;
+      font-weight: 700;
+      margin-bottom: 14px;
+      user-select: none;
+      min-height: 22px;
     }
     .hidden {
       display: none;
@@ -139,24 +184,24 @@
   </div>
 
   <!-- Форма для отпуска -->
-  <div id="vacation-form" class="form-container hidden">
+  <div id="vacation-form" class="hidden">
     <label for="start-date">Дата начала отпуска:</label>
     <input type="date" id="start-date" />
     <label for="end-date">Дата окончания отпуска:</label>
     <input type="date" id="end-date" />
-    <div id="vacation-error" class="error hidden"></div>
-    <button id="vacation-submit" style="margin-top: 15px;">Отправить</button>
+    <div id="vacation-error" class="error"></div>
+    <button id="vacation-submit">Отправить</button>
     <button id="vacation-back" class="back-btn">← Назад</button>
   </div>
 
   <!-- Выбор года для зарплаты -->
-  <div id="salary-year" class="submenu hidden">
+  <div id="salary-year" class="submenu hidden" style="flex-direction: column;">
     <!-- Кнопки годов сгенерируем в JS -->
     <button id="salary-year-back" class="back-btn">← Назад</button>
   </div>
 
   <!-- Выбор месяца для зарплаты -->
-  <div id="salary-month" class="submenu hidden">
+  <div id="salary-month" class="submenu hidden" style="flex-direction: row; flex-wrap: wrap; gap: 10px;">
     <button data-month="Январь">Январь</button>
     <button data-month="Февраль">Февраль</button>
     <button data-month="Март">Март</button>
@@ -169,14 +214,14 @@
     <button data-month="Октябрь">Октябрь</button>
     <button data-month="Ноябрь">Ноябрь</button>
     <button data-month="Декабрь">Декабрь</button>
-    <button id="salary-month-back" class="back-btn">← Назад</button>
+    <button id="salary-month-back" class="back-btn" style="flex-basis: 100%;">← Назад</button>
   </div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
 
-    const user = tg.initDataUnsafe.user || { first_name: "Гость" };
+    const user = tg.initDataUnsafe?.user || { first_name: "Гость" };
 
     const now = new Date();
     const hour = now.getHours();
@@ -208,29 +253,29 @@
     };
 
     document.getElementById("lunch-back").onclick = () => {
-      showBlock(mainButtons);
-    };
-
-    lunchMenu.querySelectorAll("button[data-dish]").forEach(btn => {
-      btn.onclick = () => {
-        alert(`Вы выбрали блюдо: ${btn.dataset.dish}`);
-      };
-    });
-
-    // === Отпуск ===
-    document.getElementById("vacation").onclick = () => {
-      showBlock(vacationForm);
-      document.getElementById("vacation-error").classList.add("hidden");
-      // Сбросить даты
-      document.getElementById("start-date").value = "";
-      document.getElementById("end-date").value = "";
-      // Ограничения: сегодня и позже
-      const todayStr = new Date().toISOString().slice
-(0, 10);
-document.getElementById("start-date").setAttribute("min", todayStr);
-document.getElementById("end-date").setAttribute("min", todayStr);
+      showBlock
+(mainButtons);
 };
-    document.getElementById("vacation-back").onclick = () => {
+    lunchMenu.querySelectorAll("button[data-dish]").forEach(btn => {
+  btn.onclick = () => {
+    alert(`Вы выбрали блюдо: ${btn.dataset.dish}`);
+  };
+});
+
+// === Отпуск ===
+document.getElementById("vacation").onclick = () => {
+  showBlock(vacationForm);
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+  document.getElementById("start-date").value = "";
+  document.getElementById("end-date").value = "";
+  document.getElementById("vacation-error").classList.add("hidden");
+  document.getElementById("vacation-error").innerText = "";
+  document.getElementById("start-date").setAttribute("min", todayStr);
+  document.getElementById("end-date").setAttribute("min", todayStr);
+};
+
+document.getElementById("vacation-back").onclick = () => {
   showBlock(mainButtons);
 };
 
@@ -280,9 +325,7 @@ document.getElementById("salary-month-back").onclick = () => {
   showBlock(salaryYear);
 };
 
-// Генерация кнопок годов (от 2025 до 2015)
 function renderYears() {
-  // Очищаем все, кроме кнопки назад
   const backBtn = document.getElementById("salary-year-back");
   salaryYear.innerHTML = "";
   salaryYear.appendChild(backBtn);
@@ -298,7 +341,6 @@ function renderYears() {
   }
 }
 
-// Обработка выбора месяца
 salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
   btn.onclick = () => {
     const year = salaryMonth.getAttribute("data-year");
