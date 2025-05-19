@@ -208,7 +208,6 @@
   <!-- Выбор года для зарплаты -->
   <div id="salary-year" class="submenu hidden">
     <!-- Кнопки годов сгенерируем в JS -->
-    <button id="salary-year-back" class="back-btn">← Назад</button>
   </div>
 
   <!-- Выбор месяца для зарплаты -->
@@ -349,20 +348,34 @@
 
     // Генерация кнопок годов
     function renderYears() {
-      salaryYear.innerHTML = '';
-      const currentYear = new Date().getFullYear();
-      
-      for (let y = currentYear; y >= currentYear - 9; y--) {
-        const btn = document.createElement("button");
-        btn.innerHTML = `<span class="icon">📅</span> ${y}`;
-        btn.addEventListener("click", () => {
-          tg.HapticFeedback.impactOccurred("light");
-          showBlock(salaryMonth);
-          salaryMonth.dataset.year = y;
-        });
-        salaryYear.insertBefore(btn, document.getElementById("salary-year-back"));
-      }
-    }
+  salaryYear.innerHTML = '';
+
+  const currentYear = new Date().getFullYear();
+  const minYear = 2015;
+
+  for (let y = currentYear; y >= minYear; y--) {
+    const btn = document.createElement("button");
+    btn.innerHTML = `<span class="icon">📅</span> ${y}`;
+    btn.dataset.year = y;
+    btn.addEventListener("click", () => {
+      tg.HapticFeedback.impactOccurred("light");
+      showBlock(salaryMonth);
+      salaryMonth.dataset.year = y;
+    });
+    salaryYear.appendChild(btn);
+  }
+
+  // Добавляем кнопку "Назад" внизу
+  const backBtn = document.createElement("button");
+  backBtn.id = "salary-year-back";
+  backBtn.className = "back-btn";
+  backBtn.textContent = "← Назад";
+  backBtn.addEventListener("click", () => {
+    tg.HapticFeedback.impactOccurred("light");
+    showBlock(mainButtons);
+  });
+  salaryYear.appendChild(backBtn);
+}
 
     // Обработка выбора месяца
     salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
