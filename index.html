@@ -1,113 +1,170 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Кабинет сотрудника</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
+      font-family: 'Inter', sans-serif;
     }
+
+    html, body {
+      height: 100%;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      color: #333;
+      overflow: hidden;
+    }
+
     body {
-      background-color: #f5f5f5;
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      transition: all 0.3s ease;
+      justify-content: center;
+      padding: 20px;
     }
-    .hidden {
-      display: none;
-    }
+
     .container {
       width: 100%;
       max-width: 400px;
-      padding: 20px;
-      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.6s ease forwards;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      backdrop-filter: blur(15px);
     }
+
+    .container.active {
+      display: flex;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: slideUp 0.5s ease forwards;
+    }
+
     .emoji {
       font-size: 64px;
       animation: pulse 1.5s infinite;
-      margin-bottom: 30px;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    .btn, button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      background-color: #0088cc;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .btn:hover {
-      background-color: #006699;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 30px;
-    }
-    .title {
-      font-size: 22px;
       margin-bottom: 20px;
     }
-    .back-btn {
-      margin-top: 30px;
-      background: #ccc;
+
+    button {
+      padding: 14px;
+      background: #6200ea;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3700b3;
+      transform: scale(1.03);
+    }
+
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .square-btn {
+      background: #ede7f6;
+      border: 2px solid #d1c4e9;
       color: #333;
+      border-radius: 16px;
+      height: 100px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .square-btn:active {
+      transform: scale(0.98);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    input[type="date"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .back-btn {
+      background: transparent;
+      color: #6200ea;
+      border: none;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div id="screen-welcome" class="container">
-    <div class="emoji">⚡</div>
-    <button id="start-btn" class="btn">Войти</button>
-  </div>
-
-  <div id="screen-menu" class="container hidden">
-    <div id="greeting" class="title"></div>
-    <div class="grid">
-      <button id="vacation">Отпуск</button>
-      <button id="salary">Зарплата</button>
-      <button id="lunch">Обед</button>
-      <button id="chat">Чат</button>
+  <div class="container active" id="screen-welcome">
+    <div class="center">
+      <div class="emoji">⚡</div>
+      <button id="start-btn">Войти как ...</button>
     </div>
   </div>
 
-  <div id="screen-salary-year" class="container hidden"></div>
-  <div id="screen-salary-month" class="container hidden"></div>
-  <div id="screen-salary-slip" class="container hidden"></div>
-
-  <div id="screen-vacation" class="container hidden">
-    <h2 class="title">Запрос на отпуск</h2>
-    <label>С:</label><br>
-    <input type="date" id="start-date"><br><br>
-    <label>По:</label><br>
-    <input type="date" id="end-date"><br>
-    <div id="vacation-error" class="title" style="color: red; display: none;">Ошибка</div>
-    <button id="vacation-submit">Отправить</button>
-    <button class="back-btn" id="vacation-back">Назад</button>
-  </div>
-
-  <div id="screen-lunch" class="container hidden">
-    <h2 class="title">Выберите обед</h2>
-    <button id="random-lunch">Выбрать блюдо</button>
-    <div id="lunch-result" class="title"></div>
-    <button class="back-btn" id="lunch-back">Назад</button>
+  <div class="container" id="screen-menu">
+    <h2 id="greeting"></h2>
+    <div class="grid-buttons">
+      <button class="square-btn" id="btn-vacation">Отпуск</button>
+      <button class="square-btn" id="btn-salary">Зарплата</button>
+      <button class="square-btn" id="btn-lunch">Обед</button>
+      <button class="square-btn" id="btn-chat">Чат</button>
+    </div>
   </div>
 
   <script>
@@ -116,111 +173,16 @@
     tg.expand();
 
     const user = tg.initDataUnsafe.user || { first_name: "Гость" };
-    const fullName = `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`;
+    const name = user.first_name;
 
-    const showScreen = (id) => {
-      document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-    };
+    document.getElementById("start-btn").innerText = `Войти как ${name}`;
 
-    // Приветствие
-    const greetingEl = document.getElementById("greeting");
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
-    greetingEl.innerText = `${greeting}, ${fullName}`;
-
-    // Старт
-    document.getElementById("start-btn").innerText = `Войти как ${fullName}`;
-    document.getElementById("start-btn").onclick = () => showScreen("screen-menu");
-
-    // Отпуск
-    document.getElementById("vacation").onclick = () => {
-      document.getElementById("vacation-error").style.display = 'none';
-      showScreen("screen-vacation");
-    };
-    document.getElementById("vacation-back").onclick = () => showScreen("screen-menu");
-    document.getElementById("vacation-submit").onclick = () => {
-      const start = document.getElementById("start-date").value;
-      const end = document.getElementById("end-date").value;
-      const error = document.getElementById("vacation-error");
-      if (!start || !end || new Date(end) < new Date(start)) {
-        error.innerText = "Проверьте даты";
-        error.style.display = 'block';
-      } else {
-        error.style.display = 'none';
-        tg.showAlert(`Отпуск с ${start} по ${end} отправлен`);
-        showScreen("screen-menu");
-      }
-    };
-
-    // Обед
-    document.getElementById("lunch").onclick = () => showScreen("screen-lunch");
-    document.getElementById("lunch-back").onclick = () => showScreen("screen-menu");
-    document.getElementById("random-lunch").onclick = () => {
-      const dishes = ["Плов", "Макароны", "Бургер", "Пицца", "Котлеты"];
-      const dish = dishes[Math.floor(Math.random() * dishes.length)];
-      document.getElementById("lunch-result").innerText = `Вы выбрали: ${dish}`;
-    };
-
-    // Зарплата
-    document.getElementById("salary").onclick = () => {
-      const yearScreen = document.getElementById("screen-salary-year");
-      yearScreen.innerHTML = '<h2 class="title">Выберите год</h2>';
-      const currentYear = new Date().getFullYear();
-      for (let y = currentYear; y >= currentYear - 5; y--) {
-        const btn = document.createElement("button");
-        btn.innerText = y;
-        btn.onclick = () => showMonths(y);
-        yearScreen.appendChild(btn);
-      }
-      const back = document.createElement("button");
-      back.innerText = "Назад";
-      back.className = "back-btn";
-      back.onclick = () => showScreen("screen-menu");
-      yearScreen.appendChild(back);
-      showScreen("screen-salary-year");
-    };
-
-    const showMonths = (year) => {
-      const monthScreen = document.getElementById("screen-salary-month");
-      monthScreen.innerHTML = '<h2 class="title">Выберите месяц</h2>';
-      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-      months.forEach((m, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = m;
-        btn.onclick = () => showSlip(year, m);
-        monthScreen.appendChild(btn);
-      });
-      const back = document.createElement("button");
-      back.innerText = "Назад";
-      back.className = "back-btn";
-      back.onclick = () => showScreen("screen-salary-year");
-      monthScreen.appendChild(back);
-      showScreen("screen-salary-month");
-    };
-
-    const showSlip = (year, month) => {
-      const slipScreen = document.getElementById("screen-salary-slip");
-      const base = Math.floor(Math.random() * 20000000) + 40000000;
-      const accrued = base + Math.floor(Math.random() * 5000000);
-      const withheld = Math.floor(Math.random() * 5000000);
-      const paid = accrued - withheld;
-
-      slipScreen.innerHTML = `
-        <h2 class="title">Расчетный листок за ${month} ${year}</h2>
-        <p><strong>ФИО:</strong> ${fullName}</p>
-        <p><strong>Оклад:</strong> ${base.toLocaleString()} сум</p>
-        <p><strong>Начислено:</strong> ${accrued.toLocaleString()} сум</p>
-        <p><strong>Удержано:</strong> ${withheld.toLocaleString()} сум</p>
-        <p><strong>Выплачено:</strong> ${paid.toLocaleString()} сум</p>
-        <button class="back-btn" onclick="showScreen('screen-salary-month')">Назад</button>
-      `;
-      showScreen("screen-salary-slip");
-    };
-
-    // Чат
-    document.getElementById("chat").onclick = () => {
-      tg.openTelegramLink("https://t.me/your_chat_link");
+    document.getElementById("start-btn").onclick = () => {
+      document.getElementById("screen-welcome").classList.remove("active");
+      document.getElementById("screen-menu").classList.add("active");
+      const hour = new Date().getHours();
+      const greet = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
+      document.getElementById("greeting").innerText = `${greet}, ${name}`;
     };
   </script>
 </body>
