@@ -138,11 +138,35 @@
     <div class="center">
       <h2 id="greeting"></h2>
       <div class="grid-buttons">
-        <button class="square-btn"><i class="fas fa-plane"></i>Отпуск</button>
-        <button class="square-btn"><i class="fas fa-wallet"></i>Зарплата</button>
-        <button class="square-btn"><i class="fas fa-utensils"></i>Обед</button>
-        <button class="square-btn"><i class="fas fa-comments"></i>Чат</button>
+        <button class="square-btn" id="btn-vacation"><i class="fas fa-plane"></i>Отпуск</button>
+        <button class="square-btn" id="btn-salary"><i class="fas fa-wallet"></i>Зарплата</button>
+        <button class="square-btn" id="btn-lunch"><i class="fas fa-utensils"></i>Обед</button>
+        <button class="square-btn" id="btn-chat"><i class="fas fa-comments"></i>Чат</button>
       </div>
+    </div>
+  </div>
+
+  <div class="container hidden" id="screen-salary-years">
+    <div class="center">
+      <h2>Выберите год</h2>
+      <div class="grid-buttons" id="year-buttons"></div>
+      <button onclick="backToMenu()">Назад</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="screen-salary-months">
+    <div class="center">
+      <h2 id="selected-year-title"></h2>
+      <div class="grid-buttons" id="month-buttons"></div>
+      <button onclick="showYears()">Назад</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="screen-salary-slip">
+    <div class="center">
+      <h2 id="slip-title"></h2>
+      <div id="slip-details"></div>
+      <button onclick="showMonths()">Назад</button>
     </div>
   </div>
 
@@ -159,7 +183,17 @@
     const screenMenu = document.getElementById("screen-menu");
     const greetingEl = document.getElementById("greeting");
 
-    startBtn.innerText = `Войти как ${name}`;
+    const screenYears = document.getElementById("screen-salary-years");
+    const screenMonths = document.getElementById("screen-salary-months");
+    const screenSlip = document.getElementById("screen-salary-slip");
+
+    const yearButtons = document.getElementById("year-buttons");
+    const monthButtons = document.getElementById("month-buttons");
+    const selectedYearTitle = document.getElementById("selected-year-title");
+    const slipTitle = document.getElementById("slip-title");
+    const slipDetails = document.getElementById("slip-details");
+
+    let selectedYear = null;
 
     function getGreetingAndTheme() {
       const hour = new Date().getHours();
@@ -179,12 +213,76 @@
       return greeting;
     }
 
+    function showScreen(screen) {
+      [screenWelcome, screenMenu, screenYears, screenMonths, screenSlip].forEach(s => s.classList.add("hidden"));
+      screen.classList.remove("hidden");
+    }
+
     startBtn.onclick = () => {
-      screenWelcome.classList.add("hidden");
-      screenMenu.classList.remove("hidden");
       const greet = getGreetingAndTheme();
       greetingEl.innerText = `${greet}, ${name}`;
+      showScreen(screenMenu);
     };
+
+    document.getElementById("btn-salary").onclick = () => {
+      showYears();
+    };
+
+    function showYears() {
+      showScreen(screenYears);
+      yearButtons.innerHTML = "";
+      const years = [2023, 2024, 2025];
+      years.forEach(year => {
+        const btn = document.createElement("button");
+        btn.className = "square-btn";
+        btn.innerText = year;
+        btn.onclick = () => showMonths(year);
+        yearButtons.appendChild(btn);
+      });
+    }
+
+    function showMonths(year) {
+      selectedYear = year;
+      showScreen(screenMonths);
+      selectedYearTitle.innerText = `Выберите месяц: ${year}`;
+      monthButtons.innerHTML = "";
+      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+      months.forEach(month => {
+        const btn = document.createElement("button");
+        btn.className = "square-btn";
+        btn.innerText = month;
+        btn.onclick = () => showSlip(month, year);
+        monthButtons.appendChild(btn);
+      });
+    }
+
+    function showSlip(month, year) {
+      showScreen(screenSlip);
+      slipTitle.innerText = `Расчетный листок за ${month} ${year}`;
+      const fullName = `${name} Фамилия`;
+      const ok = getRandomInt(40000000, 100000000);
+      const total = getRandomInt(40000000, 100000000);
+      const deductions = ["Обед", "Автомобиль", "Командировка", "Прогул"];
+      let used = deductions.filter(() => Math.random() > 0.5);
+      let udStr = used.map(ud => `${ud}: ${getRandomInt(1000000, 8000000).toLocaleString()}`).join("<br>");
+      let udTotal = used.reduce((sum, _) => sum + getRandomInt(1000000, 8000000), 0);
+
+      slipDetails.innerHTML = `
+        <p><strong>ФИО:</strong> ${fullName}</p>
+        <p><strong>Оклад:</strong> ${ok.toLocaleString()} сум</p>
+        <p><strong>Начислено:</strong> ${total.toLocaleString()} сум</p>
+        <p><strong>Удержано:</strong><br>${udStr || "-"}</p>
+        <p><strong>Выдано:</strong> ${(total - udTotal).toLocaleString()} сум</p>
+      `;
+    }
+
+    function backToMenu() {
+      showScreen(screenMenu);
+    }
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
   </script>
 </body>
 </html>
