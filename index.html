@@ -6,6 +6,7 @@
   <title>Кабинет сотрудника</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -86,14 +87,20 @@
       color: white;
       border-radius: 20px;
       height: 100px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 500;
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
 
-    .square-btn:active {
-      transform: scale(0.97);
+    .square-btn:hover {
+      transform: scale(1.05);
     }
 
     h2 {
@@ -102,6 +109,10 @@
       margin-bottom: 12px;
       text-align: center;
       color: white;
+    }
+
+    .square-btn i {
+      font-size: 22px;
     }
 
     @keyframes pulse {
@@ -127,10 +138,10 @@
     <div class="center">
       <h2 id="greeting"></h2>
       <div class="grid-buttons">
-        <button class="square-btn">Отпуск</button>
-        <button class="square-btn">Зарплата</button>
-        <button class="square-btn">Обед</button>
-        <button class="square-btn">Чат</button>
+        <button class="square-btn"><i class="fas fa-plane"></i>Отпуск</button>
+        <button class="square-btn"><i class="fas fa-wallet"></i>Зарплата</button>
+        <button class="square-btn"><i class="fas fa-utensils"></i>Обед</button>
+        <button class="square-btn"><i class="fas fa-comments"></i>Чат</button>
       </div>
     </div>
   </div>
@@ -152,16 +163,20 @@
 
     function getGreetingAndTheme() {
       const hour = new Date().getHours();
+      let greeting = "Добрый день";
+
       if (hour < 12) {
-        document.body.style.background = "linear-gradient(to top, #020111, #191621)";
-        return "Доброе утро";
+        document.body.style.background = "linear-gradient(to top, #FFE29F, #FFA99F)";
+        greeting = "Доброе утро";
       } else if (hour < 18) {
-        document.body.style.background = "linear-gradient(to top, #0f2027, #203a43, #2c5364)";
-        return "Добрый день";
+        document.body.style.background = "linear-gradient(to top, #a1ffce, #faffd1)";
+        greeting = "Добрый день";
       } else {
-        document.body.style.background = "linear-gradient(to top, #000000, #434343)";
-        return "Добрый вечер";
+        document.body.style.background = "linear-gradient(to top, #0f2027, #203a43, #2c5364)";
+        greeting = "Добрый вечер";
       }
+
+      return greeting;
     }
 
     startBtn.onclick = () => {
