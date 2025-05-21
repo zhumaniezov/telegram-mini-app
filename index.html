@@ -1,446 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Telegram Mini App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Кабинет сотрудника</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #6C5CE7;
-      --primary-hover: #5649C0;
-      --secondary-color: #00B894;
-      --error-color: #D63031;
-      --text-color: var(--tg-theme-text-color, #2D3436);
-      --bg-color: var(--tg-theme-bg-color, #F5F6FA);
-      --button-text-color: #FFFFFF;
-      --border-radius: 16px;
-      --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(to bottom right, #d0d8f0, #f5f8ff);
+      transition: background 1s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 24px;
-      box-sizing: border-box;
-      transition: background-color 0.3s ease;
-    }
-
-    #greeting {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      text-align: center;
-      user-select: none;
-      width: 100%;
-      max-width: 400px;
-      color: var(--text-color);
-    }
-
-    .buttons, .submenu, .form-container {
-      display: flex;
       gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 400px;
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    button {
-      flex: 1 1 calc(50% - 8px);
-      min-width: 140px;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      background-color: var(--primary-color);
-      color: var(--button-text-color);
-      box-shadow: var(--box-shadow);
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      user-select: none;
-    }
-
-    button:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .icon {
-      font-size: 20px;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    /* Специальные стили для разных кнопок */
-    #lunch { background-color: #00B894; }
-    #lunch:hover { background-color: #00A884; }
-
-    #salary { background-color: #FDCB6E; color: #2D3436; }
-    #salary:hover { background-color: #FFB347; }
-
-    #chat { background-color: #0984E3; }
-    #chat:hover { background-color: #0771C1; }
-
-    /* Стили для форм */
-    .form-container {
-      flex-direction: column;
-      align-items: stretch;
-      background: var(--tg-theme-secondary-bg-color, #FFFFFF);
-      padding: 24px;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-    }
-
-    label {
-      font-weight: 600;
-      margin-bottom: 8px;
-      display: block;
-      user-select: none;
-      color: var(--text-color);
-    }
-
-    input[type="date"], select {
-      padding: 12px 16px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: 2px solid var(--tg-theme-hint-color, #DFE6E9);
-      width: 100%;
-      box-sizing: border-box;
-      background-color: var(--tg-theme-bg-color, #FFFFFF);
-      color: var(--text-color);
-      margin-bottom: 16px;
-    }
-
-    input[type="date"]:focus, select:focus {
-      outline: none;
-      border-color: var(--primary-color);
-    }
-
-    .error {
-      color: var(--error-color);
-      font-weight: 600;
-      margin: 8px 0;
-      user-select: none;
-      font-size: 14px;
+      animation: fadeIn 0.6s ease forwards;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .hidden {
-      display: none !important;
+      display: none;
     }
 
-    .back-btn {
-      margin-top: 8px;
-      background-color: var(--tg-theme-secondary-bg-color, #636E72);
-      color: var(--tg-theme-button-text-color, #FFFFFF);
-      flex: none;
-      width: 100%;
-      border-radius: 12px;
+    .center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: slideUp 0.5s ease forwards;
     }
 
-    .back-btn:hover {
-      background-color: var(--tg-theme-secondary-bg-color, #555F61);
-      transform: none;
+    .emoji {
+      font-size: 72px;
+      animation: pulse 1.5s infinite;
+      margin-bottom: 24px;
     }
 
-    /* Анимации */
+    button {
+      padding: 14px;
+      background: #6200ea;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3700b3;
+      transform: scale(1.03);
+    }
+
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .square-btn {
+      background: #ffffff88;
+      border: 2px solid #d1c4e9;
+      color: #333;
+      border-radius: 20px;
+      height: 100px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: transform 0.2s ease, background 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .square-btn:active {
+      transform: scale(0.98);
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .buttons, .submenu, .form-container {
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    /* Новый стиль для расчетного листка */
-    #salary-slip {
-      max-width: 400px;
-      background: var(--tg-theme-secondary-bg-color, #FFFFFF);
-      box-shadow: var(--box-shadow);
-      border-radius: var(--border-radius);
-      padding: 24px;
-      box-sizing: border-box;
-      color: var(--text-color);
-      user-select: none;
-    }
-
-    #salary-slip h2 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 22px;
-      text-align: center;
-    }
-
-    #salary-slip p {
-      margin: 6px 0;
-      font-size: 16px;
-    }
-
-    #salary-slip .amount {
-      font-weight: 700;
-      color: var(--primary-color);
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <h1 id="greeting">Загрузка...</h1>
-
-  <!-- Основные кнопки -->
-  <div id="main-buttons" class="buttons">
-    <button id="vacation"><span class="icon">✈️</span> Отпуск</button>
-    <button id="lunch"><span class="icon">🍽️</span> Обед</button>
-    <button id="salary"><span class="icon">💰</span> Зарплата</button>
-    <button id="chat"><span class="icon">💬</span> Чат</button>
+  <div class="container" id="screen-welcome">
+    <div class="center">
+      <div class="emoji">⚡</div>
+      <button id="start-btn">Войти как ...</button>
+    </div>
   </div>
 
-  <!-- Подменю для обеда -->
-  <div id="lunch-menu" class="submenu hidden">
-    <button data-dish="Макароны"><span class="icon">🍝</span> Макароны</button>
-    <button data-dish="Плов"><span class="icon">🍚</span> Плов</button>
-    <button data-dish="Суп"><span class="icon">🥣</span> Суп</button>
-    <button data-dish="Бургер"><span class="icon">🍔</span> Бургер</button>
-    <button id="lunch-back" class="back-btn">← Назад</button>
+  <div class="container hidden" id="screen-menu">
+    <h2 id="greeting"></h2>
+    <div class="grid-buttons">
+      <button class="square-btn" id="btn-vacation">Отпуск</button>
+      <button class="square-btn" id="btn-salary">Зарплата</button>
+      <button class="square-btn" id="btn-lunch">Обед</button>
+      <button class="square-btn" id="btn-chat">Чат</button>
+    </div>
   </div>
-
-  <!-- Форма для отпуска -->
-  <div id="vacation-form" class="form-container hidden">
-    <label for="start-date">Дата начала отпуска:</label>
-    <input type="date" id="start-date" />
-    <label for="end-date">Дата окончания отпуска:</label>
-    <input type="date" id="end-date" />
-    <div id="vacation-error" class="error hidden"></div>
-    <button id="vacation-submit">Отправить</button>
-    <button id="vacation-back" class="back-btn">← Назад</button>
-  </div>
-
-  <!-- Выбор года для зарплаты -->
-  <div id="salary-year" class="submenu hidden"></div>
-
-  <!-- Выбор месяца для зарплаты -->
-  <div id="salary-month" class="submenu hidden">
-    <button data-month="Январь"><span class="icon">❄️</span> Январь</button>
-    <button data-month="Февраль"><span class="icon">🌨️</span> Февраль</button>
-    <button data-month="Март"><span class="icon">🌷</span> Март</button>
-    <button data-month="Апрель"><span class="icon">🌧️</span> Апрель</button>
-    <button data-month="Май"><span class="icon">🌼</span> Май</button>
-    <button data-month="Июнь"><span class="icon">☀️</span> Июнь</button>
-    <button data-month="Июль"><span class="icon">🌻</span> Июль</button>
-    <button data-month="Август"><span class="icon">🏖️</span> Август</button>
-    <button data-month="Сентябрь"><span class="icon">🍂</span> Сентябрь</button>
-    <button data-month="Октябрь"><span class="icon">🍁</span> Октябрь</button>
-    <button data-month="Ноябрь"><span class="icon">🌧️</span> Ноябрь</button>
-    <button data-month="Декабрь"><span class="icon">🎄</span> Декабрь</button>
-    <button id="salary-month-back" class="back-btn">← Назад</button>
-  </div>
-
-  <!-- Расчетный листок -->
-  <div id="salary-slip" class="form-container hidden"></div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
 
-    // Инициализация пользователя
-    const user = tg.initDataUnsafe.user || { first_name: "Гость", last_name: "", username: "" };
-    const now = new Date();
-    const hour = now.getHours();
+    const user = tg.initDataUnsafe.user || { first_name: "Гость" };
+    const name = user.first_name;
 
-    let greetingText = "Добрый вечер";
-    if (hour < 12) greetingText = "Доброе утро";
-    else if (hour < 18) greetingText = "Добрый день";
+    const startBtn = document.getElementById("start-btn");
+    const screenWelcome = document.getElementById("screen-welcome");
+    const screenMenu = document.getElementById("screen-menu");
+    const greetingEl = document.getElementById("greeting");
 
-    // Корректно выводим имя
-    let fullName = user.first_name;
-    if (user.last_name) fullName += " " + user.last_name;
+    startBtn.innerText = `Войти как ${name}`;
 
-    document.getElementById("greeting").innerText = ${greetingText}, ${fullName}!;
-
-    // Главные кнопки и блоки
-    const mainButtons = document.getElementById("main-buttons");
-    const lunchMenu = document.getElementById("lunch-menu");
-    const vacationForm = document.getElementById("vacation-form");
-    const salaryYear = document.getElementById("salary-year");
-    const salaryMonth = document.getElementById("salary-month");
-    const salarySlip = document.getElementById("salary-slip");
-
-    // Функция показа/скрытия блоков
-    function showBlock(block) {
-      [mainButtons, lunchMenu, vacationForm, salaryYear, salaryMonth, salarySlip].forEach(el => {
-        el.classList.toggle("hidden", el !== block);
-      });
+    function getGreetingAndTheme() {
+      const hour = new Date().getHours();
+      if (hour < 12) {
+        document.body.style.background = "linear-gradient(to bottom, #fbc2eb, #a6c1ee)";
+        return "Доброе утро";
+      } else if (hour < 18) {
+        document.body.style.background = "linear-gradient(to bottom, #dce35b, #45b649)";
+        return "Добрый день";
+      } else {
+        document.body.style.background = "linear-gradient(to bottom, #141e30, #243b55)";
+        return "Добрый вечер";
+      }
     }
 
-    // === Обед ===
-    document.getElementById("lunch").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(lunchMenu);
-    });
-
-    document.getElementById("lunch-back").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(mainButtons);
-    });
-
-    lunchMenu.querySelectorAll("button[data-dish]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        tg.HapticFeedback.impactOccurred("medium");
-        tg.showAlert(Вы выбрали: ${btn.dataset.dish});
-      });
-    });
-
-    // === Отпуск ===
-    document.getElementById("vacation").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(vacationForm);
-      document.getElementById("vacation-error").classList.add("hidden");
-
-      // Установка минимальной даты (сегодня)
-      const todayStr = new Date().toISOString().slice(0, 10);
-      document.getElementById("start-date").value = "";
-      document.getElementById("end-date").value = "";
-      document.getElementById("start-date").min = todayStr;
-      document.getElementById("end-date").min = todayStr;
-    });
-
-    document.getElementById("vacation-back").addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(mainButtons);
-    });
-
-    document.getElementById("vacation-submit").addEventListener("click", () => {
-      const start = document.getElementById("start-date").value;
-      const end = document.getElementById("end-date").value;
-      const error = document.getElementById("vacation-error");
-
-      if (!start || !end) {
-        error.innerText = "Пожалуйста, выберите обе даты";
-        error.classList.remove("hidden");
-        tg.HapticFeedback.notificationOccurred("error");
-        return;
-      }
-
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-
-      if (endDate < startDate) {
-        error.innerText = "Дата окончания не может быть раньше начала";
-        error.class
-List.remove("hidden");
-tg.HapticFeedback.notificationOccurred("error");
-return;
-}
-        error.classList.add("hidden");
-  tg.HapticFeedback.notificationOccurred("success");
-  tg.showAlert(Заявка на отпуск с ${start} по ${end} отправлена!);
-  showBlock(mainButtons);
-});
-
-// === Зарплата ===
-document.getElementById("salary").addEventListener("click", () => {
-  tg.HapticFeedback.impactOccurred("light");
-  showBlock(salaryYear);
-  salarySlip.classList.add("hidden");
-  populateYears();
-});
-
-document.getElementById("salary-month-back").addEventListener("click", () => {
-  tg.HapticFeedback.impactOccurred("light");
-  showBlock(salaryYear);
-  salarySlip.classList.add("hidden");
-});
-
-// Заполнить выбор года (последние 5 лет)
-function populateYears() {
-  salaryYear.innerHTML = "";
-  const currentYear = new Date().getFullYear();
-
-  for (let y = currentYear; y >= currentYear - 5; y--) {
-    const btn = document.createElement("button");
-    btn.textContent = y;
-    btn.addEventListener("click", () => {
-      tg.HapticFeedback.impactOccurred("light");
-      showBlock(salaryMonth);
-      salarySlip.classList.add("hidden");
-      salaryMonth.dataset.year = y;
-    });
-    salaryYear.appendChild(btn);
-  }
-
-  // Кнопка назад
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "← Назад";
-  backBtn.className = "back-btn";
-  backBtn.addEventListener("click", () => {
-    tg.HapticFeedback.impactOccurred("light");
-    showBlock(mainButtons);
-  });
-  salaryYear.appendChild(backBtn);
-}
-
-// При выборе месяца показываем расчетный листок
-salaryMonth.querySelectorAll("button[data-month]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    tg.HapticFeedback.impactOccurred("medium");
-    const year = salaryMonth.dataset.year;
-    const month = btn.dataset.month;
-    showSalarySlip(year, month);
-  });
-});
-
-// Функция генерации рандомного числа в диапазоне
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Функция показа расчетного листка
-function showSalarySlip(year, month) {
-  const fullNameSlip = fullName || "Иван Иванов";
-  const baseSalary = randomInt(15000000, 50000000);
-  const accrued = baseSalary + randomInt(-2000000, 3000000); // Начислено
-  const withheld = randomInt(0, 2000000);                   // Удержано
-  const paid = accrued - withheld;
-
-  salarySlip.innerHTML = 
-    <h2>Расчетный листок за ${month} ${year} г.</h2>
-    <p><strong>ФИО:</strong> ${fullNameSlip}</p>
-    <p><strong>Оклад:</strong> <span class="amount">${baseSalary.toLocaleString('ru-RU')} сум</span></p>
-    <p><strong>Начислено:</strong> <span class="amount">${accrued.toLocaleString('ru-RU')} сум</span></p>
-    <p><strong>Удержано:</strong> <span class="amount">${withheld.toLocaleString('ru-RU')} сум</span></p>
-    <p><strong>Выплачено:</strong> <span class="amount">${paid.toLocaleString('ru-RU')} сум</span></p>
-    <button id="salary-slip-back" class="back-btn">← Назад</button>
-  ;
-
-  showBlock(salarySlip);
-
-  document.getElementById("salary-slip-back").addEventListener("click", () => {
-    tg.HapticFeedback.impactOccurred("light");
-    showBlock(salaryMonth);
-  });
-}
-
-// === Чат ===
-document.getElementById("chat").addEventListener("click", () => {
-  tg.HapticFeedback.impactOccurred("light");
-  tg.openTelegramLink("https://t.me/your_chat_link"); // Замените на свой чат
-});
-</script> </body> </html>
+    startBtn.onclick = () => {
+      screenWelcome.classList.add("hidden");
+      screenMenu.classList.remove("hidden");
+      const greet = getGreetingAndTheme();
+      greetingEl.innerText = `${greet}, ${name}`;
+    };
+  </script>
+</body>
+</html>
