@@ -6,15 +6,16 @@
     <title>Кабинет сотрудника</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div id="screen1" class="screen">
         <div class="lightning">⚡</div>
-        <button id="loginBtn" class="btn">Войти как Иван</button>
+        <button id="loginBtn" class="btn">Войти через Telegram</button>
     </div>
 
     <div id="screen2" class="screen hidden">
-        <h1 id="greeting">Доброе утро, Иван!</h1>
+        <h1 id="greeting">Доброе утро, <span id="userName"></span>!</h1>
         <div class="grid">
             <button id="salaryBtn" class="card">Зарплата</button>
             <button id="vacationBtn" class="card">Отпуск</button>
@@ -25,13 +26,11 @@
 
     <div id="screen3" class="screen hidden">
         <h2>Расчетный листок</h2>
-        <div class="year-selector">
+        <div class="selectors">
             <select id="yearSelect">
                 <option value="2023">2023</option>
-                <option value="2024">2024</option>
+                <option value="2024" selected>2024</option>
             </select>
-        </div>
-        <div class="month-selector">
             <select id="monthSelect">
                 <option value="1">Январь</option>
                 <option value="2">Февраль</option>
@@ -47,9 +46,9 @@
                 <option value="12">Декабрь</option>
             </select>
         </div>
-        <div id="payslip" class="payslip hidden">
+        <div id="payslip" class="payslip">
             <h3>Расчетный листок за <span id="selectedMonth"></span> <span id="selectedYear"></span></h3>
-            <p>ФИО: <strong>Иван Иванов</strong></p>
+            <p>ФИО: <strong id="userFullName">Иван Иванов</strong></p>
             <p>Оклад........................<span class="amount">75,000 ₽</span></p>
             <p>Начислено..............<span class="amount">82,500 ₽</span></p>
             <p>Удержано................<span class="amount">7,500 ₽</span></p>
