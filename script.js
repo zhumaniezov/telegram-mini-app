@@ -1,29 +1,47 @@
-// Получаем данные пользователя из Telegram WebApp
+// Инициализация Telegram WebApp
 const tg = window.Telegram.WebApp;
+tg.expand(); // Раскрываем приложение на весь экран
 
-// Если пользователь авторизован, показываем его имя
-if (tg.initDataUnsafe?.user) {
-  const user = tg.initDataUnsafe.user;
-  document.getElementById('userName').textContent = user.first_name || 'Гость';
+// Функция для определения времени суток
+function getTimeOfDay() {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Доброе утро';
+  if (hour < 18) return 'Добрый день';
+  return 'Добрый вечер';
+}
+
+// Получаем данные пользователя
+function initUser() {
+  if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    const user = tg.initDataUnsafe.user;
+    const userName = user.first_name || user.username || 'Гость';
+    
+    // Устанавливаем имя на обеих страницах
+    const userNameElements = document.querySelectorAll('#userName');
+    userNameElements.forEach(el => {
+      el.textContent = userName;
+    });
+    
+    // Устанавливаем приветствие на главной странице
+    if (document.getElementById('greeting')) {
+      document.getElementById('greeting').textContent = 
+        `${getTimeOfDay()}, ${userName}!`;
+    }
+  }
 }
 
 // Обработка кнопки входа
-document.getElementById('startBtn')?.addEventListener('click', () => {
-  window.location.href = 'main.html';
+function initStartButton() {
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      window.location.href = 'main.html';
+    });
+  }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+  initUser();
+  initStartButton();
 });
-
-// Динамическое приветствие (утро/день/вечер)
-function updateGreeting() {
-  const hour = new Date().getHours();
-  let greeting = 'Добрый день';
-  if (hour < 12) greeting = 'Доброе утро';
-  else if (hour >= 18) greeting = 'Добрый вечер';
-  
-  const userName = tg.initDataUnsafe?.user?.first_name || 'Гость';
-  document.getElementById('greeting').textContent = `${greeting}, ${userName}!`;
-}
-
-// Если мы на главном экране, обновляем приветствие
-if (document.getElementById('greeting')) {
-  updateGreeting();
-}
