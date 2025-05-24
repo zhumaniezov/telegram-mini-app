@@ -8,7 +8,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transition: background 0.3s;
 }
 
 .screen {
@@ -17,13 +16,10 @@ body {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-    opacity: 1;
-    transition: opacity 0.5s ease;
 }
 
 .screen.hidden {
     display: none;
-    opacity: 0;
 }
 
 .lightning {
@@ -46,15 +42,9 @@ body {
     border-radius: 25px;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s;
     margin: 10px 0;
     width: 100%;
     max-width: 300px;
-}
-
-.btn:hover {
-    background: #1565C0;
-    transform: scale(1.05);
 }
 
 .grid {
@@ -69,7 +59,6 @@ body {
     border-radius: 12px;
     padding: 20px;
     cursor: pointer;
-    transition: all 0.3s;
     border: none;
     color: white;
     font-size: 16px;
@@ -77,11 +66,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.card:hover {
-    background: #2E2E2E;
-    transform: translateY(-5px);
 }
 
 .payslip {
@@ -96,9 +80,9 @@ body {
     margin: 10px 0;
 }
 
-/* Добавляем только новые стили */
 .amount {
-    font-family: 'Courier New', monospace; /* Четкое выравнивание чисел */
+    float: right;
+    font-family: 'Courier New', monospace;
 }
 
 .selectors {
@@ -107,7 +91,19 @@ body {
     margin-bottom: 20px;
 }
 
+select {
+    background: #1E1E1E;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    flex: 1;
+}
+
 @media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
     .selectors {
         flex-direction: column;
     }
