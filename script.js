@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Элементы интерфейса
     const Telegram = window.Telegram?.WebApp;
     const loginBtn = document.getElementById("loginBtn");
     const salaryBtn = document.getElementById("salaryBtn");
@@ -14,37 +15,53 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectedMonth = document.getElementById("selectedMonth");
     const selectedYear = document.getElementById("selectedYear");
 
-    // Инициализация Telegram WebApp
-    if (Telegram) {
-        Telegram.expand(); // Раскрываем на весь экран
-        Telegram.BackButton.hide(); // Скрываем кнопку "Назад" (пока не нужна)
+    // ===== 1. Генерация случайных сумм в сумах =====
+    function generateRandomAmount() {
+        const min = 30000000;
+        const max = 50000000;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Авторизация через Telegram
-    loginBtn.addEventListener("click", () => {
-        if (Telegram) {
-            const user = Telegram.initDataUnsafe?.user;
-            if (user) {
-                const name = user.first_name || "Сотрудник";
-                userName.textContent = name;
-                userFullName.textContent = `${name} ${user.last_name || ""}`.trim();
-                screen1.classList.add("hidden");
-                screen2.classList.remove("hidden");
-                updateGreeting();
-            } else {
-                alert("Ошибка: данные пользователя не получены.");
-            }
-        } else {
-            // Для теста вне Telegram
-            userName.textContent = "Иван";
-            userFullName.textContent = "Иван Иванов";
-            screen1.classList.add("hidden");
-            screen2.classList.remove("hidden");
-            updateGreeting();
-        }
-    });
+    function formatUZS(amount) {
+        return new Intl.NumberFormat('uz-UZ').format(amount) + ' сум';
+    }
 
-    // Обновление приветствия по времени
+    // ===== 2. Обновление данных пользователя =====
+    function updateUserData(user) {
+        const name = user?.first_name || "Сотрудник";
+        userName.textContent = name;
+        userFullName.textContent = `${name} ${user?.last_name || ''}`.trim();
+    }
+
+    // ===== 3. Инициализация выбора года =====
+    function initYearSelect() {
+        const currentYear = new Date().getFullYear();
+        yearSelect.innerHTML = '';
+        
+        for (let year = currentYear; year >= 2020; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            if (year === currentYear) option.selected = true;
+            yearSelect.appendChild(option);
+        }
+    }
+
+    // ===== 4. Обновление расчетного листка =====
+    function updatePayslip() {
+        const year = yearSelect.value;
+        const month = monthSelect.options[monthSelect.selectedIndex].text;
+        
+        selectedYear.textContent = year;
+        selectedMonth.textContent = month;
+        
+        // Обновляем все суммы
+        document.querySelectorAll('.amount').forEach(el => {
+            el.textContent = formatUZS(generateRandomAmount());
+        });
+    }
+
+    // ===== 5. Приветствие по времени суток =====
     function updateGreeting() {
         const hour = new Date().getHours();
         let greetingText;
@@ -54,11 +71,32 @@ document.addEventListener("DOMContentLoaded", function() {
         greeting.textContent = `${greetingText}, ${userName.textContent}!`;
     }
 
-    // Переходы между экранами
+    // ===== 6. Обработчики событий =====
+    loginBtn.addEventListener("click", () => {
+        if (Telegram) {
+            const user = Telegram.initDataUnsafe?.user;
+            if (user) {
+                updateUserData(user);
+                initYearSelect();
+                updatePayslip();
+                screen1.classList.add("hidden");
+                screen2.classList.remove("hidden");
+                updateGreeting();
+            }
+        } else {
+            // Режим демо (если открыто не в Telegram)
+            updateUserData({ first_name: "Сотрудник" });
+            initYearSelect();
+            updatePayslip();
+            screen1.classList.add("hidden");
+            screen2.classList.remove("hidden");
+            updateGreeting();
+        }
+    });
+
     salaryBtn.addEventListener("click", () => {
         screen2.classList.add("hidden");
         screen3.classList.remove("hidden");
-        updatePayslip();
     });
 
     backBtn.addEventListener("click", () => {
@@ -66,19 +104,12 @@ document.addEventListener("DOMContentLoaded", function() {
         screen2.classList.remove("hidden");
     });
 
-    // Обновление расчетного листка
     yearSelect.addEventListener("change", updatePayslip);
     monthSelect.addEventListener("change", updatePayslip);
 
-    function updatePayslip() {
-        const year = yearSelect.value;
-        const month = monthSelect.options[monthSelect.selectedIndex].text;
-        selectedYear.textContent = year;
-        selectedMonth.textContent = month;
-    }
-
-    // Инициализация при загрузке (для теста)
-    if (!Telegram) {
-        console.log("Режим теста: Telegram WebApp не обнаружен.");
+    // Инициализация при загрузке
+    if (Telegram) {
+        Telegram.expand();
+        Telegram.BackButton.hide();
     }
 });
