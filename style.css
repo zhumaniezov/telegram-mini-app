@@ -3,7 +3,7 @@ body {
     background: #121212;
     color: #fff;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,8 @@ body {
 .screen {
     text-align: center;
     padding: 20px;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
     margin: 0 auto;
     opacity: 1;
     transition: opacity 0.5s ease;
@@ -47,6 +48,8 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     margin: 10px 0;
+    width: 100%;
+    max-width: 300px;
 }
 
 .btn:hover {
@@ -70,6 +73,10 @@ body {
     border: none;
     color: white;
     font-size: 16px;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card:hover {
@@ -93,12 +100,27 @@ body {
     float: right;
 }
 
+.selectors {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 select {
     background: #1E1E1E;
     color: white;
     border: none;
     padding: 10px;
     border-radius: 8px;
-    margin: 10px 0;
-    width: 100%;
+    flex: 1;
+}
+
+/* Адаптив для мобилок */
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .selectors {
+        flex-direction: column;
+    }
 }
