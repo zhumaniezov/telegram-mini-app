@@ -6,42 +6,56 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  overflow: hidden;
+}
+
+/* Стили для экрана входа */
+.start-screen .container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  transition: background 0.5s ease;
-}
-
-.container {
+  justify-content: center;
+  height: 100%;
   text-align: center;
-  padding: 20px;
-  max-width: 400px;
-  width: 100%;
 }
 
-/* Кнопка входа */
+/* Анимация ракеты */
+lottie-player {
+  margin-bottom: 40px;
+}
+
+/* Стили кнопки входа */
 .btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 24px;
+  background: #FFF8E1;
+  color: #121212;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #FFECB3;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Главное меню */
+/* Стили для главного меню */
+.main-screen .container {
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .main-screen h1 {
   font-weight: 600;
   margin-bottom: 40px;
+  text-align: center;
 }
 
 .menu-grid {
