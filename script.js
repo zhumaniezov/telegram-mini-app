@@ -1,6 +1,6 @@
 // Инициализация Telegram WebApp
 const tg = window.Telegram.WebApp;
-tg.expand(); // Раскрываем приложение на весь экран
+tg.expand();
 
 // Функция для определения времени суток
 function getTimeOfDay() {
@@ -16,13 +16,10 @@ function initUser() {
     const user = tg.initDataUnsafe.user;
     const userName = user.first_name || user.username || 'Гость';
     
-    // Устанавливаем имя на обеих страницах
-    const userNameElements = document.querySelectorAll('#userName');
-    userNameElements.forEach(el => {
+    document.querySelectorAll('#userName').forEach(el => {
       el.textContent = userName;
     });
     
-    // Устанавливаем приветствие на главной странице
     if (document.getElementById('greeting')) {
       document.getElementById('greeting').textContent = 
         `${getTimeOfDay()}, ${userName}!`;
