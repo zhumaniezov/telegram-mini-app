@@ -3,14 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Кабинет Сотрудника</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <title>Telegram Mini App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
-<body>
-  <div class="screen active">
-    <img src="assets/lightning.gif" alt="⚡" class="lightning" />
-    <button class="login-btn" onclick="goToMain()">Войти как Иван</button>
+<body class="start-screen">
+  <div class="container">
+    <lottie-player 
+      src="assets/rocket.json" 
+      background="transparent" 
+      speed="1" 
+      style="width: 200px; height: 200px;" 
+      loop autoplay>
+    </lottie-player>
+    <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
   </div>
   <script src="script.js"></script>
 </body>
