@@ -45,13 +45,20 @@ body {
     margin: 10px 0;
     width: 100%;
     max-width: 300px;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background: #1565C0;
+    transform: scale(1.05);
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin: 20px 0;
+    margin: 20px auto;
+    max-width: 400px;
 }
 
 .card {
@@ -66,6 +73,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    background: #2E2E2E;
+    transform: translateY(-5px);
 }
 
 .payslip {
