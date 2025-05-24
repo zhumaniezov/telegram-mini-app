@@ -24,18 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 2. Приветствие по времени
+    // 2. Приветствие по времени суток
     function updateGreeting() {
         const hour = new Date().getHours();
-        let timeGreeting;
-        if (hour < 12) timeGreeting = "Доброе утро";
-        else if (hour < 18) timeGreeting = "Добрый день";
-        else timeGreeting = "Добрый вечер";
-        greeting.textContent = `${timeGreeting}, ${userName.textContent}!`;
+        let greetingText;
+        if (hour < 12) greetingText = "Доброе утро";
+        else if (hour < 18) greetingText = "Добрый день";
+        else greetingText = "Добрый вечер";
+        greeting.textContent = `${greetingText}, ${userName.textContent}!`;
     }
 
     // 3. Генерация случайной суммы (30-50 млн сум)
-    function getRandomSum() {
+    function generateRandomSum() {
         const min = 30000000;
         const max = 50000000;
         const amount = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         selectedMonth.textContent = monthSelect.options[monthSelect.selectedIndex].text;
         
         document.querySelectorAll('.amount').forEach(el => {
-            el.textContent = getRandomSum();
+            el.textContent = generateRandomSum();
         });
     }
 
@@ -78,6 +78,5 @@ document.addEventListener("DOMContentLoaded", function() {
     // Инициализация
     if (Telegram) {
         Telegram.BackButton.hide();
-        Telegram.ready();
     }
 });
