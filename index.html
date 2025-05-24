@@ -15,7 +15,7 @@
     </div>
 
     <div id="screen2" class="screen hidden">
-        <h1 id="greeting">Доброе утро, <span id="userName">Сотрудник</span>!</h1>
+        <h1 id="greeting">Доброе утро, <span id="userName">Иван</span>!</h1>
         <div class="grid">
             <button id="salaryBtn" class="card">Зарплата</button>
             <button id="vacationBtn" class="card">Отпуск</button>
@@ -27,7 +27,13 @@
     <div id="screen3" class="screen hidden">
         <h2>Расчетный листок</h2>
         <div class="selectors">
-            <select id="yearSelect"></select>
+            <select id="yearSelect">
+                <option value="2025">2025</option>
+                <option value="2024" selected>2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+            </select>
             <select id="monthSelect">
                 <option value="1">Январь</option>
                 <option value="2">Февраль</option>
@@ -45,7 +51,7 @@
         </div>
         <div id="payslip" class="payslip">
             <h3>Расчетный листок за <span id="selectedMonth">Январь</span> <span id="selectedYear">2024</span></h3>
-            <p>ФИО: <strong id="userFullName">Сотрудник</strong></p>
+            <p>ФИО: <strong id="userFullName">Иван Иванов</strong></p>
             <p>Оклад........................<span class="amount">37,450,000 сум</span></p>
             <p>Начислено..............<span class="amount">41,200,000 сум</span></p>
             <p>Удержано................<span class="amount">3,750,000 сум</span></p>
