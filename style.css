@@ -96,8 +96,9 @@ body {
     margin: 10px 0;
 }
 
+/* Добавляем только новые стили */
 .amount {
-    float: right;
+    font-family: 'Courier New', monospace; /* Четкое выравнивание чисел */
 }
 
 .selectors {
@@ -106,20 +107,7 @@ body {
     margin-bottom: 20px;
 }
 
-select {
-    background: #1E1E1E;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    flex: 1;
-}
-
-/* Адаптив для мобилок */
 @media (max-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
     .selectors {
         flex-direction: column;
     }
