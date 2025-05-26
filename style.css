@@ -1,260 +1,183 @@
+:root {
+  --bg-primary: #121212;
+  --text-primary: #ffffff;
+  --accent-color: #FFA000;
+  --error-color: #F44336;
+}
+
 /* Общие стили */
 body {
   font-family: 'Open Sans', sans-serif;
-  background: #121212;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  overflow-y: auto;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme {
+  --bg-primary: #f5f5f5;
+  --text-primary: #212121;
+}
+
+body.dark-theme {
+  --bg-primary: #121212;
+  --text-primary: #ffffff;
 }
 
 .container {
+  position: relative;
   text-align: center;
   padding: 20px;
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
-  animation: fadeIn 0.5s ease;
-  padding-bottom: 80px;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Стили для экрана зарплаты */
-.period-selector {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 25px;
-}
-
-.date-picker {
-  display: flex;
-  gap: 10px;
-}
-
-.date-select {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.date-select label {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  text-align: left;
-}
-
-.period-select {
-  width: 100%;
-  padding: 12px 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-}
-
-.period-select:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.period-select:focus {
-  outline: none;
-  border-color: #FFA000;
-}
-
-.show-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #FFA000, #FF8F00);
-  color: #121212;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(255, 160, 0, 0.2);
-}
-
-.show-btn:hover {
-  background: linear-gradient(135deg, #FFB300, #FFA000);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
-}
-
-.show-btn:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.5);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.payslip {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 25px;
-}
-
-.employee-info {
-  text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.employee-info h3 {
-  margin: 0 0 5px;
-  font-size: 18px;
-  color: #FFECB3;
-}
-
-.employee-info p {
-  margin: 5px 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-}
-
-.employee-info p span {
-  color: white;
-  font-weight: 600;
-}
-
-.salary-details {
-  margin: 20px 0;
-}
-
-.salary-details h4 {
-  margin: 15px 0 10px;
-  font-size: 16px;
-  color: #FFECB3;
-}
-
-.details-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 15px;
-}
-
-.details-table td {
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 14px;
-}
-
-.details-table td:last-child {
-  text-align: right;
-  font-weight: 600;
-}
-
-.details-table tr.subtotal td {
-  border-bottom: none;
-  padding-top: 10px;
-  font-weight: 600;
-  color: #FFECB3;
-}
-
-.total-table {
-  width: 100%;
-  margin: 20px 0;
-  border-collapse: collapse;
-}
-
-.total-table td {
-  padding: 12px 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.total-table td:last-child {
-  text-align: right;
-  color: #4CAF50;
-  font-size: 18px;
-}
-
-.payslip-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.download-btn, .email-btn {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 8px;
-}
-
-.download-btn {
-  background: linear-gradient(135deg, #2196F3, #1976D2);
-  color: white;
-}
-
-.download-btn:hover {
-  background: linear-gradient(135deg, #42A5F5, #1E88E5);
-  transform: translateY(-2px);
-}
-
-.email-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.email-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Кнопка Назад */
-.back-btn {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 24px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  width: calc(100% - 40px);
-  max-width: 400px;
+  align-items: center;
   box-sizing: border-box;
 }
 
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+/* Индикатор загрузки */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-/* Иконки */
-svg {
-  vertical-align: middle;
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Фоновый градиент */
+.background-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  z-index: -1;
+  opacity: 0.7;
+}
+
+body.light-theme .background-gradient {
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+}
+
+/* Кнопка */
+.btn {
+  position: relative;
+  background: #FFA000;
+  color: #121212;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 160, 0, 0.2);
+  overflow: hidden;
+  width: 220px;
+  height: 48px;
+}
+
+.btn:hover {
+  background: #FFB300;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 160, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #121212;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+}
+
+.btn-pressed {
+  width: 48px;
+  background: #FF8F00;
+}
+
+.btn-pressed .btn-text {
+  opacity: 0;
+}
+
+.btn-pressed .btn-loader {
+  display: block;
+  margin-left: 0;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Ошибки */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.error-message svg {
+  stroke: var(--error-color);
+  margin-bottom: 16px;
+}
+
+.error-message h2 {
+  color: var(--error-color);
+  margin-bottom: 8px;
+}
+
+.error-message p {
+  margin-bottom: 20px;
 }
