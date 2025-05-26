@@ -216,6 +216,116 @@ lottie-player {
   display: inline-block;
 }
 
+/* Стили для экрана обеда */
+.menu-date {
+  margin: -15px 0 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.dishes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.dish-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.dish-card.selected {
+  background: rgba(255, 160, 0, 0.1);
+  border: 1px solid rgba(255, 160, 0, 0.3);
+  transform: translateY(-5px);
+}
+
+.dish-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.dish-image img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.dish-card h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  color: #FFECB3;
+}
+
+.dish-card p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  min-height: 36px;
+}
+
+.select-btn {
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.selected-dish {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.selected-dish h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+#selected-dish-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #FFA000;
+  margin: 0 0 15px;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #66BB6A, #7CB342);
+  transform: translateY(-2px);
+}
+
 /* Календарь (переопределение стилей flatpickr) */
 .flatpickr-day.selected {
   background: #FFA000;
