@@ -7,14 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body class="start-screen">
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-spinner"></div>
-  </div>
-  
   <div class="container">
-    <div class="background-gradient"></div>
     <lottie-player 
       src="assets/rocket.json"
       background="transparent"
@@ -23,12 +19,7 @@
       loop
       autoplay>
     </lottie-player>
-    <button id="startBtn" class="btn pulse" aria-label="Войти в приложение">
-      <span class="btn-content">
-        <span id="btnText">Войти как <span id="userName">Гость</span></span>
-        <span class="btn-loader" id="btnLoader"></span>
-      </span>
-    </button>
+    <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
   </div>
   <script src="script.js"></script>
 </body>
