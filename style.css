@@ -317,6 +317,183 @@ lottie-player {
   transform: translateY(-2px);
 }
 
+/* Стили для экрана зарплаты */
+.period-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.period-select {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.period-select:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.show-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #FFA000, #FF8F00);
+  color: #121212;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 160, 0, 0.2);
+}
+
+.show-btn:hover {
+  background: linear-gradient(135deg, #FFB300, #FFA000);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
+}
+
+.show-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.payslip {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.employee-info {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.employee-info h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+  color: #FFECB3;
+}
+
+.employee-info p {
+  margin: 5px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.employee-info p span {
+  color: white;
+  font-weight: 600;
+}
+
+.salary-details {
+  margin: 20px 0;
+}
+
+.salary-details h4 {
+  margin: 15px 0 10px;
+  font-size: 16px;
+  color: #FFECB3;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.details-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+}
+
+.details-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+.details-table tr.subtotal td {
+  border-bottom: none;
+  padding-top: 10px;
+  font-weight: 600;
+  color: #FFECB3;
+}
+
+.total-table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+
+.total-table td {
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total-table td:last-child {
+  text-align: right;
+  color: #4CAF50;
+  font-size: 18px;
+}
+
+.payslip-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.download-btn, .email-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #42A5F5, #1E88E5);
+  transform: translateY(-2px);
+}
+
+.email-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.email-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
 /* Календарь (переопределение стилей flatpickr) */
 .flatpickr-day.selected {
   background: #FFA000;
@@ -326,4 +503,9 @@ lottie-player {
 .flatpickr-day.inRange {
   background: rgba(255, 160, 0, 0.1);
   box-shadow: none;
+}
+
+/* Иконки */
+svg {
+  vertical-align: middle;
 }
