@@ -78,7 +78,7 @@ lottie-player {
   transform: scale(1.02);
 }
 
-/* Новые экраны информации */
+/* Общие стили для информационных экранов */
 .info-screen .container {
   height: 100%;
   display: flex;
@@ -115,8 +115,130 @@ lottie-player {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Стили для экрана отпуска */
+.vacation-balance {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vacation-balance p {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.date-selection {
+  margin: 25px 0;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.date-selection h3, .upcoming-vacation h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #FFECB3;
+}
+
+#dateRange {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#dateRange:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+#dateRange:focus {
+  outline: none;
+  border-color: #FFA000;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #FFA000, #FF8F00);
+  color: #121212;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+  box-shadow: 0 2px 8px rgba(255, 160, 0, 0.2);
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #FFB300, #FFA000);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.upcoming-vacation {
+  padding: 20px 0 10px;
+}
+
+.upcoming-vacation p {
+  font-size: 16px;
+  padding: 8px 12px;
+  background: rgba(255, 160, 0, 0.1);
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* Календарь (переопределение стилей flatpickr) */
+.flatpickr-day.selected {
+  background: #FFA000;
+  border-color: #FFA000;
+}
+
+.flatpickr-day.inRange {
+  background: rgba(255, 160, 0, 0.1);
+  box-shadow: none;
+}
+
 /* Анимации */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
 }
