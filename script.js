@@ -37,8 +37,29 @@ function initStartButton() {
   }
 }
 
+// Обработка кнопок меню
+function initMenuButtons() {
+  const buttons = document.querySelectorAll('.menu-btn');
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const text = this.textContent.trim();
+      
+      if (text.includes('Зарплата')) {
+        window.location.href = 'salary.html';
+      } else if (text.includes('Отпуск')) {
+        window.location.href = 'vacation.html';
+      } else if (text.includes('Обед')) {
+        window.location.href = 'lunch.html';
+      }
+      // Кнопка "Чат" пока не обрабатывается
+    });
+  });
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   initUser();
   initStartButton();
+  initMenuButtons();
 });
