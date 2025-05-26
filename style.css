@@ -1,165 +1,14 @@
-/* Общие стили */
-body {
-  font-family: 'Open Sans', sans-serif;
-  background: #121212;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.container {
-  text-align: center;
-  padding: 20px;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  animation: fadeIn 0.5s ease;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Экран входа */
-.start-screen .container {
+/* Стили для экрана зарплаты */
+.period-selector {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-lottie-player {
-  margin-bottom: 40px;
-}
-
-.btn {
-  background: #FFF8E1;
-  color: #121212;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover {
-  background: #FFECB3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* Главное меню */
-.main-screen h1 {
-  font-weight: 600;
-  margin-bottom: 40px;
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.menu-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: white;
-}
-
-.menu-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.02);
-}
-
-/* Общие стили для информационных экранов */
-.info-screen .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.info-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 20px;
-  margin: 30px 0;
-}
-
-.back-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 24px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-}
-
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Стили для экрана отпуска */
-.vacation-balance {
+  gap: 12px;
   margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.vacation-balance p {
-  font-size: 17px;
-  margin-bottom: 8px;
-}
-
-.progress-bar {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  margin-top: 15px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
-
-.date-selection {
-  margin: 25px 0;
-  padding: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.date-selection h3, .upcoming-vacation h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 18px;
-  color: #FFECB3;
-}
-
-#dateRange {
+.period-select {
   width: 100%;
   padding: 12px 15px;
-  margin: 10px 0 15px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
@@ -170,16 +19,11 @@ lottie-player {
   transition: all 0.3s ease;
 }
 
-#dateRange:hover {
+.period-select:hover {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-#dateRange:focus {
-  outline: none;
-  border-color: #FFA000;
-}
-
-.submit-btn {
+.show-btn {
   width: 100%;
   padding: 14px;
   background: linear-gradient(135deg, #FFA000, #FF8F00);
@@ -190,140 +34,148 @@ lottie-player {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 5px;
   box-shadow: 0 2px 8px rgba(255, 160, 0, 0.2);
 }
 
-.submit-btn:hover {
+.show-btn:hover {
   background: linear-gradient(135deg, #FFB300, #FFA000);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
 }
 
-.upcoming-vacation {
-  padding: 20px 0 10px;
+.show-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.upcoming-vacation p {
-  font-size: 16px;
-  padding: 8px 12px;
-  background: rgba(255, 160, 0, 0.1);
-  border-radius: 6px;
-  display: inline-block;
+.payslip {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
 }
 
-/* Стили для экрана обеда */
-.menu-date {
-  margin: -15px 0 20px;
+.employee-info {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.employee-info h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+  color: #FFECB3;
+}
+
+.employee-info p {
+  margin: 5px 0;
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
 }
 
-.dishes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 25px;
+.employee-info p span {
+  color: white;
+  font-weight: 600;
 }
 
-.dish-item {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
+.salary-details {
+  margin: 20px 0;
 }
 
-.dish-item.selected {
-  background: rgba(255, 160, 0, 0.1);
-  border: 1px solid rgba(255, 160, 0, 0.3);
-}
-
-.dish-content {
-  text-align: left;
-  flex-grow: 1;
-}
-
-.dish-item h3 {
-  margin: 0 0 4px;
+.salary-details h4 {
+  margin: 15px 0 10px;
   font-size: 16px;
   color: #FFECB3;
 }
 
-.dish-description {
-  margin: 0 0 4px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dish-calories {
-  margin: 0;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.select-btn {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: white;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 15px;
-  flex-shrink: 0;
-}
-
-.select-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.selection-summary {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 20px 0;
-  text-align: center;
-}
-
-.selection-summary p {
-  margin: 0 0 12px;
-  font-size: 16px;
-}
-
-#selected-dish-name {
-  font-weight: 600;
-  color: #FFA000;
-}
-
-.confirm-btn {
+.details-table {
   width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.details-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+}
+
+.details-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+.details-table tr.subtotal td {
+  border-bottom: none;
+  padding-top: 10px;
+  font-weight: 600;
+  color: #FFECB3;
+}
+
+.total-table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+
+.total-table td {
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total-table td:last-child {
+  text-align: right;
+  color: #4CAF50;
+  font-size: 18px;
+}
+
+.payslip-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.download-btn, .email-btn {
+  flex: 1;
   padding: 12px;
-  background: linear-gradient(135deg, #4CAF50, #8BC34A);
-  color: white;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.confirm-btn:hover {
-  background: linear-gradient(135deg, #66BB6A, #7CB342);
+.download-btn {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #42A5F5, #1E88E5);
   transform: translateY(-2px);
 }
 
-/* Календарь (переопределение стилей flatpickr) */
-.flatpickr-day.selected {
-  background: #FFA000;
-  border-color: #FFA000;
+.email-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.flatpickr-day.inRange {
-  background: rgba(255, 160, 0, 0.1);
-  box-shadow: none;
+.email-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Иконки */
+svg {
+  vertical-align: middle;
 }
