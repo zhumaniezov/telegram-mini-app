@@ -9,22 +9,28 @@ body {
   overflow: hidden;
 }
 
-/* Стили для экрана входа */
+.container {
+  text-align: center;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Экран входа */
 .start-screen .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  text-align: center;
 }
 
-/* Анимация ракеты */
 lottie-player {
   margin-bottom: 40px;
 }
 
-/* Стили кнопки входа */
 .btn {
   background: #FFF8E1;
   color: #121212;
@@ -44,18 +50,10 @@ lottie-player {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Стили для главного меню */
-.main-screen .container {
-  padding: 20px;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-}
-
+/* Главное меню */
 .main-screen h1 {
   font-weight: 600;
   margin-bottom: 40px;
-  text-align: center;
 }
 
 .menu-grid {
@@ -80,12 +78,45 @@ lottie-player {
   transform: scale(1.02);
 }
 
+/* Новые экраны информации */
+.info-screen .container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.info-card p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 /* Анимации */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-.container {
-  animation: fadeIn 0.5s ease;
 }
