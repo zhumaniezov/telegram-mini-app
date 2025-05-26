@@ -15,52 +15,51 @@
       <p id="current-date"></p>
     </div>
     
-    <div class="dishes-grid">
+    <div class="dishes-list">
       <!-- Блюдо 1 -->
-      <div class="dish-card selected">
-        <div class="dish-image" style="background-color: #FFEE58;">
-          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787100.png" alt="Суп">
+      <div class="dish-item selected">
+        <div class="dish-content">
+          <h3>Куриный суп</h3>
+          <p class="dish-description">С домашней лапшой и зеленью</p>
+          <p class="dish-calories">~250 ккал</p>
         </div>
-        <h3>Куриный суп</h3>
-        <p>С домашней лапшой и зеленью</p>
         <button class="select-btn">Выбрать</button>
       </div>
       
       <!-- Блюдо 2 -->
-      <div class="dish-card">
-        <div class="dish-image" style="background-color: #FFA000;">
-          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787134.png" alt="Гарнир">
+      <div class="dish-item">
+        <div class="dish-content">
+          <h3>Гречка с грибами</h3>
+          <p class="dish-description">С луковой поджаркой</p>
+          <p class="dish-calories">~320 ккал</p>
         </div>
-        <h3>Гречка с грибами</h3>
-        <p>С луковой поджаркой</p>
         <button class="select-btn">Выбрать</button>
       </div>
       
       <!-- Блюдо 3 -->
-      <div class="dish-card">
-        <div class="dish-image" style="background-color: #FF7043;">
-          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787085.png" alt="Салат">
+      <div class="dish-item">
+        <div class="dish-content">
+          <h3>Салат Цезарь</h3>
+          <p class="dish-description">С курицей и пармезаном</p>
+          <p class="dish-calories">~280 ккал</p>
         </div>
-        <h3>Цезарь</h3>
-        <p>С курицей и пармезаном</p>
         <button class="select-btn">Выбрать</button>
       </div>
       
       <!-- Блюдо 4 -->
-      <div class="dish-card">
-        <div class="dish-image" style="background-color: #AED581;">
-          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787095.png" alt="Десерт">
+      <div class="dish-item">
+        <div class="dish-content">
+          <h3>Тирамису</h3>
+          <p class="dish-description">Классический итальянский</p>
+          <p class="dish-calories">~350 ккал</p>
         </div>
-        <h3>Тирамису</h3>
-        <p>Классический итальянский</p>
         <button class="select-btn">Выбрать</button>
       </div>
     </div>
     
-    <div class="selected-dish">
-      <h3>Ваш выбор:</h3>
-      <p id="selected-dish-name">Куриный суп</p>
-      <button id="confirm-btn" class="confirm-btn">Подтвердить выбор</button>
+    <div class="selection-summary">
+      <p>Ваш выбор: <span id="selected-dish-name">Куриный суп</span></p>
+      <button id="confirm-btn" class="confirm-btn">Подтвердить обед</button>
     </div>
     
     <button onclick="window.location.href='main.html'" class="back-btn">← Назад</button>
@@ -72,69 +71,30 @@
     document.getElementById('current-date').textContent = new Date().toLocaleDateString('ru-RU', options);
     
     // Обработка выбора блюд
-    const dishCards = document.querySelectorAll('.dish-card');
+    const dishItems = document.querySelectorAll('.dish-item');
     const selectedDishName = document.getElementById('selected-dish-name');
     
-    dishCards.forEach(card => {
-      const btn = card.querySelector('.select-btn');
+    dishItems.forEach(item => {
+      const btn = item.querySelector('.select-btn');
       
       btn.addEventListener('click', function() {
-        // Удаляем выделение у всех карточек
-        dishCards.forEach(c => c.classList.remove('selected'));
+        // Удаляем выделение у всех блюд
+        dishItems.forEach(i => i.classList.remove('selected'));
         
-        // Добавляем выделение текущей
-        card.classList.add('selected');
+        // Добавляем выделение текущему
+        item.classList.add('selected');
         
         // Обновляем выбранное блюдо
-        const dishName = card.querySelector('h3').textContent;
+        const dishName = item.querySelector('h3').textContent;
         selectedDishName.textContent = dishName;
       });
     });
     
     // Подтверждение выбора
     document.getElementById('confirm-btn').addEventListener('click', function() {
-      const selectedDish = document.querySelector('.dish-card.selected h3').textContent;
-      alert(`Вы выбрали: ${selectedDish}\nВаш заказ принят!`);
+      const selectedDish = document.querySelector('.dish-item.selected h3').textContent;
+      alert(`Вы выбрали: ${selectedDish}\nПриятного аппетита!`);
     });
-    
-    // Рандомизация меню (для демонстрации)
-    function randomizeMenu() {
-      const menus = [
-        [
-          { name: "Куриный суп", desc: "С домашней лапшой и зеленью", icon: "5787100" },
-          { name: "Гречка с грибами", desc: "С луковой поджаркой", icon: "5787134" },
-          { name: "Цезарь", desc: "С курицей и пармезаном", icon: "5787085" },
-          { name: "Тирамису", desc: "Классический итальянский", icon: "5787095" }
-        ],
-        [
-          { name: "Борщ", desc: "С говядиной и сметаной", icon: "5787100" },
-          { name: "Пюре с котлетой", desc: "С соусом бешамель", icon: "5787134" },
-          { name: "Греческий салат", desc: "С фетаксой и оливками", icon: "5787085" },
-          { name: "Чизкейк", desc: "С малиновым соусом", icon: "5787095" }
-        ],
-        [
-          { name: "Том Ям", desc: "Острый тайский суп", icon: "5787100" },
-          { name: "Паста Карбонара", desc: "С беконом и пармезаном", icon: "5787134" },
-          { name: "Оливье", desc: "Классический рецепт", icon: "5787085" },
-          { name: "Панна котта", desc: "С карамельным соусом", icon: "5787095" }
-        ]
-      ];
-      
-      // Выбираем случайное меню (в реальном приложении брать с сервера)
-      const todayMenu = menus[new Date().getDay() % menus.length];
-      
-      // Обновляем карточки блюд
-      dishCards.forEach((card, index) => {
-        const dish = todayMenu[index];
-        card.querySelector('h3').textContent = dish.name;
-        card.querySelector('p').textContent = dish.desc;
-        card.querySelector('.dish-image img').src = 
-          `https://cdn-icons-png.flaticon.com/512/5787/${dish.icon}.png`;
-      });
-    }
-    
-    // Для демонстрации - рандомизируем меню при загрузке
-    randomizeMenu();
   </script>
 </body>
 </html>
