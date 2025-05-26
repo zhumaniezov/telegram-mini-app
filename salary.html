@@ -9,12 +9,130 @@
 </head>
 <body class="info-screen">
   <div class="container">
-    <h1>💰 Ваша зарплата</h1>
-    <div class="info-card">
-      <p>Ожидаемая выплата: <strong>25 000 ₽</strong></p>
-      <p>Дата: <strong>10 июня</strong></p>
+    <h1>💰 Расчетный листок</h1>
+    
+    <div class="period-selector">
+      <select id="year-select" class="period-select">
+        <option value="">Выберите год</option>
+      </select>
+      
+      <select id="month-select" class="period-select" disabled>
+        <option value="">Выберите месяц</option>
+      </select>
+      
+      <button id="show-payslip" class="show-btn" disabled>Показать</button>
     </div>
+    
+    <div class="payslip" id="payslip" style="display: none;">
+      <div class="employee-info">
+        <h3 id="employee-name">Иванов Иван Иванович</h3>
+        <p id="period">Июнь 2023</p>
+      </div>
+      
+      <table class="salary-table">
+        <tr>
+          <td>Оклад:</td>
+          <td id="salary-base">35 000 000 сум</td>
+        </tr>
+        <tr>
+          <td>Начислено:</td>
+          <td id="salary-accrued">42 750 000 сум</td>
+        </tr>
+        <tr>
+          <td>Удержано:</td>
+          <td id="salary-deductions">2 150 000 сум</td>
+        </tr>
+        <tr class="total">
+          <td>К выплате:</td>
+          <td id="salary-net">40 600 000 сум</td>
+        </tr>
+      </table>
+      
+      <button id="download-pdf" class="download-btn">Скачать PDF</button>
+    </div>
+    
     <button onclick="window.location.href='main.html'" class="back-btn">← Назад</button>
   </div>
+
+  <script>
+    // Заполняем года (последние 5 лет)
+    const yearSelect = document.getElementById('year-select');
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= currentYear - 5; year--) {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      yearSelect.appendChild(option);
+    }
+    
+    // Заполняем месяцы при выборе года
+    yearSelect.addEventListener('change', function() {
+      const monthSelect = document.getElementById('month-select');
+      monthSelect.innerHTML = '<option value="">Выберите месяц</option>';
+      monthSelect.disabled = false;
+      
+      const months = [
+        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+      ];
+      
+      months.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = month;
+        monthSelect.appendChild(option);
+      });
+    });
+    
+    // Активируем кнопку при выборе месяца
+    document.getElementById('month-select').addEventListener('change', function() {
+      document.getElementById('show-payslip').disabled = !this.value;
+    });
+    
+    // Генерация расчетного листка
+    document.getElementById('show-payslip').addEventListener('click', function() {
+      const year = document.getElementById('year-select').value;
+      const monthIndex = document.getElementById('month-select').value;
+      const months = [
+        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+      ];
+      
+      // Устанавливаем период
+      document.getElementById('period').textContent = `${months[monthIndex]} ${year}`;
+      
+      // Генерируем случайные суммы (в млн. сум)
+      const base = Math.floor(Math.random() * 20 + 30) * 1000000;
+      const accrued = Math.floor(base * (1 + Math.random() * 0.2));
+      const deductions = Math.floor(accrued * (0.05 + Math.random() * 0.05));
+      const net = accrued - deductions;
+      
+      // Форматируем суммы
+      function formatSum(sum) {
+        return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' сум';
+      }
+      
+      // Заполняем данные
+      document.getElementById('salary-base').textContent = formatSum(base);
+      document.getElementById('salary-accrued').textContent = formatSum(accrued);
+      document.getElementById('salary-deductions').textContent = formatSum(deductions);
+      document.getElementById('salary-net').textContent = formatSum(net);
+      
+      // Показываем расчетный листок
+      document.getElementById('payslip').style.display = 'block';
+    });
+    
+    // Заглушка для кнопки скачивания
+    document.getElementById('download-pdf').addEventListener('click', function() {
+      alert('PDF-документ будет сгенерирован и сохранен в ваших документах');
+    });
+    
+    // Получаем имя сотрудника из Telegram
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      const userName = [user.last_name, user.first_name].filter(Boolean).join(' ') || 'Сотрудник';
+      document.getElementById('employee-name').textContent = userName;
+    }
+  </script>
 </body>
 </html>
