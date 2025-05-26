@@ -18,6 +18,12 @@ body {
   animation: fadeIn 0.5s ease;
 }
 
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Экран входа */
 .start-screen .container {
   display: flex;
@@ -91,12 +97,6 @@ lottie-player {
   border-radius: 16px;
   padding: 20px;
   margin: 30px 0;
-  text-align: left;
-}
-
-.info-card p {
-  margin: 10px 0;
-  font-size: 16px;
 }
 
 .back-btn {
@@ -200,10 +200,6 @@ lottie-player {
   box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
 }
 
-.submit-btn:active {
-  transform: translateY(0);
-}
-
 .upcoming-vacation {
   padding: 20px 0 10px;
 }
@@ -223,90 +219,85 @@ lottie-player {
   font-size: 14px;
 }
 
-.dishes-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+.dishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-bottom: 25px;
 }
 
-.dish-card {
+.dish-item {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  padding: 15px;
-  transition: all 0.3s ease;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid transparent;
+  transition: all 0.3s ease;
 }
 
-.dish-card.selected {
+.dish-item.selected {
   background: rgba(255, 160, 0, 0.1);
   border: 1px solid rgba(255, 160, 0, 0.3);
-  transform: translateY(-5px);
 }
 
-.dish-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
+.dish-content {
+  text-align: left;
+  flex-grow: 1;
 }
 
-.dish-image img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
-.dish-card h3 {
-  margin: 0 0 5px;
+.dish-item h3 {
+  margin: 0 0 4px;
   font-size: 16px;
   color: #FFECB3;
 }
 
-.dish-card p {
-  margin: 0 0 10px;
+.dish-description {
+  margin: 0 0 4px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
-  min-height: 36px;
+}
+
+.dish-calories {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .select-btn {
-  width: 100%;
-  padding: 8px;
-  background: transparent;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
   color: white;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-left: 15px;
+  flex-shrink: 0;
 }
 
 .select-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.selected-dish {
+.selection-summary {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  padding: 15px;
+  padding: 16px;
   margin: 20px 0;
   text-align: center;
 }
 
-.selected-dish h3 {
-  margin: 0 0 5px;
+.selection-summary p {
+  margin: 0 0 12px;
   font-size: 16px;
 }
 
 #selected-dish-name {
-  font-size: 18px;
   font-weight: 600;
   color: #FFA000;
-  margin: 0 0 15px;
 }
 
 .confirm-btn {
@@ -335,20 +326,4 @@ lottie-player {
 .flatpickr-day.inRange {
   background: rgba(255, 160, 0, 0.1);
   box-shadow: none;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.pulse {
-  animation: pulse 1.5s infinite;
 }
