@@ -19,33 +19,11 @@
       loop
       autoplay>
     </lottie-player>
-    <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
-    <div class="language-switcher">
-  <button class="btn lang-btn" data-lang="ru">Русский</button>
-  <button class="btn lang-btn" data-lang="uz">Ўзбекча</button>
-</div>
+    <button id="startBtn" class="btn" data-i18n="login_as">Войти как <span id="userName">Гость</span></button>
+    <button id="languageBtn" class="btn language-btn">
+      <span id="currentLanguage">Русский</span> ▼
+    </button>
   </div>
   <script src="script.js"></script>
-  <script>
-  const translations = {
-    ru: {
-      login: 'Войти как',
-    },
-    uz: {
-      login: 'Kirish',
-    }
-  };
-
-  const userName = document.getElementById('userName').textContent;
-  const startBtn = document.getElementById('startBtn');
-
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.getAttribute('data-lang');
-      startBtn.innerHTML = `${translations[lang].login} <span id="userName">${userName}</span>`;
-    });
-  });
-</script>
-<script src="i18n.js"></script>
 </body>
 </html>
