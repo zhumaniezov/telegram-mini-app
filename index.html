@@ -20,7 +20,31 @@
       autoplay>
     </lottie-player>
     <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
+    <div class="language-switcher">
+  <button class="lang-btn" data-lang="ru">Русский</button>
+  <button class="lang-btn" data-lang="uz">Ўзбекча</button>
+</div>
   </div>
   <script src="script.js"></script>
+  <script>
+  const translations = {
+    ru: {
+      login: 'Войти как',
+    },
+    uz: {
+      login: 'Kirish',
+    }
+  };
+
+  const userNameEl = document.getElementById('userName');
+  const startBtn = document.getElementById('startBtn');
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      startBtn.innerHTML = `${translations[lang].login} <span id="userName">${userNameEl.textContent}</span>`;
+    });
+  });
+</script>
 </body>
 </html>
