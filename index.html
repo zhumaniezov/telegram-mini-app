@@ -36,13 +36,13 @@
     }
   };
 
-  const userNameEl = document.getElementById('userName');
+  const userName = document.getElementById('userName').textContent;
   const startBtn = document.getElementById('startBtn');
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const lang = btn.getAttribute('data-lang');
-      startBtn.innerHTML = `${translations[lang].login} <span id="userName">${userNameEl.textContent}</span>`;
+      startBtn.innerHTML = `${translations[lang].login} <span id="userName">${userName}</span>`;
     });
   });
 </script>
