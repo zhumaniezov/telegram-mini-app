@@ -64,6 +64,23 @@
 
   <script src="lang.js"></script>
   <script>
+    function updateMonths() {
+      const monthSelect = document.getElementById('month-select');
+      if (!monthSelect) return;
+      
+      const selectedMonth = monthSelect.value;
+      monthSelect.innerHTML = `<option value="">${translations[currentLang].chooseMonth}</option>`;
+      
+      translations[currentLang].months.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = month;
+        monthSelect.appendChild(option);
+      });
+      
+      if (selectedMonth) monthSelect.value = selectedMonth;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
 
@@ -71,6 +88,7 @@
       const yearSelect = document.getElementById('year-select');
       const currentYear = new Date().getFullYear();
 
+      // Заполняем годы
       for (let year = currentYear; year >= currentYear - 5; year--) {
         const option = document.createElement('option');
         option.value = year;
@@ -79,27 +97,20 @@
       }
 
       yearSelect.addEventListener('change', () => {
-      const monthSelect = document.getElementById('month-select');
-      monthSelect.innerHTML = `<option value="">${translations[currentLang].chooseMonth}</option>`;
-      monthSelect.disabled = false;
-
-      translations[currentLang].months.forEach((month, index) => {
-      const option = document.createElement('option');
-      option.value = index;
-      option.textContent = month;
-      monthSelect.appendChild(option);
+        document.getElementById('month-select').disabled = false;
+        updateMonths();
       });
-    });
 
-      document.getElementById('month-select').addEventListener('change', function () {
+      document.getElementById('month-select').addEventListener('change', function() {
         document.getElementById('show-payslip').disabled = !this.value;
       });
 
       document.getElementById('show-payslip').addEventListener('click', () => {
-      const monthIndex = document.getElementById('month-select').value;
-      const year = document.getElementById('year-select').value;
-      const monthName = translations[currentLang].months[monthIndex];
-      document.getElementById('period').textContent = `${monthName} ${year}`;
+        const monthIndex = document.getElementById('month-select').value;
+        const year = document.getElementById('year-select').value;
+        document.getElementById('period').textContent = 
+          `${translations[currentLang].months[monthIndex]} ${year}`;
+        document.getElementById('payslip').style.display = 'block';
       });
 
       document.getElementById('download-pdf').addEventListener('click', () => {
@@ -110,6 +121,7 @@
         alert(currentLang === 'uz' ? 'Hisob varaqasi emailingizga yuborildi' : 'Расчетный листок отправлен на почту');
       });
     });
+  window.updateMonths = updateMonths;
   </script>
 </body>
 </html>
