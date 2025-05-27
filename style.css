@@ -515,6 +515,7 @@ svg {
   top: 10px;
   right: 10px;
 }
+
 .language-switcher select {
   padding: 6px 10px;
   border-radius: 6px;
@@ -525,3 +526,4 @@ svg {
   font-size: 14px;
   cursor: pointer;
 }
+
