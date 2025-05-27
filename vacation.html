@@ -1,79 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Отпуск</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vacation</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="info-screen">
+<body>
   <div class="container">
-    <h1>🏖️ Ваш отпуск</h1>
-    
-    <div class="info-card">
-      <div class="vacation-balance">
-        <p>Осталось дней отпуска: <strong id="days-left">14</strong></p>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 70%"></div>
-        </div>
-      </div>
-      
-      <div class="date-selection">
-        <h3>Запланировать отпуск</h3>
-        <input type="text" id="dateRange" placeholder="Выберите даты" readonly>
-        <button id="submitVacation" class="submit-btn">Отправить запрос</button>
-      </div>
-      
-      <div class="upcoming-vacation">
-        <h3>Ближайший отпуск</h3>
-        <p id="next-vacation">1-15 августа (14 дней)</p>
-      </div>
-    </div>
-    
-    <button onclick="window.location.href='main.html'" class="back-btn">← Назад</button>
+    <h1 id="title">Запрос на отпуск</h1>
+    <label id="from-label" for="from">С:</label>
+    <input type="date" id="from" />
+    <label id="to-label" for="to">До:</label>
+    <input type="date" id="to" />
+    <button class="btn" id="submit-btn">Отправить</button>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
   <script>
-    // Инициализация календаря
-    flatpickr("#dateRange", {
-      mode: "range",
-      dateFormat: "d.m.Y",
-      locale: "ru",
-      minDate: "today",
-      maxDate: new Date().fp_incr(365), // +1 год
-      onChange: function(selectedDates) {
-        if(selectedDates.length === 2) {
-          const diff = (selectedDates[1] - selectedDates[0]) / (1000 * 60 * 60 * 24) + 1;
-          document.getElementById('days-left').textContent = 14 - diff;
-        }
+    const translations = {
+      ru: {
+        title: "Запрос на отпуск",
+        from: "С:",
+        to: "До:",
+        send: "Отправить"
+      },
+      uz: {
+        title: "Ta'til so'rovi",
+        from: "Dan:",
+        to: "Gacha:",
+        send: "Yuborish"
       }
-    });
+    };
 
-    // Обработка отправки
-    document.getElementById('submitVacation').addEventListener('click', function() {
-      const dates = document.getElementById('dateRange').value;
-      if(dates) {
-        alert(`Запрос на отпуск ${dates} отправлен!`);
-        document.getElementById('next-vacation').textContent = 
-          dates.replace(' to ', '-') + ` (${calculateDays(dates)} дней)`;
-      } else {
-        alert('Пожалуйста, выберите даты отпуска');
-      }
+    const lang = localStorage.getItem('lang') || 'ru';
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("title").textContent = translations[lang].title;
+      document.getElementById("from-label").textContent = translations[lang].from;
+      document.getElementById("to-label").textContent = translations[lang].to;
+      document.getElementById("submit-btn").textContent = translations[lang].send;
     });
-
-    function calculateDays(dateString) {
-      const parts = dateString.split(' to ');
-      if(parts.length === 2) {
-        const start = new Date(parts[0]);
-        const end = new Date(parts[1]);
-        return (end - start) / (1000 * 60 * 60 * 24) + 1;
-      }
-      return 0;
-    }
   </script>
 </body>
 </html>
