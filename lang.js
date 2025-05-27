@@ -22,7 +22,9 @@ const translations = {
     daysLeft: "Осталось дней отпуска:",
     planVacation: "Запланировать отпуск",
     submitRequest: "Отправить запрос",
-    upcomingVacation: "Ближайший отпуск"
+    upcomingVacation: "Ближайший отпуск",
+    months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
+             "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
   },
   uz: {
     greeting: "Hayrli kun,",
@@ -47,7 +49,9 @@ const translations = {
     daysLeft: "Qolgan ta'til kunlari:",
     planVacation: "Ta'tilni rejalashtiring",
     submitRequest: "So‘rov yuborish",
-    upcomingVacation: "Yaqinlashayotgan ta'til"
+    upcomingVacation: "Yaqinlashayotgan ta'til",
+    months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
+             "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"]
   }
 };
 
