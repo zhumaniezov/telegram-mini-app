@@ -513,21 +513,23 @@ svg {
 .language-switcher {
   margin-top: 20px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
 }
 
 .lang-btn {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 10px 20px; /* чуть меньше, чем основная кнопка */
   font-size: 14px;
+  border-radius: 24px;
+  background: #FFF8E1;
+  color: #121212;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .lang-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #FFECB3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
