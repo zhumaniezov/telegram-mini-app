@@ -15,15 +15,15 @@
       <p id="current-date"></p>
     </div>
 
-    <div class="dishes-list" id="dishes-list">
-      <!-- Блюда будут добавляться динамически -->
-    </div>
+    <div class="dishes-list" id="dishes-list"></div>
 
     <div class="selection-summary">
       <p><span data-i18n="yourChoice"></span> <span id="selected-dish-name"></span></p>
       <button id="confirm-btn" class="confirm-btn" data-i18n="confirmLunch"></button>
     </div>
+  </div>
 
+  <div class="fixed-back-btn">
     <button onclick="window.location.href='main.html'" class="back-btn" data-i18n="back"></button>
   </div>
 
@@ -31,13 +31,11 @@
   <script>
     function updateDishes() {
       const dishesList = document.getElementById('dishes-list');
-      if (!dishesList) return;
-      
       dishesList.innerHTML = '';
       
-      translations[currentLang].dishes.forEach(dish => {
+      translations[currentLang].dishes.forEach((dish, index) => {
         const dishItem = document.createElement('div');
-        dishItem.className = 'dish-item';
+        dishItem.className = 'dish-item' + (index === 0 ? ' selected' : '');
         dishItem.innerHTML = `
           <div class="dish-content">
             <h3>${dish.name}</h3>
@@ -46,34 +44,29 @@
               ${translations[currentLang].caloriesTemplate.replace('{calories}', dish.calories)}
             </p>
           </div>
-          <button class="select-btn" data-i18n="choose"></button>
         `;
+        
+        dishItem.addEventListener('click', function() {
+          document.querySelectorAll('.dish-item').forEach(item => {
+            item.classList.remove('selected');
+          });
+          this.classList.add('selected');
+          document.getElementById('selected-dish-name').textContent = dish.name;
+        });
+        
         dishesList.appendChild(dishItem);
       });
 
-      initDishSelection();
-    }
-
-    function initDishSelection() {
-      const dishItems = document.querySelectorAll('.dish-item');
-      const selectedDishName = document.getElementById('selected-dish-name');
-      
-      dishItems.forEach(item => {
-        item.querySelector('.select-btn').addEventListener('click', () => {
-          dishItems.forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          selectedDishName.textContent = item.querySelector('h3').textContent;
-        });
-      });
-      
-      if (dishItems.length > 0) {
-        dishItems[0].classList.add('selected');
-        selectedDishName.textContent = dishItems[0].querySelector('h3').textContent;
+      // Устанавливаем первое блюдо как выбранное по умолчанию
+      if (translations[currentLang].dishes.length > 0) {
+        document.getElementById('selected-dish-name').textContent = 
+          translations[currentLang].dishes[0].name;
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
+      updateDishes();
 
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('current-date').textContent = new Date().toLocaleDateString(
