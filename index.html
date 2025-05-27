@@ -10,6 +10,12 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body class="start-screen">
+  <div class="language-switcher">
+    <select id="language-switcher">
+      <option value="ru">RU</option>
+      <option value="uz">UZ</option>
+    </select>
+  </div>
   <div class="container">
     <lottie-player 
       src="assets/rocket.json"
@@ -19,8 +25,9 @@
       loop
       autoplay>
     </lottie-player>
-    <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
+    <button id="startBtn" class="btn"><span data-i18n="startBtn"></span> <span id="userName">Гость</span></button>
   </div>
+  <script src="lang.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
