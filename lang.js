@@ -24,7 +24,30 @@ const translations = {
     submitRequest: "Отправить запрос",
     upcomingVacation: "Ближайший отпуск",
     months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
-             "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+             "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+    dishes: [
+      {
+        name: "Куриный суп",
+        description: "С домашней лапшой и зеленью",
+        calories: "250"
+      },
+      {
+        name: "Гречка с грибами",
+        description: "С луковой поджаркой",
+        calories: "320"
+      },
+      {
+        name: "Салат Цезарь",
+        description: "С курицей и пармезаном",
+        calories: "280"
+      },
+      {
+        name: "Тирамису",
+        description: "Классический итальянский",
+        calories: "350"
+      }
+    ],
+    caloriesTemplate: "~{calories} ккал"
   },
   uz: {
     greeting: "Hayrli kun,",
@@ -51,32 +74,63 @@ const translations = {
     submitRequest: "So‘rov yuborish",
     upcomingVacation: "Yaqinlashayotgan ta'til",
     months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
-             "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"]
+             "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"],
+    dishes: [
+      {
+        name: "Tovuq sho'rva",
+        description: "Uy lag'moni va ko'katlar bilan",
+        calories: "250"
+      },
+      {
+        name: "Qo'ziqorinli grechka",
+        description: "Piyoz qovurilgan",
+        calories: "320"
+      },
+      {
+        name: "Sezar salati",
+        description: "Tovuq va parmezan bilan",
+        calories: "280"
+      },
+      {
+        name: "Tiramisu",
+        description: "Klassik italyan deserti",
+        calories: "350"
+      }
+    ],
+    caloriesTemplate: "~{calories} kkal"
   }
 };
 
 let currentLang = localStorage.getItem("lang") || "ru";
 
 function translatePage() {
+  // Статические элементы
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
     const translation = translations[currentLang]?.[key];
     if (translation) el.textContent = translation;
   });
+
+  // Динамические элементы
+  if (typeof updateDishes === 'function') updateDishes();
+  if (typeof updateMonths === 'function') updateMonths();
+}
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+  translatePage();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const switcher = document.getElementById("language-switcher");
   if (switcher) {
     switcher.value = currentLang;
-    switcher.addEventListener("change", () => {
-      currentLang = switcher.value;
-      localStorage.setItem("lang", currentLang);
-      translatePage();
-    });
+    switcher.addEventListener("change", () => switchLanguage(switcher.value));
   }
   translatePage();
 });
 
 window.translatePage = translatePage;
 window.currentLang = currentLang;
+window.translations = translations;
