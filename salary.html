@@ -79,30 +79,28 @@
       }
 
       yearSelect.addEventListener('change', () => {
-        const monthSelect = document.getElementById('month-select');
-        monthSelect.innerHTML = `<option value=\"\">${translations[currentLang].chooseMonth}</option>`;
-        monthSelect.disabled = false;
+  const monthSelect = document.getElementById('month-select');
+  monthSelect.innerHTML = `<option value="">${translations[currentLang].chooseMonth}</option>`;
+  monthSelect.disabled = false;
 
-        const months = [
-          'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-          'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-        ];
-
-        months.forEach((month, index) => {
-          const option = document.createElement('option');
-          option.value = index;
-          option.textContent = month;
-          monthSelect.appendChild(option);
-        });
-      });
+  translations[currentLang].months.forEach((month, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = month;
+    monthSelect.appendChild(option);
+  });
+});
 
       document.getElementById('month-select').addEventListener('change', function () {
         document.getElementById('show-payslip').disabled = !this.value;
       });
 
       document.getElementById('show-payslip').addEventListener('click', () => {
-        document.getElementById('payslip').style.display = 'block';
-      });
+  const monthIndex = document.getElementById('month-select').value;
+  const year = document.getElementById('year-select').value;
+  const monthName = translations[currentLang].months[monthIndex];
+  document.getElementById('period').textContent = `${monthName} ${year}`;
+});
 
       document.getElementById('download-pdf').addEventListener('click', () => {
         alert(currentLang === 'uz' ? 'PDF fayl tayyorlanmoqda...' : 'Формируется PDF-файл...');
