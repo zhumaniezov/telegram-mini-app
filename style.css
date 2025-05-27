@@ -1,12 +1,13 @@
 /* Общие стили */
 body {
   font-family: 'Open Sans', sans-serif;
-  background: #121212;
-  color: #ffffff;
+  background: var(--tg-theme-bg-color, #121212);
+  color: var(--tg-theme-text-color, #ffffff);
   margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden;
+  transition: opacity 0.3s ease;
 }
 
 .container {
@@ -15,13 +16,33 @@ body {
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
-  animation: fadeIn 0.5s ease;
 }
 
 /* Анимации */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container > * {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.container > *:nth-child(1) { animation-delay: 0.1s; }
+.container > *:nth-child(2) { animation-delay: 0.3s; }
+.container > *:nth-child(3) { animation-delay: 0.5s; }
+
+/* Кнопка языка */
+.language-btn {
+  margin-top: 15px;
+  background: rgba(var(--tg-theme-button-color-rgb, 255, 248, 225), 0.2) !important;
+  color: var(--tg-theme-button-color, #FFF8E1) !important;
+  transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Экран входа */
@@ -508,28 +529,4 @@ lottie-player {
 /* Иконки */
 svg {
   vertical-align: middle;
-}
-
-.language-switcher {
-  margin-top: 20px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-.lang-btn {
-  padding: 10px 20px; /* чуть меньше, чем основная кнопка */
-  font-size: 14px;
-  border-radius: 24px;
-  background: #FFF8E1;
-  color: #121212;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.lang-btn:hover {
-  background: #FFECB3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
