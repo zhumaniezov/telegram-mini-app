@@ -14,12 +14,22 @@
     <h1 data-i18n="payslipTitle">💰 Расчетный листок</h1>
 
     <div class="period-selector">
-      <select id="year-select" class="period-select">
-        <option value="" data-i18n="chooseYear"></option>
-      </select>
-      <select id="month-select" class="period-select" disabled>
-        <option value="" data-i18n="chooseMonth"></option>
-      </select>
+      <div class="custom-select">
+        <div class="select-header" id="year-select-header">
+          <span data-i18n="chooseYear"></span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="select-options" id="year-options"></div>
+      </div>
+      
+      <div class="custom-select">
+        <div class="select-header" id="month-select-header" disabled>
+          <span data-i18n="chooseMonth"></span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="select-options" id="month-options"></div>
+      </div>
+      
       <button id="show-payslip" class="show-btn" disabled data-i18n="showPayslip"></button>
     </div>
 
@@ -32,24 +42,24 @@
       </div>
 
       <div class="salary-details">
-        <h4>Начисления</h4>
+        <h4 data-i18n="accruals">Начисления</h4>
         <table class="details-table">
-          <tr><td>Оклад</td><td id="salary-base">35 000 000 сум</td></tr>
-          <tr><td>Премия</td><td id="salary-bonus">7 750 000 сум</td></tr>
-          <tr><td>Переработки</td><td id="salary-overtime">1 200 000 сум</td></tr>
-          <tr class="subtotal"><td>Итого начислено</td><td id="salary-accrued">42 750 000 сум</td></tr>
+          <tr><td data-i18n="baseSalary">Оклад</td><td id="salary-base">35 000 000 сум</td></tr>
+          <tr><td data-i18n="bonus">Премия</td><td id="salary-bonus">7 750 000 сум</td></tr>
+          <tr><td data-i18n="overtime">Переработки</td><td id="salary-overtime">1 200 000 сум</td></tr>
+          <tr class="subtotal"><td data-i18n="totalAccrued">Итого начислено</td><td id="salary-accrued">42 750 000 сум</td></tr>
         </table>
 
-        <h4>Удержания</h4>
+        <h4 data-i18n="deductions">Удержания</h4>
         <table class="details-table">
-          <tr><td>НДФЛ (12%)</td><td id="tax-ndfl">1 530 000 сум</td></tr>
-          <tr><td>Пенсионный взнос (1%)</td><td id="tax-pension">427 500 сум</td></tr>
-          <tr><td>Профсоюзный взнос</td><td id="tax-union">192 500 сум</td></tr>
-          <tr class="subtotal"><td>Итого удержано</td><td id="salary-deductions">2 150 000 сум</td></tr>
+          <tr><td data-i18n="incomeTax">НДФЛ (12%)</td><td id="tax-ndfl">1 530 000 сум</td></tr>
+          <tr><td data-i18n="pensionTax">Пенсионный взнос (1%)</td><td id="tax-pension">427 500 сум</td></tr>
+          <tr><td data-i18n="unionTax">Профсоюзный взнос</td><td id="tax-union">192 500 сум</td></tr>
+          <tr class="subtotal"><td data-i18n="totalDeductions">Итого удержано</td><td id="salary-deductions">2 150 000 сум</td></tr>
         </table>
 
         <table class="total-table">
-          <tr><td>К выплате:</td><td id="salary-net">40 600 000 сум</td></tr>
+          <tr><td data-i18n="netSalary">К выплате:</td><td id="salary-net">40 600 000 сум</td></tr>
         </table>
       </div>
 
@@ -58,59 +68,145 @@
         <button id="send-email" class="email-btn"><span data-i18n="sendEmail"></span></button>
       </div>
     </div>
+  </div>
 
+  <div class="fixed-back-btn">
     <button onclick="window.location.href='main.html'" class="back-btn" data-i18n="back"></button>
   </div>
 
   <script src="lang.js"></script>
   <script>
-    function updateMonths() {
-      const monthSelect = document.getElementById('month-select');
-      if (!monthSelect) return;
+    function initCustomSelects() {
+      const yearHeader = document.getElementById('year-select-header');
+      const monthHeader = document.getElementById('month-select-header');
+      const yearOptions = document.getElementById('year-options');
+      const monthOptions = document.getElementById('month-options');
       
-      const selectedMonth = monthSelect.value;
-      monthSelect.innerHTML = `<option value="">${translations[currentLang].chooseMonth}</option>`;
+      // Заполняем годы
+      const currentYear = new Date().getFullYear();
+      for (let year = currentYear; year >= currentYear - 5; year--) {
+        const option = document.createElement('div');
+        option.className = 'select-option';
+        option.textContent = year;
+        option.dataset.value = year;
+        option.addEventListener('click', () => {
+          yearHeader.querySelector('span:first-child').textContent = year;
+          yearHeader.dataset.value = year;
+          yearOptions.style.display = 'none';
+          yearHeader.classList.remove('active');
+          
+          // Активируем выбор месяца
+          monthHeader.disabled = false;
+          monthHeader.style.opacity = '1';
+          monthHeader.style.cursor = 'pointer';
+          updateMonths();
+        });
+        yearOptions.appendChild(option);
+      }
       
-      translations[currentLang].months.forEach((month, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = month;
-        monthSelect.appendChild(option);
+      // Обработчики открытия
+      yearHeader.addEventListener('click', function() {
+        if (this.disabled) return;
+        yearOptions.style.display = yearOptions.style.display === 'block' ? 'none' : 'block';
+        this.classList.toggle('active');
+        monthOptions.style.display = 'none';
+        monthHeader.classList.remove('active');
       });
       
-      if (selectedMonth) monthSelect.value = selectedMonth;
+      monthHeader.addEventListener('click', function() {
+        if (this.disabled) return;
+        monthOptions.style.display = monthOptions.style.display === 'block' ? 'none' : 'block';
+        this.classList.toggle('active');
+        yearOptions.style.display = 'none';
+        yearHeader.classList.remove('active');
+      });
+      
+      // Клик вне селекта
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-select')) {
+          yearOptions.style.display = 'none';
+          monthOptions.style.display = 'none';
+          yearHeader.classList.remove('active');
+          monthHeader.classList.remove('active');
+        }
+      });
+    }
+
+    function updateMonths() {
+      const monthOptions = document.getElementById('month-options');
+      monthOptions.innerHTML = '';
+      
+      translations[currentLang].months.forEach((month, index) => {
+        const option = document.createElement('div');
+        option.className = 'select-option';
+        option.textContent = month;
+        option.dataset.value = index;
+        option.addEventListener('click', () => {
+          const monthHeader = document.getElementById('month-select-header');
+          monthHeader.querySelector('span:first-child').textContent = month;
+          monthHeader.dataset.value = index;
+          monthOptions.style.display = 'none';
+          monthHeader.classList.remove('active');
+          
+          // Активируем кнопку "Показать"
+          document.getElementById('show-payslip').disabled = false;
+        });
+        monthOptions.appendChild(option);
+      });
+    }
+
+    function generateSalaryData() {
+      const base = Math.floor(Math.random() * 20 + 30) * 1000000;
+      const bonus = Math.floor(base * (0.15 + Math.random() * 0.1));
+      const overtime = Math.floor(base * (0.02 + Math.random() * 0.03));
+      const accrued = base + bonus + overtime;
+      
+      const ndfl = Math.floor(accrued * 0.12);
+      const pension = Math.floor(accrued * 0.01);
+      const union = Math.floor(accrued * 0.005);
+      const deductions = ndfl + pension + union;
+      
+      const net = accrued - deductions;
+      
+      // Обновляем значения в таблице
+      document.getElementById('salary-base').textContent = formatSum(base);
+      document.getElementById('salary-bonus').textContent = formatSum(bonus);
+      document.getElementById('salary-overtime').textContent = formatSum(overtime);
+      document.getElementById('salary-accrued').textContent = formatSum(accrued);
+      document.getElementById('tax-ndfl').textContent = formatSum(ndfl);
+      document.getElementById('tax-pension').textContent = formatSum(pension);
+      document.getElementById('tax-union').textContent = formatSum(union);
+      document.getElementById('salary-deductions').textContent = formatSum(deductions);
+      document.getElementById('salary-net').textContent = formatSum(net);
+    }
+
+    function formatSum(sum) {
+      return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' сум';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
-
-      const { jsPDF } = window.jspdf;
-      const yearSelect = document.getElementById('year-select');
-      const currentYear = new Date().getFullYear();
-
-      // Заполняем годы
-      for (let year = currentYear; year >= currentYear - 5; year--) {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        yearSelect.appendChild(option);
-      }
-
-      yearSelect.addEventListener('change', () => {
-        document.getElementById('month-select').disabled = false;
-        updateMonths();
-      });
-
-      document.getElementById('month-select').addEventListener('change', function() {
-        document.getElementById('show-payslip').disabled = !this.value;
-      });
+      initCustomSelects();
 
       document.getElementById('show-payslip').addEventListener('click', () => {
-        const monthIndex = document.getElementById('month-select').value;
-        const year = document.getElementById('year-select').value;
+        const yearHeader = document.getElementById('year-select-header');
+        const monthHeader = document.getElementById('month-select-header');
+        
+        if (!yearHeader.dataset.value || !monthHeader.dataset.value) {
+          alert(currentLang === 'uz' 
+            ? 'Iltimos, yil va oyni tanlang' 
+            : 'Пожалуйста, выберите год и месяц');
+          return;
+        }
+
         document.getElementById('period').textContent = 
-          `${translations[currentLang].months[monthIndex]} ${year}`;
+          `${monthHeader.querySelector('span:first-child').textContent} ${yearHeader.querySelector('span:first-child').textContent}`;
+        
         document.getElementById('payslip').style.display = 'block';
+        generateSalaryData();
+        
+        // Прокрутка к результатам
+        document.getElementById('payslip').scrollIntoView({ behavior: 'smooth' });
       });
 
       document.getElementById('download-pdf').addEventListener('click', () => {
@@ -121,7 +217,6 @@
         alert(currentLang === 'uz' ? 'Hisob varaqasi emailingizga yuborildi' : 'Расчетный листок отправлен на почту');
       });
     });
-  window.updateMonths = updateMonths;
   </script>
 </body>
 </html>
