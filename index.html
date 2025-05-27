@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telegram Mini App</title>
-  <link rel="stylesheet" href="style.css" />
-  <script>
-    function setLanguage(lang) {
-      localStorage.setItem('lang', lang);
-      window.location.href = 'main.html';
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body>
+<body class="start-screen">
   <div class="container">
-    <h1 class="title">Выберите язык / Tilni tanlang</h1>
-    <button class="btn" onclick="setLanguage('ru')">Русский 🇷🇺</button>
-    <button class="btn" onclick="setLanguage('uz')">O‘zbekcha 🇺🇿</button>
+    <lottie-player 
+      src="assets/rocket.json"
+      background="transparent"
+      speed="1"
+      style="width: 200px; height: 200px;"
+      loop
+      autoplay>
+    </lottie-player>
+    <button id="startBtn" class="btn">Войти как <span id="userName">Гость</span></button>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
