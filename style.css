@@ -527,3 +527,106 @@ svg {
   cursor: pointer;
 }
 
+/* Фиксированная кнопка "Назад" */
+.fixed-back-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 40px);
+  max-width: 400px;
+}
+
+/* Кастомные селекторы */
+.custom-select {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.select-header {
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.select-header:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.select-header[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.select-header.active {
+  background: rgba(255, 160, 0, 0.1);
+  border-color: rgba(255, 160, 0, 0.3);
+}
+
+.select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 200;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.select-option {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.select-option:hover {
+  background: rgba(255, 160, 0, 0.2);
+}
+
+.arrow {
+  transition: transform 0.3s;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.select-header.active .arrow {
+  transform: rotate(180deg);
+}
+
+/* Адаптация контейнера для прокрутки */
+.container {
+  padding-bottom: 80px;
+  overflow-y: auto;
+  max-height: 100vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Улучшение выбора блюд */
+.dish-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dish-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dish-item.selected {
+  background: rgba(255, 160, 0, 0.1);
+  border: 1px solid rgba(255, 160, 0, 0.3);
+  transform: scale(1.01);
+}
