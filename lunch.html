@@ -15,46 +15,12 @@
       <p id="current-date"></p>
     </div>
 
-    <div class="dishes-list">
-      <div class="dish-item selected">
-        <div class="dish-content">
-          <h3>Куриный суп</h3>
-          <p class="dish-description">С домашней лапшой и зеленью</p>
-          <p class="dish-calories">~250 ккал</p>
-        </div>
-        <button class="select-btn" data-i18n="choose"></button>
-      </div>
-
-      <div class="dish-item">
-        <div class="dish-content">
-          <h3>Гречка с грибами</h3>
-          <p class="dish-description">С луковой поджаркой</p>
-          <p class="dish-calories">~320 ккал</p>
-        </div>
-        <button class="select-btn" data-i18n="choose"></button>
-      </div>
-
-      <div class="dish-item">
-        <div class="dish-content">
-          <h3>Салат Цезарь</h3>
-          <p class="dish-description">С курицей и пармезаном</p>
-          <p class="dish-calories">~280 ккал</p>
-        </div>
-        <button class="select-btn" data-i18n="choose"></button>
-      </div>
-
-      <div class="dish-item">
-        <div class="dish-content">
-          <h3>Тирамису</h3>
-          <p class="dish-description">Классический итальянский</p>
-          <p class="dish-calories">~350 ккал</p>
-        </div>
-        <button class="select-btn" data-i18n="choose"></button>
-      </div>
+    <div class="dishes-list" id="dishes-list">
+      <!-- Блюда будут добавляться динамически -->
     </div>
 
     <div class="selection-summary">
-      <p><span data-i18n="yourChoice"></span> <span id="selected-dish-name">Куриный суп</span></p>
+      <p><span data-i18n="yourChoice"></span> <span id="selected-dish-name"></span></p>
       <button id="confirm-btn" class="confirm-btn" data-i18n="confirmLunch"></button>
     </div>
 
@@ -63,6 +29,49 @@
 
   <script src="lang.js"></script>
   <script>
+    function updateDishes() {
+      const dishesList = document.getElementById('dishes-list');
+      if (!dishesList) return;
+      
+      dishesList.innerHTML = '';
+      
+      translations[currentLang].dishes.forEach(dish => {
+        const dishItem = document.createElement('div');
+        dishItem.className = 'dish-item';
+        dishItem.innerHTML = `
+          <div class="dish-content">
+            <h3>${dish.name}</h3>
+            <p class="dish-description">${dish.description}</p>
+            <p class="dish-calories">
+              ${translations[currentLang].caloriesTemplate.replace('{calories}', dish.calories)}
+            </p>
+          </div>
+          <button class="select-btn" data-i18n="choose"></button>
+        `;
+        dishesList.appendChild(dishItem);
+      });
+
+      initDishSelection();
+    }
+
+    function initDishSelection() {
+      const dishItems = document.querySelectorAll('.dish-item');
+      const selectedDishName = document.getElementById('selected-dish-name');
+      
+      dishItems.forEach(item => {
+        item.querySelector('.select-btn').addEventListener('click', () => {
+          dishItems.forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          selectedDishName.textContent = item.querySelector('h3').textContent;
+        });
+      });
+      
+      if (dishItems.length > 0) {
+        dishItems[0].classList.add('selected');
+        selectedDishName.textContent = dishItems[0].querySelector('h3').textContent;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
 
@@ -71,22 +80,14 @@
         currentLang === 'uz' ? 'uz-UZ' : 'ru-RU', options
       );
 
-      const dishItems = document.querySelectorAll('.dish-item');
-      const selectedDishName = document.getElementById('selected-dish-name');
-
-      dishItems.forEach(item => {
-        item.querySelector('.select-btn').addEventListener('click', () => {
-          dishItems.forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          selectedDishName.textContent = item.querySelector('h3').textContent;
-        });
-      });
-
       document.getElementById('confirm-btn').addEventListener('click', () => {
         const selected = document.querySelector('.dish-item.selected h3').textContent;
-        alert(`${currentLang === 'uz' ? 'Siz tanladingiz:' : 'Вы выбрали:'} ${selected}\n${currentLang === 'uz' ? 'Yoqimli ishtaha!' : 'Приятного аппетита!'}`);
+        alert(`${currentLang === 'uz' ? 'Siz tanladingiz:' : 'Вы выбрали:'} ${selected}\n${
+          currentLang === 'uz' ? 'Yoqimli ishtaha!' : 'Приятного аппетита!'}`);
       });
     });
+
+    window.updateDishes = updateDishes;
   </script>
 </body>
 </html>
