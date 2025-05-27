@@ -2,6 +2,7 @@ const translations = {
   ru: {
     greeting: "Добрый день,",
     startBtn: "Войти как",
+    mainTitle: "Главное меню",
     salaryTitle: "💰 Зарплата",
     vacationTitle: "🏖️ Отпуск",
     lunchTitle: "🍕 Обед",
@@ -9,6 +10,7 @@ const translations = {
     lunchPageTitle: "🍽️ Обеденное меню",
     confirmLunch: "Подтвердить обед",
     yourChoice: "Ваш выбор:",
+    choose: "Выбрать",
     back: "← Назад",
     payslipTitle: "💰 Расчетный листок",
     chooseYear: "Выберите год",
@@ -19,20 +21,21 @@ const translations = {
     vacationTitlePage: "🏖️ Ваш отпуск",
     daysLeft: "Осталось дней отпуска:",
     planVacation: "Запланировать отпуск",
-    selectDates: "Выберите даты",
     submitRequest: "Отправить запрос",
     upcomingVacation: "Ближайший отпуск"
   },
   uz: {
     greeting: "Hayrli kun,",
     startBtn: "Kirish",
+    mainTitle: "Asosiy menyu",
     salaryTitle: "💰 Maosh",
     vacationTitle: "🏖️ Ta'til",
     lunchTitle: "🍕 Tushlik",
     chatTitle: "💬 Chat",
     lunchPageTitle: "🍽️ Tushlik menyusi",
     confirmLunch: "Tushlikni tasdiqlash",
-    yourChoice: "Sizning tanlovingiz:",
+    yourChoice: "Tanlovingiz:",
+    choose: "Tanlash",
     back: "← Orqaga",
     payslipTitle: "💰 Hisob varaqasi",
     chooseYear: "Yilni tanlang",
@@ -42,8 +45,7 @@ const translations = {
     sendEmail: "Emailga yuborish",
     vacationTitlePage: "🏖️ Ta'tilingiz",
     daysLeft: "Qolgan ta'til kunlari:",
-    planVacation: "Ta'til rejalashtiring",
-    selectDates: "Sanalarni tanlang",
+    planVacation: "Ta'tilni rejalashtiring",
     submitRequest: "So‘rov yuborish",
     upcomingVacation: "Yaqinlashayotgan ta'til"
   }
@@ -54,7 +56,7 @@ let currentLang = localStorage.getItem("lang") || "ru";
 function translatePage() {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
-    const translation = translations[currentLang] && translations[currentLang][key];
+    const translation = translations[currentLang]?.[key];
     if (translation) el.textContent = translation;
   });
 }
@@ -72,6 +74,5 @@ document.addEventListener("DOMContentLoaded", () => {
   translatePage();
 });
 
-// Возможность вызвать функцию из других файлов
 window.translatePage = translatePage;
 window.currentLang = currentLang;
