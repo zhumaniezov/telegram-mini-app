@@ -42,6 +42,8 @@ const translations = {
     daysLabel: "Рабочих дней в месяце",
     hoursLabel: "Рабочих часов в месяце",
     workedLabel: "Отработано сотрудником",
+    daysShort: "дней",
+    hoursShort: "часов",
     months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
              "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
     dishes: [
@@ -111,6 +113,8 @@ const translations = {
     daysLabel: "Oydagi ish kunlari",
     hoursLabel: "Oydagi ish soatlari",
     workedLabel: "Xodim tomonidan ishlangan",
+    daysShort: "kun",
+    hoursShort: "soat",
     months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
              "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"],
     dishes: [
