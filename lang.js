@@ -31,22 +31,22 @@ const translations = {
     chooseYear: "Выберите год",
     chooseMonth: "Выберите месяц",
     showPayslip: "Показать",
-    downloadPDF: "Скачать PDF",
-    sendEmail: "Отправить на email",
     vacationTitlePage: "🏖️ Ваш отпуск",
     daysLeft: "Осталось дней отпуска:",
     planVacation: "Запланировать отпуск",
     submitRequest: "Отправить запрос",
     upcomingVacation: "Ближайший отпуск",
     workStats: {
-    daysLabel: "Рабочих дней в месяце",
-    hoursLabel: "Рабочих часов в месяце",
-    workedLabel: "Отработано сотрудником",
-    daysShort: "дней",
-    hoursShort: "часов"
-      },
-    months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
-             "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+      daysLabel: "Рабочих дней в месяце",
+      hoursLabel: "Рабочих часов в месяце",
+      workedLabel: "Отработано сотрудником",
+      daysShort: "дней",
+      hoursShort: "часов"
+    },
+    months: [
+      "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+      "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+    ],
     dishes: [
       {
         name: "Куриный суп",
@@ -103,22 +103,22 @@ const translations = {
     chooseYear: "Yilni tanlang",
     chooseMonth: "Oyni tanlang",
     showPayslip: "Ko‘rsatish",
-    downloadPDF: "PDF yuklab olish",
-    sendEmail: "Emailga yuborish",
     vacationTitlePage: "🏖️ Ta'tilingiz",
     daysLeft: "Qolgan ta'til kunlari:",
     planVacation: "Ta'tilni rejalashtiring",
     submitRequest: "So‘rov yuborish",
     upcomingVacation: "Yaqinlashayotgan ta'til",
     workStats: {
-    daysLabel: "Oydagi ish kunlari",
-    hoursLabel: "Oydagi ish soatlari",
-    workedLabel: "Xodim tomonidan ishlangan",
-    daysShort: "kun",
-    hoursShort: "soat"
-      },
-    months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
-             "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"],
+      daysLabel: "Oydagi ish kunlari",
+      hoursLabel: "Oydagi ish soatlari",
+      workedLabel: "Xodim tomonidan ishlangan",
+      daysShort: "kun",
+      hoursShort: "soat"
+    },
+    months: [
+      "Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
+      "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"
+    ],
     dishes: [
       {
         name: "Tovuq sho'rva",
@@ -153,15 +153,18 @@ function setLanguage(lang) {
   translatePage();
 }
 
+// Исправленная функция для поддержки вложенных data-i18n (например, workStats.daysLabel)
 function translatePage() {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
-    if (translations[currentLang][key]) {
-      el.textContent = translations[currentLang][key];
-    }
+    let value = translations[currentLang];
+    key.split('.').forEach(k => {
+      if (value) value = value[k];
+    });
+    if (value) el.textContent = value;
   });
-  
-  // Обновляем динамические элементы
+
+  // Обновляем динамические элементы, если есть такие функции
   if (typeof updateDishes === 'function') updateDishes();
   if (typeof updateMonths === 'function') updateMonths();
 }
