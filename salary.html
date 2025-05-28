@@ -88,17 +88,14 @@
         <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
         <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
         <!-- Новый блок расчёта рабочих дней/часов -->
-        <div id="work-stats" class="work-stats-block">
-          <div>
-            <b><span data-i18n="workStats.daysLabel"></span>:</b> <span id="workdays-total">—</span>
-          </div>
-          <div>
-            <b><span data-i18n="workStats.hoursLabel"></span>:</b> <span id="workhours-total">—</span>
-          </div>
-          <div>
-            <b><span data-i18n="workStats.workedLabel"></span>:</b> <span id="workdays-done">—</span> <span data-i18n="workStats.daysShort">дней</span>, <span id="workhours-done">—</span> <span data-i18n="workStats.hoursShort">часов</span>
-          </div>
-        </div>
+        <div class="work-stats-block" style="margin: 20px 0 28px 0; font-size: 16px; line-height: 1.6;">
+  <div data-i18n="monthNorm">
+    Норма месяца (дни/часы): <span id="norm-days">23</span>/<span id="norm-hours">184</span>
+  </div>
+  <div data-i18n="employeeWorked">
+    Отработано сотрудником (дни/часы): <span id="emp-days">22</span>/<span id="emp-hours">176</span>
+  </div>
+</div>
       </div>
 
       <div class="salary-details">
@@ -358,5 +355,55 @@
       }
     }
   </script>
+<script>
+// --- Пример локализации (русский/узбекский) ---
+const translations = {
+  ru: {
+    monthNorm: "Норма месяца (дни/часы):",
+    employeeWorked: "Отработано сотрудником (дни/часы):"
+  },
+  uz: {
+    monthNorm: "Oyni norma (kun/soat):",
+    employeeWorked: "Xodim ishlagan (kun/soat):"
+  }
+};
+
+// --- Простая функция для применения перевода ---
+function applyI18n(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      // Заменяем только текст до двоеточия (оставляем значения)
+      el.childNodes[0].textContent = translations[lang][key] + " ";
+    }
+  });
+}
+
+// --- Генерация логичных рандомных значений ---
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function updateWorkStats() {
+  // Рандомная норма месяца: дни 20-25, часы = дни * 8
+  const normDays = getRandomInt(20, 25);
+  const normHours = normDays * 8;
+
+  // Сотрудник мог отработать 80-100% нормы
+  const empDays = getRandomInt(normDays - 3, normDays);
+  const empHours = empDays * 8 - getRandomInt(0, 2); // возможно на 1-2 часа меньше
+
+  document.getElementById('norm-days').textContent = normDays;
+  document.getElementById('norm-hours').textContent = normHours;
+  document.getElementById('emp-days').textContent = empDays;
+  document.getElementById('emp-hours').textContent = empHours;
+}
+
+// --- ИНИЦИАЛИЗАЦИЯ ---
+const lang = localStorage.getItem('lang') || 'ru'; // или 'uz'
+applyI18n(lang);
+updateWorkStats();
+
+// Если язык меняется динамически — не забудьте вызвать applyI18n(newLang)
+</script>
 </body>
 </html>
