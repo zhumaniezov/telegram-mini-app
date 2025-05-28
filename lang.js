@@ -133,34 +133,31 @@ const translations = {
 
 let currentLang = localStorage.getItem("lang") || "ru";
 
-function translatePage() {
-  // Статические элементы
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.dataset.i18n;
-    const translation = translations[currentLang]?.[key];
-    if (translation) el.textContent = translation;
-  });
-
-  // Динамические элементы
-  if (typeof updateDishes === 'function') updateDishes();
-  if (typeof updateMonths === 'function') updateMonths();
-}
-
-function switchLanguage(lang) {
+function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   translatePage();
 }
 
+function translatePage() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (translations[currentLang][key]) {
+      el.textContent = translations[currentLang][key];
+    }
+  });
+  
+  // Обновляем динамические элементы
+  if (typeof updateDishes === 'function') updateDishes();
+  if (typeof updateMonths === 'function') updateMonths();
+}
+
+// Инициализация
 document.addEventListener("DOMContentLoaded", () => {
-  const switcher = document.getElementById("language-switcher");
-  if (switcher) {
-    switcher.value = currentLang;
-    switcher.addEventListener("change", () => switchLanguage(switcher.value));
-  }
   translatePage();
 });
 
 window.translatePage = translatePage;
 window.currentLang = currentLang;
 window.translations = translations;
+window.setLanguage = setLanguage;
