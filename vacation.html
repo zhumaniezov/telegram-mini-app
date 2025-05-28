@@ -9,9 +9,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="info-screen">
-<!-- Универсальная кнопка "Назад" -->
-  <div class="fixed-back-btn">
-    <button class="back-btn" data-i18n="back" onclick="universalBack()" aria-label="Назад">←</button>
+<!-- Флэт-минималистичная кнопка "Назад" с SVG-иконкой, справа вверху -->
+  <div class="toolbar">
+    <button class="back-btn" onclick="universalBack()" aria-label="Назад">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#bfc8e2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4l-8 8 8 8"/>
+      </svg>
+    </button>
+    <span class="toolbar-title" data-i18n="salaryTitle">💰 Зарплата</span>
   </div>
   <div class="container">
     <h1 data-i18n="vacationTitlePage">🏖️ Ваш отпуск</h1>
