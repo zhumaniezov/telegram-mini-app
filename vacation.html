@@ -19,19 +19,22 @@
           <div class="progress-fill" style="width: 70%"></div>
         </div>
       </div>
-
+      
       <div class="date-selection">
         <h3 data-i18n="planVacation"></h3>
-        <input type="text" id="dateRange" placeholder="" readonly />
+        <input type="text" id="dateRange" placeholder="Выберите даты" readonly />
         <button id="submitVacation" class="submit-btn" data-i18n="submitRequest"></button>
       </div>
-
+      
       <div class="upcoming-vacation">
         <h3 data-i18n="upcomingVacation"></h3>
         <p id="next-vacation">1-15 августа (14 дней)</p>
       </div>
     </div>
+  </div>
 
+  <!-- Фиксированная кнопка "Назад" -->
+  <div class="fixed-back-btn">
     <button onclick="window.location.href='main.html'" class="back-btn" data-i18n="back"></button>
   </div>
 
@@ -43,27 +46,55 @@
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
 
+      // Инициализация скролла для кнопки "Назад"
+      const container = document.querySelector('.container');
+      const backBtn = document.querySelector('.fixed-back-btn');
+      let lastScroll = 0;
+
+      if (container && backBtn) {
+        container.addEventListener('scroll', () => {
+          const currentScroll = container.scrollTop;
+          if (currentScroll > lastScroll) {
+            backBtn.classList.add('hide-back-btn');
+          } else {
+            backBtn.classList.remove('hide-back-btn');
+          }
+          lastScroll = currentScroll;
+        });
+      }
+
+      // Инициализация календаря
       flatpickr("#dateRange", {
         mode: "range",
         dateFormat: "d.m.Y",
         locale: currentLang === 'uz' ? 'uz' : 'ru',
         minDate: "today",
         maxDate: new Date().fp_incr(365),
-        onChange: function (selectedDates) {
+        onChange: function(selectedDates) {
           if (selectedDates.length === 2) {
-            const diff = (selectedDates[1] - selectedDates[0]) / (1000 * 60 * 60 * 24) + 1;
+            const diff = Math.ceil((selectedDates[1] - selectedDates[0]) / (1000 * 60 * 60 * 24)) + 1;
             document.getElementById('days-left').textContent = 14 - diff;
           }
         }
       });
 
-      document.getElementById('submitVacation').addEventListener('click', () => {
+      // Обработка отправки
+      document.getElementById('submitVacation').addEventListener('click', function() {
         const dates = document.getElementById('dateRange').value;
         if (dates) {
-          alert(`${currentLang === 'uz' ? 'Taʼtil so‘rovi yuborildi:' : 'Запрос на отпуск отправлен:'} ${dates}`);
-          document.getElementById('next-vacation').textContent = `${dates}`;
+          const [start, end] = dates.split(' to ');
+          const days = Math.ceil((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)) + 1;
+          
+          alert(currentLang === 'uz' 
+            ? `Ta'til so‘rovi yuborildi: ${start} - ${end}` 
+            : `Запрос на отпуск отправлен: ${start} - ${end}`);
+          
+          document.getElementById('next-vacation').textContent = 
+            `${start} - ${end} (${days} ${currentLang === 'uz' ? 'kun' : 'дней'})`;
         } else {
-          alert(currentLang === 'uz' ? 'Iltimos, sanalarni tanlang' : 'Пожалуйста, выберите даты отпуска');
+          alert(currentLang === 'uz' 
+            ? 'Iltimos, sanalarni tanlang' 
+            : 'Пожалуйста, выберите даты отпуска');
         }
       });
     });
