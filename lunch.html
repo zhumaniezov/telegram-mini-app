@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="info-screen">
+  <div class="fixed-back-btn">
+    <button class="back-btn" data-i18n="back" onclick="universalBack()" aria-label="Назад">←</button>
+  </div>
   <div class="container">
     <h1 data-i18n="lunchPageTitle">🍽️ Обеденное меню</h1>
 
@@ -103,6 +106,15 @@
           currentLang === 'uz' ? 'Yoqimli ishtaha!' : 'Приятного аппетита!'}`);
       });
     });
+  </script>
+<script>
+    function universalBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "main.html";
+      }
+    }
   </script>
 </body>
 </html>
