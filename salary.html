@@ -57,7 +57,7 @@
   </style>
 </head>
 <body class="info-screen">
-  <!-- Переключатель языка флагами -->
+  <!-- Универсальная кнопка "Назад" -->
   <div class="fixed-back-btn">
     <button class="back-btn" data-i18n="back" onclick="universalBack()" aria-label="Назад">←</button>
   </div>
@@ -345,6 +345,7 @@
     });
   </script>
   <script>
+    // Универсальный переход назад
     function universalBack() {
       if (window.history.length > 1) {
         window.history.back();
@@ -352,6 +353,22 @@
         window.location.href = "main.html";
       }
     }
+
+    // Прозрачность кнопки при скролле
+    (function(){
+      let lastScroll = 0;
+      const btn = document.querySelector('.fixed-back-btn');
+      window.addEventListener('scroll', () => {
+        if (!btn) return;
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        if (scrollY > lastScroll && scrollY > 30) {
+          btn.classList.add('scrolled');
+        } else {
+          btn.classList.remove('scrolled');
+        }
+        lastScroll = scrollY;
+      });
+    })();
   </script>
 </body>
 </html>
