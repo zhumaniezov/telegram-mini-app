@@ -344,5 +344,14 @@
       };
     });
   </script>
+  <script>
+    function universalBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "main.html";
+      }
+    }
+  </script>
 </body>
 </html>
