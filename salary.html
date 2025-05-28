@@ -8,8 +8,49 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    .language-flags {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+      background: rgba(0,0,0,0.7);
+      padding: 5px;
+      border-radius: 8px;
+    }
+    .language-flag {
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: all 0.3s;
+      object-fit: cover;
+    }
+    .language-flag:hover {
+      transform: scale(1.1);
+    }
+    .language-flag.active {
+      border-color: #FFA000;
+      box-shadow: 0 0 8px rgba(255, 160, 0, 0.5);
+    }
+  </style>
 </head>
 <body class="info-screen">
+  <!-- Переключатель языка флагами -->
+  <div class="language-flags">
+    <img src="https://flagcdn.com/w20/ru.png" 
+         class="language-flag" 
+         onclick="setLanguage('ru')" 
+         alt="Русский">
+    <img src="https://flagcdn.com/w20/uz.png" 
+         class="language-flag" 
+         onclick="setLanguage('uz')" 
+         alt="O'zbekcha">
+  </div>
+
   <div class="container">
     <h1 data-i18n="payslipTitle">💰 Расчетный листок</h1>
 
@@ -27,54 +68,54 @@
       <div class="employee-info">
         <h3 id="employee-name">Иванов Иван Иванович</h3>
         <p id="period">Июнь 2023</p>
-        <p id="employee-position">Должность: <span>Старший разработчик</span></p>
-        <p id="employee-id">Табельный номер: <span>EMP-12345</span></p>
+        <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
+        <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
       </div>
 
       <div class="salary-details">
-        <h4 data-i18n="accruals">Начисления</h4>
+        <h4 data-i18n="accruals"></h4>
         <table class="details-table">
           <tr>
-            <td data-i18n="baseSalary">Оклад</td>
+            <td data-i18n="baseSalary"></td>
             <td id="salary-base">35 000 000 сум</td>
           </tr>
           <tr>
-            <td data-i18n="bonus">Премия</td>
+            <td data-i18n="bonus"></td>
             <td id="salary-bonus">7 750 000 сум</td>
           </tr>
           <tr>
-            <td data-i18n="overtime">Переработки</td>
+            <td data-i18n="overtime"></td>
             <td id="salary-overtime">1 200 000 сум</td>
           </tr>
           <tr class="subtotal">
-            <td data-i18n="totalAccrued">Итого начислено</td>
+            <td data-i18n="totalAccrued"></td>
             <td id="salary-accrued">42 750 000 сум</td>
           </tr>
         </table>
 
-        <h4 data-i18n="deductions">Удержания</h4>
+        <h4 data-i18n="deductions"></h4>
         <table class="details-table">
           <tr>
-            <td data-i18n="incomeTax">НДФЛ (12%)</td>
+            <td data-i18n="incomeTax"></td>
             <td id="tax-ndfl">1 530 000 сум</td>
           </tr>
           <tr>
-            <td data-i18n="pensionTax">Пенсионный взнос (1%)</td>
+            <td data-i18n="pensionTax"></td>
             <td id="tax-pension">427 500 сум</td>
           </tr>
           <tr>
-            <td data-i18n="unionTax">Профсоюзный взнос</td>
+            <td data-i18n="unionTax"></td>
             <td id="tax-union">192 500 сум</td>
           </tr>
           <tr class="subtotal">
-            <td data-i18n="totalDeductions">Итого удержано</td>
+            <td data-i18n="totalDeductions"></td>
             <td id="salary-deductions">2 150 000 сум</td>
           </tr>
         </table>
 
         <table class="total-table">
           <tr>
-            <td data-i18n="netSalary">К выплате:</td>
+            <td data-i18n="netSalary"></td>
             <td id="salary-net">40 600 000 сум</td>
           </tr>
         </table>
@@ -100,6 +141,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
+      updateActiveFlag();
 
       // Инициализация скролла для кнопки "Назад"
       const container = document.querySelector('.container');
@@ -115,6 +157,14 @@
             backBtn.classList.remove('hide-back-btn');
           }
           lastScroll = currentScroll;
+        });
+      }
+
+      // Обновление активного флага языка
+      function updateActiveFlag() {
+        document.querySelectorAll('.language-flag').forEach(flag => {
+          flag.classList.toggle('active', 
+            flag.getAttribute('onclick').includes(`'${currentLang}'`));
         });
       }
 
@@ -211,6 +261,22 @@
       function formatSum(sum) {
         return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' сум';
       }
+
+      // Глобальные функции
+      window.setLanguage = function(lang) {
+        currentLang = lang;
+        localStorage.setItem("lang", lang);
+        translatePage();
+        updateActiveFlag();
+        
+        // Обновляем выбранные значения
+        const yearSelect = document.getElementById('year-select');
+        const monthSelect = document.getElementById('month-select');
+        if (yearSelect.value && monthSelect.value) {
+          document.getElementById('period').textContent = 
+            `${translations[lang].months[monthSelect.value]} ${yearSelect.value}`;
+        }
+      };
     });
   </script>
 </body>
