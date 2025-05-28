@@ -36,6 +36,24 @@
       border-color: #FFA000;
       box-shadow: 0 0 8px rgba(255, 160, 0, 0.5);
     }
+    .work-stats-block {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      text-align: left;
+      font-size: 15px;
+      color: #fff;
+    }
+    .work-stats-block div {
+      margin-bottom: 4px;
+    }
+    #employee-org {
+      margin-bottom: 5px;
+      color: #FFECB3;
+      font-size: 17px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body class="info-screen">
@@ -66,23 +84,24 @@
 
     <div class="payslip" id="payslip" style="display: none;">
       <div class="employee-info">
-  <h4 id="employee-org" style="margin-bottom: 5px; color: #FFECB3;">ООО "Пример Организации"</h4>
-  <h3 id="employee-name">Иванов Иван Иванович</h3>
-  <p id="period">Июнь 2023</p>
-  <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
-  <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
-  <div id="work-stats" style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:left;">
-    <div style="margin-bottom:4px;">
-      <b>Рабочих дней в месяце:</b> <span id="workdays-total">—</span>
-    </div>
-    <div style="margin-bottom:4px;">
-      <b>Рабочих часов в месяце:</b> <span id="workhours-total">—</span>
-    </div>
-    <div>
-      <b>Отработано сотрудником:</b> <span id="workdays-done">—</span> дней, <span id="workhours-done">—</span> часов
-    </div>
-  </div>
-</div>
+        <h4 id="employee-org">ООО "Пример Организации"</h4>
+        <h3 id="employee-name">Иванов Иван Иванович</h3>
+        <p id="period">Июнь 2023</p>
+        <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
+        <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
+        <!-- Новый блок расчёта рабочих дней/часов -->
+        <div id="work-stats" class="work-stats-block">
+          <div>
+            <b>Рабочих дней в месяце:</b> <span id="workdays-total">—</span>
+          </div>
+          <div>
+            <b>Рабочих часов в месяце:</b> <span id="workhours-total">—</span>
+          </div>
+          <div>
+            <b>Отработано сотрудником:</b> <span id="workdays-done">—</span> дней, <span id="workhours-done">—</span> часов
+          </div>
+        </div>
+      </div>
 
       <div class="salary-details">
         <h4 data-i18n="accruals"></h4>
@@ -183,7 +202,6 @@
       // Заполнение годов
       const yearSelect = document.getElementById('year-select');
       const currentYear = new Date().getFullYear();
-      
       for (let year = currentYear; year >= currentYear - 5; year--) {
         const option = document.createElement('option');
         option.value = year;
@@ -196,7 +214,7 @@
         const monthSelect = document.getElementById('month-select');
         monthSelect.innerHTML = `<option value="">${translations[currentLang].chooseMonth}</option>`;
         monthSelect.disabled = false;
-        
+
         translations[currentLang].months.forEach((month, index) => {
           const option = document.createElement('option');
           option.value = index;
@@ -214,7 +232,7 @@
       document.getElementById('show-payslip').addEventListener('click', function() {
         const year = document.getElementById('year-select').value;
         const monthIndex = document.getElementById('month-select').value;
-        
+
         if (!year || !monthIndex) {
           alert(currentLang === 'uz' 
             ? 'Iltimos, yil va oyni tanlang' 
@@ -224,9 +242,11 @@
 
         document.getElementById('period').textContent = 
           `${translations[currentLang].months[monthIndex]} ${year}`;
-        
         document.getElementById('payslip').style.display = 'block';
+
         generateSalaryData();
+        generateWorkStats();
+        setEmployeeOrg(); // если потребуется динамика
       });
 
       // Генерация PDF (заглушка)
@@ -249,15 +269,14 @@
         const bonus = Math.floor(base * (0.15 + Math.random() * 0.1));
         const overtime = Math.floor(base * (0.02 + Math.random() * 0.03));
         const accrued = base + bonus + overtime;
-        
+
         const ndfl = Math.floor(accrued * 0.12);
         const pension = Math.floor(accrued * 0.01);
         const union = Math.floor(accrued * 0.005);
         const deductions = ndfl + pension + union;
-        
+
         const net = accrued - deductions;
-        
-        // Обновляем данные в таблице
+
         document.getElementById('salary-base').textContent = formatSum(base);
         document.getElementById('salary-bonus').textContent = formatSum(bonus);
         document.getElementById('salary-overtime').textContent = formatSum(overtime);
@@ -274,14 +293,55 @@
         return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' сум';
       }
 
+      // Генерация статистики по рабочим дням/часам
+      function generateWorkStats() {
+        const year = parseInt(document.getElementById('year-select').value);
+        const month = parseInt(document.getElementById('month-select').value) + 1; // js: 0-based
+        const stats = getWorkStats(year, month);
+
+        document.getElementById('workdays-total').textContent = stats.totalDays;
+        document.getElementById('workhours-total').textContent = stats.totalHours;
+        document.getElementById('workdays-done').textContent = stats.workedDays;
+        document.getElementById('workhours-done').textContent = stats.workedHours;
+      }
+
+      // Подсчет рабочих дней/часов и отработанных (примерная симуляция)
+      function getWorkStats(year, month) {
+        // Количество дней в месяце
+        const daysInMonth = new Date(year, month, 0).getDate();
+        let workdays = 0;
+        for (let d = 1; d <= daysInMonth; d++) {
+          const dayOfWeek = new Date(year, month - 1, d).getDay();
+          if (dayOfWeek !== 0 && dayOfWeek !== 6) workdays++;
+        }
+        const hoursPerDay = 8;
+        const totalHours = workdays * hoursPerDay;
+
+        // Имитация: сотрудник мог пару дней болеть/отпуск
+        const workedDays = Math.max(workdays - Math.floor(Math.random() * 3), 0);
+        const workedHours = workedDays * hoursPerDay - Math.floor(Math.random() * 3);
+
+        return {
+          totalDays: workdays,
+          totalHours,
+          workedDays,
+          workedHours: workedHours > 0 ? workedHours : 0
+        };
+      }
+
+      // Организация (можно сделать динамической)
+      function setEmployeeOrg() {
+        // Пример — если есть данные из Telegram или API, сюда можно подставить организацию
+        // document.getElementById('employee-org').textContent = 'Ваша Организация';
+      }
+
       // Глобальные функции
       window.setLanguage = function(lang) {
         currentLang = lang;
         localStorage.setItem("lang", lang);
         translatePage();
         updateActiveFlag();
-        
-        // Обновляем выбранные значения
+
         const yearSelect = document.getElementById('year-select');
         const monthSelect = document.getElementById('month-select');
         if (yearSelect.value && monthSelect.value) {
