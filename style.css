@@ -1,4 +1,4 @@
-/* Общие стили */
+/* Основные стили */
 body {
   font-family: 'Open Sans', sans-serif;
   background: #121212;
@@ -99,6 +99,7 @@ lottie-player {
   margin: 30px 0;
 }
 
+/* Кнопка "Назад" */
 .back-btn {
   background: rgba(255, 255, 255, 0.1);
   color: white;
@@ -108,7 +109,6 @@ lottie-player {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 20px;
 }
 
 .back-btn:hover {
@@ -401,14 +401,9 @@ lottie-player {
   font-weight: 600;
 }
 
+/* Стили для таблиц в salary.html */
 .salary-details {
   margin: 20px 0;
-}
-
-.salary-details h4 {
-  margin: 15px 0 10px;
-  font-size: 16px;
-  color: #FFECB3;
 }
 
 .details-table {
@@ -420,17 +415,22 @@ lottie-player {
 .details-table td {
   padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 14px;
+}
+
+.details-table td:first-child {
+  width: 60%;
+  text-align: left;
+  padding-right: 10px;
 }
 
 .details-table td:last-child {
+  width: 40%;
   text-align: right;
   font-weight: 600;
+  font-family: 'Courier New', monospace;
 }
 
-.details-table tr.subtotal td {
-  border-bottom: none;
-  padding-top: 10px;
+.subtotal td:first-child {
   font-weight: 600;
   color: #FFECB3;
 }
@@ -438,19 +438,28 @@ lottie-player {
 .total-table {
   width: 100%;
   margin: 20px 0;
-  border-collapse: collapse;
 }
 
-.total-table td {
-  padding: 12px 0;
-  font-size: 16px;
+.total-table td:first-child {
+  text-align: left;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .total-table td:last-child {
   text-align: right;
   color: #4CAF50;
   font-size: 18px;
+  font-weight: bold;
+}
+
+.salary-details h4 {
+  position: sticky;
+  top: 0;
+  background: #121212;
+  padding: 10px 0;
+  margin: 0;
+  z-index: 10;
 }
 
 .payslip-actions {
@@ -528,14 +537,29 @@ svg {
 }
 
 /* Фиксированная кнопка "Назад" */
+/* Фиксированная кнопка "Назад" */
 .fixed-back-btn {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
   width: calc(100% - 40px);
   max-width: 400px;
+  z-index: 100;
+  background: linear-gradient(to top, #121212 20%, transparent);
+  padding-top: 30px;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.fixed-back-btn > .back-btn {
+  pointer-events: auto;
+  width: 100%;
+  margin: 0;
+}
+
+.hide-back-btn {
+  transform: translate(-50%, 100px);
 }
 
 /* Кастомные селекторы */
@@ -607,12 +631,17 @@ svg {
   transform: rotate(180deg);
 }
 
-/* Адаптация контейнера для прокрутки */
+/* Контейнер с прокруткой */
 .container {
+  padding: 20px;
   padding-bottom: 80px;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
   overflow-y: auto;
-  max-height: 100vh;
+  height: calc(100vh - 40px);
   -webkit-overflow-scrolling: touch;
+  animation: fadeIn 0.5s ease;
 }
 
 /* Улучшение выбора блюд */
