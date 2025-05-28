@@ -12,7 +12,11 @@ function initUser() {
   if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
     const user = tg.initDataUnsafe.user;
     const userName = user.first_name || user.username || 'Гость';
-    document.querySelectorAll('#userName').forEach(el => el.textContent = userName);
+    
+    document.querySelectorAll('#userName').forEach(el => {
+      el.textContent = userName;
+    });
+    
     if (document.getElementById('greeting')) {
       document.getElementById('greeting').textContent = `${getTimeOfDay()}, ${userName}!`;
     }
@@ -30,9 +34,11 @@ function initStartButton() {
 
 function initMenuButtons() {
   const buttons = document.querySelectorAll('.menu-btn');
+  
   buttons.forEach(btn => {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function() {
       const text = this.dataset.i18n;
+      
       if (text === 'salaryTitle') {
         window.location.href = 'salary.html';
       } else if (text === 'vacationTitle') {
@@ -48,5 +54,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initUser();
   initStartButton();
   initMenuButtons();
-  if (typeof translatePage === 'function') translatePage();
+  
+  // Инициализация скролла для всех страниц
+  const container = document.querySelector('.container');
+  const backBtn = document.querySelector('.fixed-back-btn');
+  
+  if (container && backBtn) {
+    let lastScroll = 0;
+    
+    container.addEventListener('scroll', () => {
+      const currentScroll = container.scrollTop;
+      if (currentScroll > lastScroll) {
+        backBtn.classList.add('hide-back-btn');
+      } else {
+        backBtn.classList.remove('hide-back-btn');
+      }
+      lastScroll = currentScroll;
+    });
+  }
 });
