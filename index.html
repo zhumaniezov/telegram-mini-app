@@ -37,11 +37,13 @@
 <body class="start-screen">
   <div class="language-flags">
     <img src="https://flagcdn.com/w20/ru.png" 
-         class="language-flag ${currentLang === 'ru' ? 'active' : ''}" 
+         class="language-flag" 
+         id="flag-ru"
          onclick="setLanguage('ru')" 
          alt="Русский">
     <img src="https://flagcdn.com/w20/uz.png" 
-         class="language-flag ${currentLang === 'uz' ? 'active' : ''}" 
+         class="language-flag" 
+         id="flag-uz"
          onclick="setLanguage('uz')" 
          alt="O'zbekcha">
   </div>
@@ -62,13 +64,43 @@
 
   <script src="lang.js"></script>
   <script>
+    // Язык по умолчанию
+    let currentLang = localStorage.getItem('lang') || 'ru';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      updateFlags();
+      translatePage && translatePage();
+    }
+
+    function updateFlags() {
+      document.getElementById('flag-ru').classList.toggle('active', currentLang === 'ru');
+      document.getElementById('flag-uz').classList.toggle('active', currentLang === 'uz');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Обновляем активный флаг
-      document.querySelectorAll('.language-flag').forEach(flag => {
-        flag.classList.toggle('active', 
-          (flag.getAttribute('onclick').includes(currentLang)));
+      // Обновляем флаги
+      updateFlags();
+
+      // Применяем перевод
+      if (typeof translatePage === 'function') translatePage();
+
+      // Вытаскиваем имя пользователя из Telegram
+      if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        const userName = user.first_name || user.username || 'Гость';
+        document.getElementById('userName').textContent = userName;
+      } else {
+        document.getElementById('userName').textContent = 'Гость';
+      }
+
+      // Обработчик кнопки "Войти как"
+      document.getElementById('startBtn').addEventListener('click', () => {
+        window.location.href = 'main.html';
       });
-      
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
