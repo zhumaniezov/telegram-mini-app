@@ -8,13 +8,42 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    .language-flags {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    .language-flag {
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .language-flag:hover {
+      transform: scale(1.1);
+    }
+    .language-flag.active {
+      border-color: #FFA000;
+      box-shadow: 0 0 8px rgba(255, 160, 0, 0.5);
+    }
+  </style>
 </head>
 <body class="start-screen">
-  <div class="language-switcher">
-    <select id="language-switcher">
-      <option value="ru">RU</option>
-      <option value="uz">UZ</option>
-    </select>
+  <div class="language-flags">
+    <img src="https://flagcdn.com/w20/ru.png" 
+         class="language-flag ${currentLang === 'ru' ? 'active' : ''}" 
+         onclick="setLanguage('ru')" 
+         alt="Русский">
+    <img src="https://flagcdn.com/w20/uz.png" 
+         class="language-flag ${currentLang === 'uz' ? 'active' : ''}" 
+         onclick="setLanguage('uz')" 
+         alt="O'zbekcha">
   </div>
 
   <div class="container">
@@ -23,7 +52,8 @@
       background="transparent"
       speed="1"
       style="width: 200px; height: 200px;"
-      loop autoplay>
+      loop
+      autoplay>
     </lottie-player>
     <button id="startBtn" class="btn">
       <span data-i18n="startBtn"></span> <span id="userName">Гость</span>
@@ -31,6 +61,14 @@
   </div>
 
   <script src="lang.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Обновляем активный флаг
+      document.querySelectorAll('.language-flag').forEach(flag => {
+        flag.classList.toggle('active', 
+          (flag.getAttribute('onclick').includes(currentLang)));
+      });
+      
   <script src="script.js"></script>
 </body>
 </html>
