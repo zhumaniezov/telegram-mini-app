@@ -66,11 +66,23 @@
 
     <div class="payslip" id="payslip" style="display: none;">
       <div class="employee-info">
-        <h3 id="employee-name">Иванов Иван Иванович</h3>
-        <p id="period">Июнь 2023</p>
-        <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
-        <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
-      </div>
+  <h4 id="employee-org" style="margin-bottom: 5px; color: #FFECB3;">ООО "Пример Организации"</h4>
+  <h3 id="employee-name">Иванов Иван Иванович</h3>
+  <p id="period">Июнь 2023</p>
+  <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
+  <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
+  <div id="work-stats" style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:left;">
+    <div style="margin-bottom:4px;">
+      <b>Рабочих дней в месяце:</b> <span id="workdays-total">—</span>
+    </div>
+    <div style="margin-bottom:4px;">
+      <b>Рабочих часов в месяце:</b> <span id="workhours-total">—</span>
+    </div>
+    <div>
+      <b>Отработано сотрудником:</b> <span id="workdays-done">—</span> дней, <span id="workhours-done">—</span> часов
+    </div>
+  </div>
+</div>
 
       <div class="salary-details">
         <h4 data-i18n="accruals"></h4>
