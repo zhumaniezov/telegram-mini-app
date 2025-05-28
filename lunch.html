@@ -15,7 +15,9 @@
       <p id="current-date"></p>
     </div>
 
-    <div class="dishes-list" id="dishes-list"></div>
+    <div class="dishes-list" id="dishes-list">
+      <!-- Блюда будут генерироваться динамически -->
+    </div>
 
     <div class="selection-summary">
       <p><span data-i18n="yourChoice"></span> <span id="selected-dish-name"></span></p>
@@ -23,64 +25,84 @@
     </div>
   </div>
 
+  <!-- Фиксированная кнопка "Назад" -->
   <div class="fixed-back-btn">
     <button onclick="window.location.href='main.html'" class="back-btn" data-i18n="back"></button>
   </div>
 
   <script src="lang.js"></script>
   <script>
-    function updateDishes() {
-      const dishesList = document.getElementById('dishes-list');
-      dishesList.innerHTML = '';
-      
-      translations[currentLang].dishes.forEach((dish, index) => {
-        const dishItem = document.createElement('div');
-        dishItem.className = 'dish-item' + (index === 0 ? ' selected' : '');
-        dishItem.innerHTML = `
-          <div class="dish-content">
-            <h3>${dish.name}</h3>
-            <p class="dish-description">${dish.description}</p>
-            <p class="dish-calories">
-              ${translations[currentLang].caloriesTemplate.replace('{calories}', dish.calories)}
-            </p>
-          </div>
-        `;
-        
-        dishItem.addEventListener('click', function() {
-          document.querySelectorAll('.dish-item').forEach(item => {
-            item.classList.remove('selected');
-          });
-          this.classList.add('selected');
-          document.getElementById('selected-dish-name').textContent = dish.name;
-        });
-        
-        dishesList.appendChild(dishItem);
-      });
-
-      // Устанавливаем первое блюдо как выбранное по умолчанию
-      if (translations[currentLang].dishes.length > 0) {
-        document.getElementById('selected-dish-name').textContent = 
-          translations[currentLang].dishes[0].name;
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       translatePage();
-      updateDishes();
 
+      // Инициализация скролла для кнопки "Назад"
+      const container = document.querySelector('.container');
+      const backBtn = document.querySelector('.fixed-back-btn');
+      let lastScroll = 0;
+
+      if (container && backBtn) {
+        container.addEventListener('scroll', () => {
+          const currentScroll = container.scrollTop;
+          if (currentScroll > lastScroll) {
+            backBtn.classList.add('hide-back-btn');
+          } else {
+            backBtn.classList.remove('hide-back-btn');
+          }
+          lastScroll = currentScroll;
+        });
+      }
+
+      // Установка текущей даты
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('current-date').textContent = new Date().toLocaleDateString(
         currentLang === 'uz' ? 'uz-UZ' : 'ru-RU', options
       );
 
+      // Генерация списка блюд
+      function renderDishes() {
+        const dishesList = document.getElementById('dishes-list');
+        dishesList.innerHTML = '';
+
+        translations[currentLang].dishes.forEach((dish, index) => {
+          const dishItem = document.createElement('div');
+          dishItem.className = 'dish-item' + (index === 0 ? ' selected' : '');
+          dishItem.innerHTML = `
+            <div class="dish-content">
+              <h3>${dish.name}</h3>
+              <p class="dish-description">${dish.description}</p>
+              <p class="dish-calories">
+                ${translations[currentLang].caloriesTemplate.replace('{calories}', dish.calories)}
+              </p>
+            </div>
+          `;
+          
+          dishItem.addEventListener('click', function() {
+            document.querySelectorAll('.dish-item').forEach(item => {
+              item.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            document.getElementById('selected-dish-name').textContent = dish.name;
+          });
+          
+          dishesList.appendChild(dishItem);
+        });
+
+        // Установка первого блюда по умолчанию
+        if (translations[currentLang].dishes.length > 0) {
+          document.getElementById('selected-dish-name').textContent = 
+            translations[currentLang].dishes[0].name;
+        }
+      }
+
+      renderDishes();
+
+      // Подтверждение выбора
       document.getElementById('confirm-btn').addEventListener('click', () => {
-        const selected = document.querySelector('.dish-item.selected h3').textContent;
-        alert(`${currentLang === 'uz' ? 'Siz tanladingiz:' : 'Вы выбрали:'} ${selected}\n${
+        const selectedDish = document.querySelector('.dish-item.selected h3').textContent;
+        alert(`${currentLang === 'uz' ? 'Siz tanladingiz:' : 'Вы выбрали:'} ${selectedDish}\n${
           currentLang === 'uz' ? 'Yoqimli ishtaha!' : 'Приятного аппетита!'}`);
       });
     });
-
-    window.updateDishes = updateDishes;
   </script>
 </body>
 </html>
