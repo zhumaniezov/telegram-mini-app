@@ -69,7 +69,9 @@ const translations = {
         calories: "350"
       }
     ],
-    caloriesTemplate: "~{calories} ккал"
+    caloriesTemplate: "~{calories} ккал",
+    monthNorm: "Норма месяца (дни/часы):",
+    employeeWorked: "Отработано сотрудником (дни/часы):"
   },
   uz: {
     greeting: "Hayrli kun,",
@@ -141,7 +143,9 @@ const translations = {
         calories: "350"
       }
     ],
-    caloriesTemplate: "~{calories} kkal"
+    caloriesTemplate: "~{calories} kkal",
+    monthNorm: "Oyni norma (kun/soat):",
+    employeeWorked: "Xodim ishlagan (kun/soat):"
   }
 };
 
