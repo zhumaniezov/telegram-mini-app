@@ -45,6 +45,12 @@ function initMenuButtons() {
         window.location.href = 'vacation.html';
       } else if (text === 'lunchTitle') {
         window.location.href = 'lunch.html';
+      } else if (text === 'absenceTitle') {
+        window.location.href = 'absence.html';
+      } else if (text === 'docsTitle') {
+        window.location.href = 'docs.html';
+      } else if (text === 'referencesTitle') {
+        window.location.href = 'references.html';
       }
     });
   });
