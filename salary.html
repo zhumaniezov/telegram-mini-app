@@ -87,8 +87,8 @@
         <p id="period">Июнь 2023</p>
         <p id="employee-position"><span data-i18n="position"></span>: <span>Старший разработчик</span></p>
         <p id="employee-id"><span data-i18n="employeeId"></span>: <span>EMP-12345</span></p>
-        <!-- Новый блок расчёта рабочих дней/часов -->
-        <div class="work-stats-block" style="margin: 20px 0 28px 0; font-size: 16px; line-height: 1.6;">
+        <!-- Блок "Норма месяца/Отработано сотрудником" -->
+<div class="work-stats-block" style="margin: 20px 0 28px 0; font-size: 16px; line-height: 1.6;">
   <div data-i18n="monthNorm">
     Норма месяца (дни/часы): <span id="norm-days">23</span>/<span id="norm-hours">184</span>
   </div>
@@ -356,30 +356,7 @@
     }
   </script>
 <script>
-// --- Пример локализации (русский/узбекский) ---
-const translations = {
-  ru: {
-    monthNorm: "Норма месяца (дни/часы):",
-    employeeWorked: "Отработано сотрудником (дни/часы):"
-  },
-  uz: {
-    monthNorm: "Oyni norma (kun/soat):",
-    employeeWorked: "Xodim ishlagan (kun/soat):"
-  }
-};
-
-// --- Простая функция для применения перевода ---
-function applyI18n(lang) {
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang] && translations[lang][key]) {
-      // Заменяем только текст до двоеточия (оставляем значения)
-      el.childNodes[0].textContent = translations[lang][key] + " ";
-    }
-  });
-}
-
-// --- Генерация логичных рандомных значений ---
+// --- Автоматическое заполнение значений ---
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -398,12 +375,25 @@ function updateWorkStats() {
   document.getElementById('emp-hours').textContent = empHours;
 }
 
-// --- ИНИЦИАЛИЗАЦИЯ ---
-const lang = localStorage.getItem('lang') || 'ru'; // или 'uz'
-applyI18n(lang);
-updateWorkStats();
+// --- Применение переводов из lang.js ---
+function applyI18n(lang) {
+  if (!window.translations) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (window.translations[lang] && window.translations[lang][key]) {
+      // Меняем только текст до двоеточия (оставляем значения)
+      el.childNodes[0].textContent = window.translations[lang][key] + " ";
+    }
+  });
+}
 
-// Если язык меняется динамически — не забудьте вызвать applyI18n(newLang)
+// --- ИНИЦИАЛИЗАЦИЯ ---
+document.addEventListener('DOMContentLoaded', function() {
+  // Язык берём из localStorage или default
+  const lang = localStorage.getItem('lang') || 'ru'; // или 'uz'
+  applyI18n(lang);
+  updateWorkStats();
+});
 </script>
 </body>
 </html>
