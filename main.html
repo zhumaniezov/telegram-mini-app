@@ -1,67 +1,25 @@
-<!-- Главный экран в стиле скриншота -->
-<link rel="stylesheet" href="main.css" />
-
-<section class="main-section">
-  <h1>Главное</h1>
-
-  <div class="main-card salary-card">
-    <div class="main-card-header">
-      <span>Зарплата</span>
-      <span class="main-card-icon salary">
-        <!-- Пример SVG-иконки: -->
-        <svg width="24" height="24" fill="none"><rect x="5" y="8" width="14" height="8" rx="3" fill="#c6c425"/><rect x="7.5" y="11" width="9" height="2" rx="1" fill="#fff"/></svg>
-      </span>
-    </div>
-    <div class="main-card-body">
-      Здесь будут отображаться данные о ваших выплатах. Сейчас информации нет – она появится позже.
-    </div>
-  </div>
-
-  <div class="main-card absence-card">
-    <div class="main-card-header">
-      <span>Отсутствия</span>
-      <span class="main-card-icon absence">
-        <svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="9" fill="#b963e7"/><path d="M11 7v4l2.5 2.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
-      </span>
-    </div>
-    <div class="main-card-body">
-      Сегодня все на месте, либо информации об отсутствиях на сегодня еще нет.
-    </div>
-    <div class="main-card-action">
-      <a href="#" class="main-card-link">Ввести отсутствие</a>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n="mainTitle">Главное меню</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body class="main-screen">
+  <div class="container">
+    <h1><span data-i18n="greeting"></span> <span id="userName">Гость</span>!</h1>
+    <div class="menu-grid">
+      <button class="menu-btn" data-i18n="salaryTitle"></button>
+      <button class="menu-btn" data-i18n="vacationTitle"></button>
+      <button class="menu-btn" data-i18n="lunchTitle"></button>
+      <button class="menu-btn" data-i18n="chatTitle"></button>
     </div>
   </div>
 
-  <div class="main-card vacation-card">
-    <div class="main-card-header">
-      <span>Отпуск</span>
-      <span class="main-card-icon vacation">
-        <svg width="23" height="23" fill="none"><rect x="3" y="7" width="17" height="8" rx="4" fill="#f5b53b"/><rect x="7" y="10" width="9" height="2" rx="1" fill="#fff"/></svg>
-      </span>
-    </div>
-    <div class="main-card-body main-card-flex">
-      <span class="vacation-days">5</span>
-      <span>
-        На сегодня, 19 ноября, доступно 5 дней отпуска. Из них 1 день можно заменить компенсацией.
-      </span>
-    </div>
-    <div class="main-card-action">
-      <a href="#" class="main-card-link">Подать заявление</a>
-    </div>
-  </div>
-
-  <div class="main-card docs-card">
-    <div class="main-card-header">
-      <span>Справки</span>
-      <span class="main-card-icon docs">
-        <svg width="24" height="24" fill="none"><rect x="5" y="4" width="14" height="16" rx="3" fill="#38b6ff"/><rect x="8" y="8" width="8" height="2.5" rx="1" fill="#fff"/><rect x="8" y="13" width="8" height="2.5" rx="1" fill="#fff"/></svg>
-      </span>
-    </div>
-    <div class="main-card-body">
-      Справки о ваших доходах и удержанных налогах и другие справки с места работы
-    </div>
-    <div class="main-card-action">
-      <a href="#" class="main-card-link">Заказать справку</a>
-    </div>
-  </div>
-</section>
+  <script src="lang.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
