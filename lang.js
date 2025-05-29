@@ -74,7 +74,23 @@ const translations = {
     ],
     caloriesTemplate: "~{calories} ккал",
     monthNorm: "Норма месяца (дни/часы):",
-    employeeWorked: "Отработано сотрудником (дни/часы):"
+    employeeWorked: "Отработано сотрудником (дни/часы):",
+    // absence.html
+    absenceInfo: "Здесь будет отображаться информация об отсутствиях: больничные, прогулы, отгулы и другие периоды отсутствия сотрудника.",
+    absenceEmpty: "На данный момент отсутствия не зафиксированы.",
+
+    // docs.html
+    docsInfo: "В этом разделе будут храниться ваши личные и рабочие документы — трудовые договоры, приказы, акты, инструкции и другие важные файлы.",
+    sampleContract: "Трудовой договор (пример)",
+    sampleOrder: "Приказ о приеме на работу (пример)",
+    sampleInstruction: "Должностная инструкция (пример)",
+
+    // references.html
+    referencesInfo: "В этом разделе вы можете заказать справки о доходах, занятости, для банка, посольства и других целей.",
+    sampleIncome: "Справка о доходах (пример)",
+    sampleEmployment: "Справка с места работы (пример)",
+    sampleBank: "Справка для банка (пример)",
+    orderReference: "Заказать справку"
   },
   uz: {
     greeting: "Hayrli kun,",
@@ -151,7 +167,23 @@ const translations = {
     ],
     caloriesTemplate: "~{calories} kkal",
     monthNorm: "Oyni norma (kun/soat):",
-    employeeWorked: "Xodim ishlagan (kun/soat):"
+    employeeWorked: "Xodim ishlagan (kun/soat):",
+    // absence.html
+    absenceInfo: "Bu bo‘limda kasallik varaqasi, sababli/sababsiz yo‘qliklar va boshqa ishga chiqmagan kunlar aks etadi.",
+    absenceEmpty: "Hozircha yo‘qliklar qayd etilmagan.",
+
+    // docs.html
+    docsInfo: "Bu bo‘limda shaxsiy va ish hujjatlaringiz — mehnat shartnomalari, buyruqlar, aktlar, yo‘riqnomalar va boshqa muhim fayllar saqlanadi.",
+    sampleContract: "Mehnat shartnomasi (namuna)",
+    sampleOrder: "Ishga qabul qilish buyrug‘i (namuna)",
+    sampleInstruction: "Lavozim yo‘riqnomasi (namuna)",
+
+    // references.html
+    referencesInfo: "Bu bo‘limda daromad, ish joyi, bank, elchixona va boshqa maqsadlar uchun ma’lumotnoma buyurtma qilishingiz mumkin.",
+    sampleIncome: "Daromad haqida ma’lumotnoma (namuna)",
+    sampleEmployment: "Ish joyidan ma’lumotnoma (namuna)",
+    sampleBank: "Bank uchun ma’lumotnoma (namuna)",
+    orderReference: "Ma’lumotnoma buyurtma qilish"
   }
 };
 
