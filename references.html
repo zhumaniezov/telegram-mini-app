@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n="referencesTitle">📑 Справки</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body class="info-screen">
+  <div class="toolbar">
+    <button class="back-btn" onclick="universalBack()" aria-label="Назад">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#bfc8e2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l-8 8 8 8"/></svg>
+    </button>
+    <span class="toolbar-title" data-i18n="referencesTitle">📑 Справки</span>
+  </div>
+  <div class="container">
+    <h1 data-i18n="referencesTitle">📑 Справки</h1>
+    <div class="info-block">
+      <p data-i18n="referencesInfo">В этом разделе вы можете заказать справки о доходах, занятости, для банка, посольства и других целей.</p>
+      <ul class="references-list">
+        <li>📑 <span data-i18n="sampleIncome">Справка о доходах (пример)</span></li>
+        <li>📑 <span data-i18n="sampleEmployment">Справка с места работы (пример)</span></li>
+        <li>📑 <span data-i18n="sampleBank">Справка для банка (пример)</span></li>
+      </ul>
+      <button class="action-btn" data-i18n="orderReference">Заказать справку</button>
+    </div>
+  </div>
+  <div class="fixed-back-btn">
+    <button onclick="window.location.href='main.html'" class="back-btn" data-i18n="back"></button>
+  </div>
+  <script>
+    function universalBack() {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "main.html";
+    }
+  </script>
+  <script src="lang.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { translatePage(); });
+  </script>
+</body>
+</html>
