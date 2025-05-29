@@ -90,10 +90,10 @@
         <!-- Блок "Норма месяца/Отработано сотрудником" -->
 <div class="work-stats-block" style="margin: 20px 0 28px 0; font-size: 16px; line-height: 1.6;">
   <div data-i18n="monthNorm">
-    Норма месяца (дни/часы): <span id="workdays-total">23</span>/<span id="workhours-total">184</span>
+    Норма месяца (дни/часы): <span id="norm-days">23</span>/<span id="norm-hours">184</span>
   </div>
   <div data-i18n="employeeWorked">
-    Отработано сотрудником (дни/часы): <span id="workdays-done">22</span>/<span id="workhours-done">176</span>
+    Отработано сотрудником (дни/часы): <span id="emp-days">22</span>/<span id="emp-hours">176</span>
   </div>
 </div>
       </div>
@@ -288,41 +288,43 @@
         return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' сум';
       }
 
-      // Генерация статистики по рабочим дням/часам
-      function generateWorkStats() {
-        const year = parseInt(document.getElementById('year-select').value);
-        const month = parseInt(document.getElementById('month-select').value) + 1; // js: 0-based
-        const stats = getWorkStats(year, month);
+      // --- Генерация статистики по рабочим дням/часам ---
+function generateWorkStats() {
+  const year = parseInt(document.getElementById('year-select').value);
+  const month = parseInt(document.getElementById('month-select').value) + 1; // js: 0-based
+  const stats = getWorkStats(year, month);
 
-        document.getElementById('workdays-total').textContent = stats.totalDays;
-        document.getElementById('workhours-total').textContent = stats.totalHours;
-        document.getElementById('workdays-done').textContent = stats.workedDays;
-        document.getElementById('workhours-done').textContent = stats.workedHours;
-      }
+  // Заполняем именно те id, что в HTML!
+  document.getElementById('norm-days').textContent = stats.totalDays;
+  document.getElementById('norm-hours').textContent = stats.totalHours;
+  document.getElementById('emp-days').textContent = stats.workedDays;
+  document.getElementById('emp-hours').textContent = stats.workedHours;
+}
 
-      // Подсчет рабочих дней/часов и отработанных (примерная симуляция)
-      function getWorkStats(year, month) {
-        // Количество дней в месяце
-        const daysInMonth = new Date(year, month, 0).getDate();
-        let workdays = 0;
-        for (let d = 1; d <= daysInMonth; d++) {
-          const dayOfWeek = new Date(year, month - 1, d).getDay();
-          if (dayOfWeek !== 0 && dayOfWeek !== 6) workdays++;
-        }
-        const hoursPerDay = 8;
-        const totalHours = workdays * hoursPerDay;
+      // --- Подсчет рабочих дней/часов и отработанных (примерная симуляция) ---
+function getWorkStats(year, month) {
+  // Количество дней в месяце
+  const daysInMonth = new Date(year, month, 0).getDate();
+  let workdays = 0;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayOfWeek = new Date(year, month - 1, d).getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) workdays++;
+  }
+  const hoursPerDay = 8;
+  const totalHours = workdays * hoursPerDay;
 
-        // Имитация: сотрудник мог пару дней болеть/отпуск
-        const workedDays = Math.max(workdays - Math.floor(Math.random() * 3), 0);
-        const workedHours = workedDays * hoursPerDay - Math.floor(Math.random() * 3);
+  // Имитация: сотрудник мог пару дней болеть/отпуск
+  const workedDays = Math.max(workdays - Math.floor(Math.random() * 3), 0);
+  const workedHours = workedDays * hoursPerDay - Math.floor(Math.random() * 3);
 
-        return {
-          totalDays: workdays,
-          totalHours,
-          workedDays,
-          workedHours: workedHours > 0 ? workedHours : 0
-        };
-      }
+  return {
+    totalDays: workdays,
+    totalHours,
+    workedDays,
+    workedHours: workedHours > 0 ? workedHours : 0
+  };
+}
+
 
       // Организация (можно сделать динамической)
       function setEmployeeOrg() {
